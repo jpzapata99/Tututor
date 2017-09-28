@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="Estilo.css">
+    <script src="../p5.min.js"></script>
+    <script src="../addons/p5.dom.min.js"></script>
+    <script src="../addons/p5.sound.min.js"></script>
+    <style> body {padding: 0; margin: 0;} </style>
+    </script>
+  </head>
+  <body>
+    <div class="hamburger">
+      <div class="_layer -top"></div>
+      <div class="_layer -mid"></div>
+      <div class="_layer -bottom"></div>
+    </div>
+    <nav class="menuppal">
+      <ul>
+        <li>
+        <button id="button1" onclick="activarLapiz()"></button>
+        <script type="text/javascript">
+        var button1 = document.getElementById("button1");
+    button1.innerHTML = '<img src="Imagenes/Lapiz.PNG"/>';
+    </script>
+        </li>
+        <li>
+        <button id="button2" onclick="activarRegla()"></button>
+        <script type="text/javascript">
+        var button2 = document.getElementById("button2");
+    button2.innerHTML = '<img src="Imagenes/Regla.PNG"/>';
+    </script>
+        </li>
+        <li>
+        <button id="button3" onclick="activarPantallazo()"></button>
+        <script type="text/javascript">
+        var button3 = document.getElementById("button3");
+    button3.innerHTML = '<img src="Imagenes/Pantallazo.PNG"/>';
+    </script>
+    </li>
+    <li>
+        <button id="button4" onclick="activarBorrador()"></button>
+        <script type="text/javascript">
+        var button4 = document.getElementById("button4");
+    button4.innerHTML = '<img src="Imagenes/Borrador.PNG"/>';
+    </script>
+        </li>
+        <li>
+        <button id="button5" onclick="activarCirculo()" ></button>
+        <script type="text/javascript">
+        var button5 = document.getElementById("button5");
+    button5.innerHTML = '<img src="Imagenes/Circulo.PNG"/>';
+    </script>
+        </li>
+        <li>
+        <button id="button6"></button>
+        <script type="text/javascript">
+        var button6 = document.getElementById("button6");
+    button6.innerHTML = '<img src="Imagenes/Cuadrado.PNG"/>';
+    </script>
+        </li>
+        <li>
+        <button id="button7"></button>
+        <script type="text/javascript">
+        var button7 = document.getElementById("button7");
+    button7.innerHTML = '<img src="Imagenes/Plano.PNG"/>';
+    </script>
+        </li>
+      </ul>
+    </nav>
+    <script src="sketch.js"></script>
+    <script src="Funcionamiento.js"></script>
+  </body>
+</html>
