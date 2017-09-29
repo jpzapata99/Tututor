@@ -14,10 +14,14 @@ var pcx=0;
 var pcy=0;
 var img;
 var cargarImagen=false;
-function preload(){
-img=loadImage("Imagenes/Paisaje.jpg");
-}
+function setup() {
 
+ cnv=createCanvas(1600, 800);
+ centerCanvas();
+ background(88,114,70);
+ img=loadImage("Imagenes/Paisaje.jpg");
+
+}
 function centerCanvas(){
   var x = (windowWidth - width)/2;
   var y = (windowHeight - height)/2;
@@ -28,12 +32,6 @@ function windowResized(){
   centerCanvas();
 }
 
-function setup() {
-
- cnv=createCanvas(1600, 800);
- centerCanvas();
- background(88,114,70);
-}
 
 function activarLapiz() {
   document.getElementById("divuno").style.visibility = "visible";
@@ -74,11 +72,11 @@ function activarCirculo(){
   pocisionCirculo=true;
 }
 function cargarImg(){
-  //set(300,300,img);
-  image(img,300,300);
-  updatePixels();
+  loadImage("Imagenes/Paisaje.jpg", function(img) {
+    image(img, 300, 300);
+    updatePixels();
+  });
 }
-loadImage(path,successCallback,failureCallback)
 function draw() {
  if (circulo==true) {
    fill(100,100,100,100);
