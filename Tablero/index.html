@@ -2,9 +2,9 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="Estilo.css">
-    <script src="../../p5.min.js"></script>
-    <script src="../../addons/p5.dom.min.js"></script>
-    <script src="../../addons/p5.sound.min.js"></script>
+    <script src="../p5.min.js"></script>
+    <script src="../addons/p5.dom.min.js"></script>
+    <script src="../addons/p5.sound.min.js"></script>
     <style> body {padding: 0; margin: 0;} </style>
     </script>
   </head>
@@ -52,7 +52,7 @@
     </script>
         </li>
         <li>
-        <button id="button6"></button>
+        <button id="button6" onclick="cargarImg()"></button>
         <script type="text/javascript">
         var button6 = document.getElementById("button6");
     button6.innerHTML = '<img src="Imagenes/Cuadrado.PNG"/>';
@@ -67,6 +67,21 @@
         </li>
       </ul>
     </nav>
+    <div  id="divuno" style="position:relative; top:5px;left:300px;visibility: hidden;">
+
+    <input style="background-color: #F01616; width:70px; height:50px;border-style: outset;border-width: 5px;" type="button" id="ColorRojo" onclick="tipoColor(255,0,0)" value="">
+    <input style="background-color: #08DB3D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorVerde" onclick="tipoColor(0,255,0)" value="">
+    <input style="background-color: #191A19; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorNegro" onclick="tipoColor(255,255,255)" value="">
+    <input style="background-color: #703C4F; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorMorado" onclick="tipoColor(108,070,117)" value="">
+    <input style="background-color: #F2F5F1; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorBlanco" onclick="tipoColor(255,255,255)" value="">
+    <input style="background-color: #EDDA09; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAmarillo" onclick="tipoColor(255,255,0)" value="">
+    <input style="background-color: #A1A097; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorGris" onclick="tipoColor(144,144,144)" value="">
+    <input style="background-color: #38376D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulO" onclick="tipoColor(062,095,138)" value="">
+    <input style="background-color: #817DEB; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulC" onclick="tipoColor(093,155,155)" value="">
+    <input style="background-color: #323004; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorCafe" onclick="tipoColor(108,059,042)" value="">
+
+
+</div>
     <script src="sketch.js"></script>
     <script src="Funcionamiento.js"></script>
   </body>
