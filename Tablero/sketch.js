@@ -13,9 +13,11 @@ var pocisionCirculo=false;
 var pcx=0;
 var pcy=0;
 function setup() {
- cnv=createCanvas(1600, 750);
+  var x=windowWidth;
+  var y=windowHeight-100;
+ cnv=createCanvas(x,y);
  centerCanvas();
- background(88,114,70);
+ background(88,100,70);
  cnv.drop(gotFile);
 
 }
@@ -102,7 +104,7 @@ function mouseDragged(){
 	tipoColor();
   }
 }
-
+function cargarImg(){}
 
 function mouseClicked(){
   if (regla==true) {

@@ -70,7 +70,7 @@ body{margin:0;padding:0;}
     top: 0;
     transform: translate3d(0px, -100%, 0px);
     transition: transform 0.35s cubic-bezier(0.05, 1.04, 0.72, 0.98) 0s;
-    width: 10%;
+    width: 12%;
     z-index: 1001;
 }
 .menuppal ul{
