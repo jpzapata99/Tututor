@@ -12,14 +12,13 @@ var circulo=false;
 var pocisionCirculo=false;
 var pcx=0;
 var pcy=0;
-var img;
-var cargarImagen=false;
 function setup() {
-
- cnv=createCanvas(1600, 800);
+  var x=windowWidth;
+  var y=windowHeight-100;
+ cnv=createCanvas(x,y);
  centerCanvas();
- background(88,114,70);
- img=loadImage("Imagenes/Paisaje.jpg");
+ background(88,100,70);
+ cnv.drop(gotFile);
 
 }
 function centerCanvas(){
@@ -71,11 +70,16 @@ function activarCirculo(){
   circulo=true;
   pocisionCirculo=true;
 }
-function cargarImg(){
-  loadImage("Imagenes/Paisaje.jpg", function(img) {
-    image(img, 300, 300);
-    updatePixels();
-  });
+function gotFile(file) {
+// If it's an image file
+if (file.type === 'image') {
+	// Create an image DOM element but don't show it
+	var img = createImg(file.data).hide();
+	// Draw the image onto the canvas
+	image(img, mouseX, mouseY,150,150);
+} else {
+	println('Not an image file!');
+}
 }
 function draw() {
  if (circulo==true) {
@@ -100,7 +104,7 @@ function mouseDragged(){
 	tipoColor();
   }
 }
-
+function cargarImg(){}
 
 function mouseClicked(){
   if (regla==true) {
