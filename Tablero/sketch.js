@@ -12,6 +12,7 @@ var circulo=false;
 var pocisionCirculo=false;
 var pcx=0;
 var pcy=0;
+var lapiztamano=65;
 function setup() {
   var x=windowWidth;
   var y=windowHeight-100;
@@ -90,12 +91,12 @@ function draw() {
 }
 function tipoColor(R,G,B){
    fill(R,G,B);
- 	ellipse(mouseX,mouseY,30,30);
+ 	ellipse(mouseX,mouseY,lapiztamano,lapiztamano);
  }
 function mouseDragged(){
   if(Borrador==true){
 	   noStroke();
-	   fill(88,114,70);
+	   fill(88,100,70);
 	    ellipse(mouseX,mouseY,60,60);
   }
 
@@ -104,7 +105,6 @@ function mouseDragged(){
 	tipoColor();
   }
 }
-function cargarImg(){}
 
 function mouseClicked(){
   if (regla==true) {
@@ -123,11 +123,19 @@ function mouseClicked(){
       }
     }
     firstclick = true;
-    ellipse(mouseX, mouseY, 20, 20);
+    //ellipse(mouseX, mouseY, 20, 20);
   }
   if (pocisionCirculo==true) {
     pcx=mouseX;
     pcy=mouseY;
     pocisionCirculo=false;
   }
+}
+function tamanomas(){
+  lapiztamano+=15;
+}
+function tamanomenos(){
+  if(lapiztamano>=0){
+  lapiztamano-=15;
+}
 }
