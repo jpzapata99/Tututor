@@ -1,23 +1,29 @@
 var mysql = require('mysql');
 var express = require('express');
 var bodyParser = require('body-parser');
-var urlencondedParser = bodyParser.urlenconded({extended : false});
+
 var app = express();
+
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const PORT = 8080;
 
-var con = mysql.createConnection({
+var pool = mysql.createPool({
    host: 'localhost',
    user: 'root',
    password: '',
-   database: 'prueba03',
-   port: 9001
+   database: 'prueba05',
+   port: 9002
 });
 
-con.connect(function(err) {
- if (err) throw err;
- else console.log("Conexión realizada");
-});
+function conectar_mysql() {
+  pool.getConnection(function(err, con){
+    con.query("SELECT * FROM usuario WHERE usuario = 'Nicolas'", function(err, res) {
+      console.log(res.length);
+    });
+  });
+}
+
 
 app.use('/js', express.static(__dirname + '/js'));
 app.use('/images', express.static(__dirname + '/images'));
@@ -28,11 +34,10 @@ app.get('/', function(req, res){
   res.render('index');
 });
 
-app.listen(PORT);
-
-con.query("SELECT * FROM personaje WHERE nombre = 'Nicolas'",function (err, result) {
-  if (err) throw err;
-  console.log(result[0].biografia);
+app.post('/', urlencodedParser, function(req, res){
+  console.log(req.body.user);
+  conectar_mysql();
+  res.render('index');
 });
 
-con.end();
+app.listen(PORT);
