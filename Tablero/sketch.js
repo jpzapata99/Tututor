@@ -13,6 +13,9 @@ var pocisionCirculo=false;
 var pcx=0;
 var pcy=0;
 var lapiztamano=65;
+var reglatamano=4;
+var imprimir_imagen=false;
+var img;
 function setup() {
   var x=windowWidth;
   var y=windowHeight-100;
@@ -34,7 +37,8 @@ function windowResized(){
 
 
 function activarLapiz() {
-  document.getElementById("divuno").style.visibility = "visible";
+  document.getElementById("divuno").style.visibility = "visible"
+  document.getElementById("ReglaTamano").style.visibility = "hidden";
   lapiz=true;
   regla=false;
   Borrador=false;
@@ -42,6 +46,8 @@ function activarLapiz() {
 }
 
 function activarRegla(){
+  document.getElementById("divuno").style.visibility = "hidden"
+  document.getElementById("ReglaTamano").style.visibility = "visible";
   regla=true;
   firstclick = false;
   lapiz=false;
@@ -75,9 +81,8 @@ function gotFile(file) {
 // If it's an image file
 if (file.type === 'image') {
 	// Create an image DOM element but don't show it
-	var img = createImg(file.data).hide();
-	// Draw the image onto the canvas
-	image(img, mouseX, mouseY,150,150);
+	img = createImg(file.data).hide();
+	imprimir_imagen=true;
 } else {
 	println('Not an image file!');
 }
@@ -91,7 +96,6 @@ function draw() {
 }
 function tipoColor(R,G,B){
    fill(R,G,B);
- 	ellipse(mouseX,mouseY,lapiztamano,lapiztamano);
  }
 function mouseDragged(){
   if(Borrador==true){
@@ -103,6 +107,7 @@ function mouseDragged(){
   if(lapiz==true){
 	   noStroke();
 	tipoColor();
+  ellipse(mouseX,mouseY,lapiztamano,lapiztamano);
   }
 }
 
@@ -118,24 +123,35 @@ function mouseClicked(){
         px2=mouseX;
         py2=mouseY;
         ban=false;
-        fill(255,255,255);
+        strokeWeight(reglatamano);
         line(px,py,px2,py2);
       }
     }
     firstclick = true;
-    //ellipse(mouseX, mouseY, 20, 20);
+    ellipse(mouseX, mouseY, 15, 15);
   }
   if (pocisionCirculo==true) {
     pcx=mouseX;
     pcy=mouseY;
     pocisionCirculo=false;
   }
+  if (imprimir_imagen==true) {
+    image(img, mouseX, mouseY,250,250);
+    imprimir_imagen=false;
+    img=null;
+  }
 }
 function tamanomas(){
-  lapiztamano+=15;
+  if (lapiz==true) {
+    lapiztamano+=15;
+  } else if (regla==true) {
+    reglatamano+=1;
+  }
 }
 function tamanomenos(){
-  if(lapiztamano>=0){
+  if(lapiztamano>=0 && lapiz==true){
   lapiztamano-=15;
+}else if (regla==true && reglatamano>=0) {
+  reglatamano-=1;
 }
 }
