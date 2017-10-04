@@ -14,6 +14,7 @@ var pcx=0;
 var pcy=0;
 var lapiztamano=65;
 var reglatamano=4;
+var borradortamano=60;
 var imprimir_imagen=false;
 var img;
 function setup() {
@@ -38,7 +39,7 @@ function windowResized(){
 
 function activarLapiz() {
   document.getElementById("divuno").style.display = "block"
-  document.getElementById("ReglaTamano").style.display = "none";
+  document.getElementById("ReglayborradorTamano").style.display = "none";
   lapiz=true;
   regla=false;
   Borrador=false;
@@ -47,7 +48,7 @@ function activarLapiz() {
 
 function activarRegla(){
   document.getElementById("divuno").style.display = "none"
-  document.getElementById("ReglaTamano").style.display = "block";
+  document.getElementById("ReglayborradorTamano").style.display = "block";
   regla=true;
   firstclick = false;
   lapiz=false;
@@ -64,6 +65,8 @@ function activarPantallazo(){
 }
 
 function activarBorrador(){
+  document.getElementById("divuno").style.display = "none"
+  document.getElementById("ReglayborradorTamano").style.display = "block";
   lapiz=false;
   regla=false;
   Borrador=true;
@@ -101,7 +104,7 @@ function mouseDragged(){
   if(Borrador==true){
 	   noStroke();
 	   fill(88,100,70);
-	    ellipse(mouseX,mouseY,60,60);
+	    ellipse(mouseX,mouseY,borradortamano,borradortamano);
   }
 
   if(lapiz==true){
@@ -146,6 +149,8 @@ function tamanomas(){
     lapiztamano+=15;
   } else if (regla==true) {
     reglatamano+=1;
+  }else if (Borrador==true) {
+    borradortamano+=30;
   }
 }
 function tamanomenos(){
@@ -153,5 +158,7 @@ function tamanomenos(){
   lapiztamano-=15;
 }else if (regla==true && reglatamano>=0) {
   reglatamano-=1;
+}else if (Borrador==true && borradortamano>=0) {
+  borradortamano-=30;
 }
 }

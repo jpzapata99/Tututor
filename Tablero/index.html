@@ -68,19 +68,21 @@
         </li>
       </ul>
     </nav>
-    <div id="ReglaTamano" style="position:relative;left:15%;width:200px; height:100px; ;display: none;">
-      <input id="menosregla" onclick="tamanomenos()" value="" style="width:70px; height:50px;border-style: outset;border-width: 5px;" type="button">
+
+
+    <div id="ReglayborradorTamano" style="position:relative;left:15%;display: none;">
+      <button id="menosregla" onclick="tamanomenos()" value=""></button>
       <script type="text/javascript">
         var menos=document.getElementById("menosregla");
         menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
       </script>
-      <input id="masregla" onclick="tamanomas()" value="" style="width:70px; height:50px;border-style: outset;border-width: 5px;" type="button">
+      <button id="masregla" onclick="tamanomas()" value="" ></button>
       <script type="text/javascript">
       var mas=document.getElementById("masregla");
     mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
       </script>
     </div>
-    <div  id="divuno" style="position:relative;left:15%;;width:600px; height:100px;display: none;">
+    <div  id="divuno" style="position:relative;left:15%;display: none;">
 
     <input style="background-color: #F01616; width:70px; height:50px;border-style: outset;border-width: 5px;" type="button" id="ColorRojo" onclick="tipoColor(255,0,0)" value="">
     <input style="background-color: #08DB3D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorVerde" onclick="tipoColor(0,255,0)" value="">
