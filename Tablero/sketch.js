@@ -37,8 +37,8 @@ function windowResized(){
 
 
 function activarLapiz() {
-  document.getElementById("divuno").style.visibility = "visible"
-  document.getElementById("ReglaTamano").style.visibility = "hidden";
+  document.getElementById("divuno").style.display = "block"
+  document.getElementById("ReglaTamano").style.display = "none";
   lapiz=true;
   regla=false;
   Borrador=false;
@@ -46,8 +46,8 @@ function activarLapiz() {
 }
 
 function activarRegla(){
-  document.getElementById("divuno").style.visibility = "hidden"
-  document.getElementById("ReglaTamano").style.visibility = "visible";
+  document.getElementById("divuno").style.display = "none"
+  document.getElementById("ReglaTamano").style.display = "block";
   regla=true;
   firstclick = false;
   lapiz=false;
