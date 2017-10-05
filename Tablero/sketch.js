@@ -91,11 +91,7 @@ if (file.type === 'image') {
 }
 }
 function draw() {
- if (circulo==true) {
-   fill(100,100,100,100);
-   noStroke();
-   ellipse(400,400,300);
- }
+
 }
 function tipoColor(R,G,B){
    fill(R,G,B);
