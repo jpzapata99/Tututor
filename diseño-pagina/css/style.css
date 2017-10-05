@@ -160,7 +160,7 @@ h2.sub-head-w3-agileits, h3.sub-head-w3-agileits {
     padding: 10px;
 }
 .bg-color-agile{
-    background: red; /* For browsers that do not support gradients */    
+    background: red; /* For browsers that do not support gradients */
     background: -webkit-linear-gradient(to bottom right, #1858e8, #ffffff); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(to bottom right, #1858e8, #ffffff); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(to bottom right, #1858e8, #ffffff); /* For Firefox 3.6 to 15 */
@@ -345,7 +345,7 @@ label.checkbox {
     color: #8BC34A;
     margin-top: 93px;
 }
- /*-- agileits --*/ 
+ /*-- agileits --*/
 .login-form p a {
     color: #fff;
     text-decoration: none;
@@ -492,15 +492,15 @@ ul.top-links {
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: #ffffff; 
+   color: #ffffff;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   color: #ffffff;  
+   color: #ffffff;
 }
 
-:-ms-input-placeholder {  
-   color: #ffffff;  
+:-ms-input-placeholder {
+   color: #ffffff;
 }
 /*--responsive--*/
 @media(max-width:1920px){

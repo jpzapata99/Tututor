@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
   <head>
@@ -68,6 +69,103 @@
         </li>
       </ul>
     </nav>
+    <div  id="divuno" style="position:relative;left:15%;visibility: hidden;">
+
+    <input style="background-color: #F01616; width:70px; height:50px;border-style: outset;border-width: 5px;" type="button" id="ColorRojo" onclick="tipoColor(255,0,0)" value="">
+    <input style="background-color: #08DB3D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorVerde" onclick="tipoColor(0,255,0)" value="">
+    <input style="background-color: #191A19; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorNegro" onclick="tipoColor(0,0,0)" value="">
+    <input style="background-color: #703C4F; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorMorado" onclick="tipoColor(108,070,117)" value="">
+    <input style="background-color: #F2F5F1; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorBlanco" onclick="tipoColor(255,255,255)" value="">
+    <input style="background-color: #EDDA09; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAmarillo" onclick="tipoColor(255,255,0)" value="">
+    <input style="background-color: #A1A097; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorGris" onclick="tipoColor(144,144,144)" value="">
+    <input style="background-color: #38376D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulO" onclick="tipoColor(062,095,138)" value="">
+    <input style="background-color: #817DEB; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulC" onclick="tipoColor(093,155,155)" value="">
+    <input style="background-color: #323004; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorCafe" onclick="tipoColor(108,059,042)" value="">
+
+
+</div>
+    <script src="sketch.js"></script>
+    <script src="Funcionamiento.js"></script>
+  </body>
+</html>
+=======
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="Estilo.css">
+    <script src="../p5.min.js"></script>
+    <script src="../addons/p5.dom.min.js"></script>
+    <script src="../addons/p5.sound.min.js"></script>
+    <style> body {padding: 0; margin: 0;} </style>
+    </script>
+  </head>
+  <body>
+    <div class="hamburger">
+      <div class="_layer -top"></div>
+      <div class="_layer -mid"></div>
+      <div class="_layer -bottom"></div>
+    </div>
+    <nav class="menuppal">
+      <ul>
+        <li>
+        <button id="button1" onclick="activarLapiz()"></button>
+        <script type="text/javascript">
+        var button1 = document.getElementById("button1");
+    button1.innerHTML = '<img src="Imagenes/Lapiz.PNG"/>';
+    </script>
+        </li>
+        <li>
+        <button id="button2" onclick="activarRegla()"></button>
+        <script type="text/javascript">
+        var button2 = document.getElementById("button2");
+    button2.innerHTML = '<img src="Imagenes/Regla.PNG"/>';
+    </script>
+        </li>
+        <li>
+        <button id="button3" onclick="activarPantallazo()"></button>
+        <script type="text/javascript">
+        var button3 = document.getElementById("button3");
+    button3.innerHTML = '<img src="Imagenes/Pantallazo.PNG"/>';
+    </script>
+    </li>
+    <li>
+        <button id="button4" onclick="activarBorrador()"></button>
+        <script type="text/javascript">
+        var button4 = document.getElementById("button4");
+    button4.innerHTML = '<img src="Imagenes/Borrador.PNG"/>';
+    </script>
+        </li>
+        <li>
+        <button id="button5" onclick="activarCirculo()" ></button>
+        <script type="text/javascript">
+        var button5 = document.getElementById("button5");
+    button5.innerHTML = '<img src="Imagenes/Circulo.PNG"/>';
+    </script>
+        </li>
+        <li>
+        <button id="button6" onclick=""></button>
+        <script type="text/javascript">
+        var button6 = document.getElementById("button6");
+    button6.innerHTML = '<img src="Imagenes/Cuadrado.PNG"/>';
+    </script>
+        </li>
+        <li>
+        <button id="button7"></button>
+        <script type="text/javascript">
+        var button7 = document.getElementById("button7");
+    button7.innerHTML = '<img src="Imagenes/Plano.PNG"/>';
+    </script>
+        </li>
+        <li>
+            <button id="button8" onclick="LimpiarTotal()"></button>
+            <script type="text/javascript">
+            var button8 = document.getElementById("button8");
+            button8.innerHTML = '<img src="Imagenes/BorradoTotal.JPG"/>';
+    </script>
+        </li>
+      </ul>
+    </nav>
 
 
     <div id="ReglayborradorTamano" style="position:relative;left:15%;display: none;">
@@ -111,3 +209,4 @@
     <script src="Funcionamiento.js"></script>
   </body>
 </html>
+>>>>>>> 123bae8e935d22355d01c5ac1585d31a4f83909b
