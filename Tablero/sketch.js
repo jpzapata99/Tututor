@@ -63,7 +63,9 @@ function activarPantallazo(){
   Borrador=false;
   circulo=false;
 }
-
+function LimpiarTotal(){
+  background(88,100,70);
+}
 function activarBorrador(){
   document.getElementById("divuno").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "block";
