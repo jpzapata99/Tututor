@@ -12,16 +12,18 @@ var pool = mysql.createPool({
    host: 'localhost',
    user: 'root',
    password: '',
-   database: 'prueba05',
+   database: 'prueba',
    port: 9002
 });
 
-function conectar_mysql() {
+function conectar_mysql(sql_string) {
   pool.getConnection(function(err, con){
-    con.query("SELECT * FROM usuario WHERE usuario = 'Nicolas'", function(err, res) {
+    con.query(sql_string, function(err, res) {
       console.log(res.length);
     });
+    return res;
   });
+  return null;
 }
 
 
@@ -34,9 +36,33 @@ app.get('/', function(req, res){
   res.render('index');
 });
 
+function comprobar(tam, tipo) {
+    if (tam > 0){
+      throw new TypeError(tipo + "No disponible");
+    }
+}
+
 app.post('/', urlencodedParser, function(req, res){
-  console.log(req.body.user);
-  conectar_mysql();
+  var data = req.body;
+  if(body.Email){
+    var res2 = conectar_mysql("SELECT * FROM usuario WHERE nombre_usuario = '" +
+    data.user + "'");
+    try{
+      comprobar(res2.length, "Usuario");
+    }catch(err){
+      console.log(err.message);
+    }
+    var res3 = conectar_mysql("SELECT * FROM usuario WHERE correo_usuario = '" +
+    data.Email + "'");
+    try {
+
+    } catch (e) {
+
+    } finally {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+    }
+
+  }
   res.render('index');
 });
 
