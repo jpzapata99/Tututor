@@ -13,6 +13,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="keywords" content="Instant Sign In Form Widget Responsive, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates, Flat Web Templates, Login Sign-up Responsive Web Template, Smartphone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design">
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script type="text/javascript" src="../js/comprobador.js"></script>
 <!-- //Meta-Tags -->
 
 <!-- Custom Theme files -->
@@ -83,18 +84,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<div id="dialogo" class="mfp-hide book-form">
 		<h3 class="sub-head-w3-agileits">Sign Up</h3>
 		<div class="login-form">
-			<form action="/" method="POST">
+			<form action="/" method="POST" onsubmit="return comprobarClave()">
 				<div class="input">
-					<i class="fa fa-user" aria-hidden="true"></i> <input type="text" class="user" name="username" placeholder="Username" required="" />
+					<i class="fa fa-user" aria-hidden="true"></i> <input pattern=".{7,15}" type="text" class="user" name="username" placeholder="Usuario (caracteres: 5 min - 15 max)" required="" />
 				</div>
 				<div class="input">
-					<i class="fa fa-envelope" aria-hidden="true"></i> <input type="email" name="Email" class="email" placeholder="Email" required=""/>
+					<i class="fa fa-envelope" aria-hidden="true"></i> <input action="/" method="GET" type="email" name="Email" class="email" placeholder="Email" required=""/>
 				</div>
 				<div class="input">
-					<i class="fa fa-unlock-alt" aria-hidden="true"></i> <input type="password" name="Password" class="password" placeholder="Password" required=""/>
+					<i class="fa fa-unlock-alt" aria-hidden="true"></i> <input id="password1" type="password" name="Password" class="password" placeholder="Password" required=""/>
 				</div>
 				<div class="input">
-					<i class="fa fa-unlock-alt" aria-hidden="true"></i> <input type="password" name="Password" class="password" placeholder="Confirm Password" required=""/>
+					<i class="fa fa-unlock-alt" aria-hidden="true"></i> <input id="password2" type="password" name="Password" class="password" placeholder="Confirm Password" required=""/>
 				</div>
 				<input type="submit" value="Sign Up">
 			</form>
