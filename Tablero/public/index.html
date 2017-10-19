@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Socket.IO chat</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="librerias/p5.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="librerias/addons/p5.dom.min.js"></script>
+    <script src="librerias/addons/p5.sound.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        $(function () {
+        var socket = io.connect();
+        var $userFormArea  = $('#userFormArea');
+        var $userForm  = $('#userForm');
+        var $users = $('#users');
+        var $nombreUsuario = $('#nombreUsuario');
+        var $formChat = $('#formChat');
+        var $messages = $('#messages');
+        var $m = $('#m');
+        $formChat.submit(function(e){
+          e.preventDefault();
+          socket.emit('chat message', $m.val());
+          $m.val('');
+          return false;
+        });
+        socket.on('new message', function(mensaje){ 
+          var fecha = new Date();
+          var horaDelEnvio = (fecha.getHours()+":"+fecha.getMinutes());
+          $messages.append($('<li><strong>'+mensaje.user+'</strong>:'+mensaje.data+"<p style='color:red;'>"+horaDelEnvio+'</p></li>'));
+        });
+
+        $userForm.submit(function(){
+          socket.emit('new user', $nombreUsuario.val(),function(msg){
+            if (msg){
+              $userForm.hide();
+              $formChat.show();
+              $messages.show();
+            } 
+          });
+          $('#nombreUsuario').val('');
+          return false;
+        });
+
+      });
+    </script>
+  </head>
+  <body>
+    <div class="hamburger" id="HamburguesaIzquierda">
+      <div class="_layer -top"></div>
+      <div class="_layer -mid"></div>
+      <div class="_layer -bottom"></div>
+    </div>
+    <nav class="menuppal" id="menuppalIzquierda">
+      <ul>
+        <li>
+        <button style="width:70px; height:60px;" id="button1" onclick="activarLapiz()"></button>
+        </li>
+        <li>
+          <button style="width:70px; height:55px;" id="button2" onclick="activarRegla()"></button>
+        </li>
+        <li>
+          <button style="width:70px; height:50px;" id="button3" onclick="activarPantallazo()"></button>
+        </li>
+        <li>
+          <button style="width:70px; height:50px;" id="button4" onclick="activarBorrador()"></button>
+        </li>
+        <li>
+          <button style="width:70px; height:50px;" id="button5" onclick="activarCirculo()" ></button>
+        </li>
+        <li>
+          <button style="width:70px; height:65px;" id="button6" onclick=""></button>
+        </li>
+        <li>
+          <button style="width:70px; height:70px;" id="button7"></button>
+        </li>
+        <li>
+          <button style="width:70px; height:66px;" id="button8" onclick="LimpiarTotal()"></button>
+        </li>
+      </ul>
+    </nav>
+    <div id="ReglayborradorTamano" style="position:relative;left:15%;display: none;">
+      <button id="menosregla" onclick="tamanomenos()" value=""></button>
+      <script type="text/javascript">
+        var menos=document.getElementById("menosregla");
+        menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
+      </script>
+      <button id="masregla" onclick="tamanomas()" value="" ></button>
+      <script type="text/javascript">
+        var mas=document.getElementById("masregla");
+        mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
+      </script>
+    </div>
+    <script src="Funcionamiento.js"></script>
+    <div  id="divuno" style="position:relative;left:15%;display: none;">
+
+    <input style="background-color: #F01616; width:70px; height:50px;border-style: outset;border-width: 5px;" type="button" id="ColorRojo" onclick="tipoColor(255,0,0)" value="">
+    <input style="background-color: #08DB3D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorVerde" onclick="tipoColor(0,255,0)" value="">
+    <input style="background-color: #191A19; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorNegro" onclick="tipoColor(0,0,0)" value="">
+    <input style="background-color: #703C4F; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorMorado" onclick="tipoColor(108,070,117)" value="">
+    <input style="background-color: #F2F5F1; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorBlanco" onclick="tipoColor(255,255,255)" value="">
+    <input style="background-color: #EDDA09; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAmarillo" onclick="tipoColor(255,255,0)" value="">
+    <input style="background-color: #A1A097; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorGris" onclick="tipoColor(144,144,144)" value="">
+    <input style="background-color: #38376D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulO" onclick="tipoColor(062,095,138)" value="">
+    <input style="background-color: #817DEB; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulC" onclick="tipoColor(093,155,155)" value="">
+    <input style="background-color: #323004; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorCafe" onclick="tipoColor(108,059,042)" value="">
+
+    <button id="menoslapiz" onclick="tamanomenos()" value=""></button>
+    <script type="text/javascript">
+      var menos=document.getElementById("menoslapiz");
+      menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
+    </script>
+    <button id="maslapiz" onclick="tamanomas()" value=""></button>
+    <script type="text/javascript">
+      var mas=document.getElementById("maslapiz");
+      mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
+    </script>
+</div>
+     <div class="container" >
+      <div id="userFormArea" class="row">
+        <div class="col-md-12">
+          <form id="userForm" >
+            <div class="form-group">
+              <label>Escriba su condición:</label>
+              <input id="nombreUsuario" placeholder="Monitor o Estudiante"  />
+              <input type="submit" class="btn btn-primary" value="Entrar" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <img src="chatImage.png" id="imagenHamburguesaDerecha">
+    <div class="hamburger" id="HamburguesaDerecha">
+      <div class="_layer -top"></div>
+      <div class="_layer -mid"></div>
+      <div class="_layer -bottom"></div>
+    </div>
+    <nav class="menuppal" id="menuppalDerecha">
+      <div id="messages"></div>
+        <form action="" id="formChat">
+          <input id="m" autocomplete="off" /><button>Enviar</button>
+        </form>
+    </nav>
+    <script src="indexMenu.js"></script>
+    <script src="sketch.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+  </body>
+</html>
