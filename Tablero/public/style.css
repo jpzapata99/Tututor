@@ -43,6 +43,9 @@ body{margin:0;padding:0;font: 13px Helvetica, Arial;}
 #HamburguesaDerecha.is-active{
   background-color:none;
 }
+#DivParaCuadrado{
+
+}
 ._layer{
   visibility: hidden;
 	background:#333333;

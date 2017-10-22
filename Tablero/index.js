@@ -55,6 +55,10 @@ io.on('connection', function(socket){
     function imageSocket(data){
         socket.broadcast.emit('image' , dataR);
     }
+    socket.on('cuadrado', cuadradoSocket);
+    function cuadradoSocket(dataC){
+        socket.broadcast.emit('cuadrado' , dataC);       
+    }
 });
 
 io.emit('some event', { for: 'everyone' });

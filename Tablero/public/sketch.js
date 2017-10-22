@@ -18,6 +18,9 @@ var reglatamano=4;
 var borradortamano=60;
 var imprimir_imagen=false;
 var img;
+var cuadrado = false;
+var CuadradoTamanoP=20;
+
 function setup() {
   //me permite conectarme al server y manener una coneccion con el host
   socket = io.connect('http://localhost:3000');
@@ -27,6 +30,7 @@ function setup() {
     socket.on('lapiz' , newLapiz);
     socket.on('borrador' , newBorrador);
     socket.on('regla' , newRegla);
+    socket.on('cuadrado',newCuadrado);
     //socket.on('imagen' , newImagen);
 //windowWidth devuelve el ancho de la pantalla del ordenador en donde se abre el proyecto
   var x=windowWidth;
@@ -69,7 +73,10 @@ function newLapiz(data){
   //tamaño y pocision de la ellipse
   ellipse(data.x, data.y,data.w,data.w);
 }
-
+function newCuadrado(dataC){
+  console.log("Si lo cojó");
+  rect(dataC.r,dataC.s,dataC.m,dataC.m);
+}
 function newBorrador(dataB){
   noStroke();
   fill(88,100,70);
@@ -94,22 +101,26 @@ function activarLapiz() {
   document.getElementById("ReglayborradorTamano").style.display = "none";
   //esto permite solamente activar la metodo de dibujar y desactivar las demas herramientas
   document.getElementById("ImagenTamano").style.display = "none";
+  document.getElementById("CuadradoTamano").style.display = "none";
   lapiz=true;
   regla=false;
   Borrador=false;
   circulo=false;
+  cuadrado = false;
 }
 //este metodo espera ser activado desde un boton puesto en el fichero index.html
 function activarRegla(){
   document.getElementById("divuno").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "block";
   document.getElementById("ImagenTamano").style.display = "none";
+  document.getElementById("CuadradoTamano").style.display = "none"; 
     //esto permite solamente activar la metodo de crear lineas rectas y desactivar las demas metodos
   regla=true;
   firstclick = false;
   lapiz=false;
   Borrador=false;
   circulo=false;
+  cuadrado = false;
 }
 //Este metodo permite tomar un pantallazo del canvas actual
 function activarPantallazo(){
@@ -119,17 +130,32 @@ function activarPantallazo(){
   regla=false;
   Borrador=false;
   circulo=false;
+  cuadrado = false;
 }
 //este metodo activa la funcionalidad de borrar sobre el tablero
 function activarBorrador(){
   document.getElementById("divuno").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "block";
-  document.getElementById("ImagenTamano").style.display = "none";  
+  document.getElementById("ImagenTamano").style.display = "none";
+  document.getElementById("CuadradoTamano").style.display = "none";   
   lapiz=false;
   regla=false;
   Borrador=true;
   circulo=false;
+  cuadrado = false;
 }
+function activarCuadrado(){
+  document.getElementById("divuno").style.display = "none"
+  document.getElementById("ReglayborradorTamano").style.display = "none";
+  document.getElementById("ImagenTamano").style.display = "none"; 
+  document.getElementById("CuadradoTamano").style.display = "block";  
+  lapiz=false;
+  regla=false;
+  Borrador=false;
+  circulo=false;
+  cuadrado = true;
+}
+
 //este metodo permite activar la funcionalidad de crear circulos sobre el tablero
 function activarCirculo(){
   lapiz=false;
@@ -137,6 +163,7 @@ function activarCirculo(){
   Borrador=false;
   circulo=true;
   pocisionCirculo=true;
+  cuadrado = false;
 }
 function LimpiarTotal(){
   //este metodo Borra todo lo dibujado y puesto sobre el canvas
@@ -155,6 +182,9 @@ function tamanomas(){
   else if(imprimir_imagen==true){
     imgtamano+=50;
   }
+  else if(cuadrado==true){
+    CuadradoTamanoP+=20;
+  }
 }
 //este metodo permite disminuir el tamaño del borrador, el lapiz y la regla
 function tamanomenos(){
@@ -166,6 +196,8 @@ function tamanomenos(){
   borradortamano-=30;
 }else if(imprimir_imagen==true){
     imgtamano-=50;
+}else if(cuadrado==true && CuadradoTamanoP>=0){
+    CuadradoTamanoP-=20;
 }
 
 }
@@ -240,7 +272,7 @@ function mouseDragged(){
 function mouseClicked(){
   if(mouseY>50){
     //cuando se activa la herramienta regla ser requiere hacer un click sobre el canvas y luego otro en otro punto
-    //para generar una recta de un punto a otro
+    //para generar una recta de un punto a otro   
     if (regla==true) {
       stroke(20);
       if(firstclick == true){
@@ -258,9 +290,9 @@ function mouseClicked(){
             l:px2,
             p:py2,
             a:reglatamano
-          }
+        }
               //esta ellpise ayuda a indicar en donde se hizo click como para conocer el inicio  y final de la recta
-      socket.emit('regla', dataR);
+          socket.emit('regla', dataR);
           strokeWeight(reglatamano);
           //este metodo permite dibujar rectas sobre el tablero,los dos primeros parametros son,
           //el punto de inicio de la linea y los otros dos el punto de fin.
@@ -278,6 +310,15 @@ function mouseClicked(){
       pcx=mouseX;
       pcy=mouseY;
       pocisionCirculo=false;
+    }
+    if (cuadrado==true){
+      var dataC={
+          r:mouseX,
+          s:mouseY,
+          m:CuadradoTamanoP
+      }
+      socket.emit('cuadrado',dataC);
+      rect(mouseX,mouseY,CuadradoTamanoP,CuadradoTamanoP);
     }
     //luego de arrastrar la imagen al canvas se debe hacer click sobre cualquier parte de este para que aparezca
     if (imprimir_imagen==true) {
