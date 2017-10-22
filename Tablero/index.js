@@ -63,6 +63,10 @@ io.on('connection', function(socket){
     function circuloSocket(dataCi){
         socket.broadcast.emit('circulo' , dataCi);     
     }
+    socket.on('triangulo', trianguloSocket);
+    function trianguloSocket(dataT){
+        socket.broadcast.emit('triangulo' , dataT);             
+    }
 });
 
 io.emit('some event', { for: 'everyone' });

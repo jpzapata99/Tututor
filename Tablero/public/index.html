@@ -81,6 +81,9 @@
         <li>
           <button style="width:70px; height:66px;" id="button8" onclick="LimpiarTotal()"></button>
         </li>
+        <li>
+          <button style="width:70px; height:66px;" id="button9" onclick="activarTriangulo()"></button>
+        </li>
       </ul>
     </nav>
       <div id="ReglayborradorTamano" style="position:relative;left:15%;display: none;">
@@ -116,6 +119,18 @@
         <button id="masCirculo" onclick="tamanomas()" value="" ></button>
         <script type="text/javascript">
           var mas=document.getElementById("masCirculo");
+          mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
+        </script>
+      </div>
+      <div id="TrianguloTamano" style="position:relative;left:15%;display: none;">
+        <button id="menosTriangulo" onclick="tamanomenos()" value=""></button>
+        <script type="text/javascript">
+          var menos=document.getElementById("menosTriangulo");
+          menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
+        </script>
+        <button id="masTriangulo" onclick="tamanomas()" value="" ></button>
+        <script type="text/javascript">
+          var mas=document.getElementById("masTriangulo");
           mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
         </script>
       </div>

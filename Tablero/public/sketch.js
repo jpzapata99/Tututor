@@ -9,8 +9,8 @@ var lapiz = false;
 var firstclick = false;
 var Borrador=false;
 var circulo=false;
-var pcx=0;
-var pcy=0;
+var xArriba,yArriba,xIzquierda,yIzquierda, xDerecha, yDerecha,pcx,pcy = 0;
+var EsquinaTriangulo = 0;
 var lapiztamano=65;
 var imgtamano=200;
 var reglatamano=4;
@@ -20,6 +20,7 @@ var img;
 var cuadrado = false;
 var CuadradoTamanoP=20;
 var CirculoTamano=10;
+var triangulo = false;
 
 function setup() {
   //me permite conectarme al server y manener una coneccion con el host
@@ -32,6 +33,7 @@ function setup() {
     socket.on('regla' , newRegla);
     socket.on('cuadrado',newCuadrado);
     socket.on('circulo',newCirculo);
+    socket.on('triangulo',newTriangulo);
     //socket.on('imagen' , newImagen);
 //windowWidth devuelve el ancho de la pantalla del ordenador en donde se abre el proyecto
   var x=windowWidth;
@@ -82,6 +84,9 @@ function newBorrador(dataB){
   fill(88,100,70);
   ellipse(dataB.x, dataB.y,dataB.w,dataB.w);
 }
+function newTriangulo(dataT){
+  triangle(dataT.x1,dataT.y1,dataT.x2,dataT.y2,dataT.x3,dataT.y3);
+}
 function newCirculo(dataCi){
   ellipse(dataCi.c, dataCi.d,dataCi.e,dataCi.e);  
 }
@@ -111,6 +116,7 @@ function activarLapiz() {
   Borrador=false;
   circulo=false;
   cuadrado = false;
+  triangulo=false;
 }
 //este metodo espera ser activado desde un boton puesto en el fichero index.html
 function activarRegla(){
@@ -126,6 +132,7 @@ function activarRegla(){
   Borrador=false;
   circulo=false;
   cuadrado = false;
+  triangulo=false;
 }
 //Este metodo permite tomar un pantallazo del canvas actual
 function activarPantallazo(){
@@ -136,6 +143,7 @@ function activarPantallazo(){
   Borrador=false;
   circulo=false;
   cuadrado = false;
+  triangulo=false;
 }
 //este metodo activa la funcionalidad de borrar sobre el tablero
 function activarBorrador(){
@@ -149,6 +157,7 @@ function activarBorrador(){
   Borrador=true;
   circulo=false;
   cuadrado = false;
+  triangulo=false;
 }
 function activarCuadrado(){
   document.getElementById("divuno").style.display = "none"
@@ -161,6 +170,7 @@ function activarCuadrado(){
   Borrador=false;
   circulo=false;
   cuadrado = true;
+  triangulo=false;  
 }
 
 //este metodo permite activar la funcionalidad de crear circulos sobre el tablero
@@ -175,6 +185,37 @@ function activarCirculo(){
   Borrador=false;
   circulo=true;
   cuadrado = false;
+  triangulo=false;
+}
+function activarTriangulo(){
+  document.getElementById("divuno").style.display = "none"
+  document.getElementById("ReglayborradorTamano").style.display = "none";
+  document.getElementById("ImagenTamano").style.display = "none"; 
+  document.getElementById("CuadradoTamano").style.display = "none"; 
+  document.getElementById("CirculoTamano").style.display = "none";
+  lapiz=false;
+  regla=false;
+  Borrador=false;
+  circulo=false;
+  cuadrado = false;
+  triangulo=true;
+  CambioDeEsquina();
+}
+function CambioDeEsquina(){
+  EsquinaTriangulo++;
+  if(EsquinaTriangulo==5){
+    var dataT={
+        x1:xArriba,
+        y1:yArriba,
+        x2:xIzquierda,
+        y2:yIzquierda,
+        x3:xDerecha,
+        y3:yDerecha
+      }
+    socket.emit('triangulo',dataT);
+    triangle(xArriba,yArriba,xIzquierda,yIzquierda,xDerecha,yDerecha);
+    EsquinaTriangulo=2;    
+  }
 }
 function LimpiarTotal(){
   //este metodo Borra todo lo dibujado y puesto sobre el canvas
@@ -338,6 +379,27 @@ function mouseClicked(){
       }
         socket.emit('circulo',dataCi);
         ellipse(mouseX,mouseY,CirculoTamano,CirculoTamano);
+    }
+    if(triangulo==true){
+        if(EsquinaTriangulo==2){
+          xArriba = mouseX;
+          yArriba = mouseY;
+          CambioDeEsquina();
+      }
+      else if(EsquinaTriangulo==3){
+          xIzquierda = mouseX;
+          yIzquierda = mouseY;
+          CambioDeEsquina();
+      }
+      else if(EsquinaTriangulo==4){
+          xDerecha = mouseX;
+          yDerecha = mouseY;
+          CambioDeEsquina();
+      }
+      else{
+        CambioDeEsquina();
+      }
+
     }
     //luego de arrastrar la imagen al canvas se debe hacer click sobre cualquier parte de este para que aparezca
     if (imprimir_imagen==true) {
