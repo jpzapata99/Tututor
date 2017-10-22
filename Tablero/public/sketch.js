@@ -9,7 +9,6 @@ var lapiz = false;
 var firstclick = false;
 var Borrador=false;
 var circulo=false;
-var pocisionCirculo=false;
 var pcx=0;
 var pcy=0;
 var lapiztamano=65;
@@ -20,6 +19,7 @@ var imprimir_imagen=false;
 var img;
 var cuadrado = false;
 var CuadradoTamanoP=20;
+var CirculoTamano=10;
 
 function setup() {
   //me permite conectarme al server y manener una coneccion con el host
@@ -31,6 +31,7 @@ function setup() {
     socket.on('borrador' , newBorrador);
     socket.on('regla' , newRegla);
     socket.on('cuadrado',newCuadrado);
+    socket.on('circulo',newCirculo);
     //socket.on('imagen' , newImagen);
 //windowWidth devuelve el ancho de la pantalla del ordenador en donde se abre el proyecto
   var x=windowWidth;
@@ -74,13 +75,15 @@ function newLapiz(data){
   ellipse(data.x, data.y,data.w,data.w);
 }
 function newCuadrado(dataC){
-  console.log("Si lo cojó");
   rect(dataC.r,dataC.s,dataC.m,dataC.m);
 }
 function newBorrador(dataB){
   noStroke();
   fill(88,100,70);
   ellipse(dataB.x, dataB.y,dataB.w,dataB.w);
+}
+function newCirculo(dataCi){
+  ellipse(dataCi.c, dataCi.d,dataCi.e,dataCi.e);  
 }
 
 function newRegla(dataR){
@@ -102,6 +105,7 @@ function activarLapiz() {
   //esto permite solamente activar la metodo de dibujar y desactivar las demas herramientas
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
+  document.getElementById("CirculoTamano").style.display = "none";
   lapiz=true;
   regla=false;
   Borrador=false;
@@ -113,7 +117,8 @@ function activarRegla(){
   document.getElementById("divuno").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "block";
   document.getElementById("ImagenTamano").style.display = "none";
-  document.getElementById("CuadradoTamano").style.display = "none"; 
+  document.getElementById("CuadradoTamano").style.display = "none";
+  document.getElementById("CirculoTamano").style.display = "none"; 
     //esto permite solamente activar la metodo de crear lineas rectas y desactivar las demas metodos
   regla=true;
   firstclick = false;
@@ -137,7 +142,8 @@ function activarBorrador(){
   document.getElementById("divuno").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "block";
   document.getElementById("ImagenTamano").style.display = "none";
-  document.getElementById("CuadradoTamano").style.display = "none";   
+  document.getElementById("CuadradoTamano").style.display = "none";
+  document.getElementById("CirculoTamano").style.display = "none";   
   lapiz=false;
   regla=false;
   Borrador=true;
@@ -148,7 +154,8 @@ function activarCuadrado(){
   document.getElementById("divuno").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none"; 
-  document.getElementById("CuadradoTamano").style.display = "block";  
+  document.getElementById("CuadradoTamano").style.display = "block"; 
+  document.getElementById("CirculoTamano").style.display = "none";   
   lapiz=false;
   regla=false;
   Borrador=false;
@@ -158,11 +165,15 @@ function activarCuadrado(){
 
 //este metodo permite activar la funcionalidad de crear circulos sobre el tablero
 function activarCirculo(){
+  document.getElementById("divuno").style.display = "none"
+  document.getElementById("ReglayborradorTamano").style.display = "none";
+  document.getElementById("ImagenTamano").style.display = "none"; 
+  document.getElementById("CuadradoTamano").style.display = "none"; 
+  document.getElementById("CirculoTamano").style.display = "block";  
   lapiz=false;
   regla=false;
   Borrador=false;
   circulo=true;
-  pocisionCirculo=true;
   cuadrado = false;
 }
 function LimpiarTotal(){
@@ -184,6 +195,8 @@ function tamanomas(){
   }
   else if(cuadrado==true){
     CuadradoTamanoP+=20;
+  }else if(circulo==true && CirculoTamano>=0){
+    CirculoTamano+=10;
   }
 }
 //este metodo permite disminuir el tamaño del borrador, el lapiz y la regla
@@ -198,6 +211,8 @@ function tamanomenos(){
     imgtamano-=50;
 }else if(cuadrado==true && CuadradoTamanoP>=0){
     CuadradoTamanoP-=20;
+}else if(circulo==true && CirculoTamano>=0){
+    CirculoTamano-=10;
 }
 
 }
@@ -305,12 +320,7 @@ function mouseClicked(){
           
       ellipse(mouseX, mouseY, 15, 15);
     }
-    //parte aun en desarrollo
-    if (pocisionCirculo==true) {
-      pcx=mouseX;
-      pcy=mouseY;
-      pocisionCirculo=false;
-    }
+
     if (cuadrado==true){
       var dataC={
           r:mouseX,
@@ -319,6 +329,15 @@ function mouseClicked(){
       }
       socket.emit('cuadrado',dataC);
       rect(mouseX,mouseY,CuadradoTamanoP,CuadradoTamanoP);
+    }
+    if(circulo==true){
+      var dataCi={
+        c:mouseX,
+        d:mouseY,
+        e:CirculoTamano
+      }
+        socket.emit('circulo',dataCi);
+        ellipse(mouseX,mouseY,CirculoTamano,CirculoTamano);
     }
     //luego de arrastrar la imagen al canvas se debe hacer click sobre cualquier parte de este para que aparezca
     if (imprimir_imagen==true) {

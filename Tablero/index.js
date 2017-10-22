@@ -59,6 +59,10 @@ io.on('connection', function(socket){
     function cuadradoSocket(dataC){
         socket.broadcast.emit('cuadrado' , dataC);       
     }
+    socket.on('circulo', circuloSocket);
+    function circuloSocket(dataCi){
+        socket.broadcast.emit('circulo' , dataCi);     
+    }
 });
 
 io.emit('some event', { for: 'everyone' });
