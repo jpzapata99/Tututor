@@ -34,6 +34,7 @@ function setup() {
     socket.on('cuadrado',newCuadrado);
     socket.on('circulo',newCirculo);
     socket.on('triangulo',newTriangulo);
+    socket.on('addimage',newimage);
     //socket.on('imagen' , newImagen);
 //windowWidth devuelve el ancho de la pantalla del ordenador en donde se abre el proyecto
   var x=windowWidth;
@@ -63,6 +64,12 @@ function centerCanvas(){
 function windowResized(){
   centerCanvas();
 }
+
+
+function newimage(base64image){
+  img = createImg(base64image).hide();
+  image(img, 100, 100, 500, 500);
+}
 //este metodo sera el que permita enviar informacion sobre lo que se dibuje sobre el canvas al server,
 //para luego ser conpartido a otros tableros
 function newLapiz(data){
@@ -88,7 +95,7 @@ function newTriangulo(dataT){
   triangle(dataT.x1,dataT.y1,dataT.x2,dataT.y2,dataT.x3,dataT.y3);
 }
 function newCirculo(dataCi){
-  ellipse(dataCi.c, dataCi.d,dataCi.e,dataCi.e);  
+  ellipse(dataCi.c, dataCi.d,dataCi.e,dataCi.e);
 }
 
 function newRegla(dataR){
@@ -126,7 +133,7 @@ function activarRegla(){
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mensajes").style.display = "none"; 
+  document.getElementById("mensajes").style.display = "none";
     //esto permite solamente activar la metodo de crear lineas rectas y desactivar las demas metodos
   regla=true;
   firstclick = false;
@@ -154,7 +161,7 @@ function activarBorrador(){
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mensajes").style.display = "none";   
+  document.getElementById("mensajes").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=true;
@@ -165,8 +172,8 @@ function activarBorrador(){
 function activarCuadrado(){
   document.getElementById("divuno").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "none";
-  document.getElementById("ImagenTamano").style.display = "none"; 
-  document.getElementById("CuadradoTamano").style.display = "block"; 
+  document.getElementById("ImagenTamano").style.display = "none";
+  document.getElementById("CuadradoTamano").style.display = "block";
   document.getElementById("CirculoTamano").style.display = "none";
   document.getElementById("mensajes").style.display = "none";
   lapiz=false;
@@ -174,24 +181,24 @@ function activarCuadrado(){
   Borrador=false;
   circulo=false;
   cuadrado = true;
-  triangulo=false;  
+  triangulo=false;
 }
 
 function activarImagen(){
   document.getElementById("divuno").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "none";
-  document.getElementById("ImagenTamano").style.display = "none"; 
-  document.getElementById("CuadradoTamano").style.display = "none"; 
+  document.getElementById("ImagenTamano").style.display = "none";
+  document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mensajes").style.display = "block"; 
+  document.getElementById("mensajes").style.display = "block";
 }
 //este metodo permite activar la funcionalidad de crear circulos sobre el tablero
 function activarCirculo(){
   document.getElementById("divuno").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "none";
-  document.getElementById("ImagenTamano").style.display = "none"; 
-  document.getElementById("CuadradoTamano").style.display = "none"; 
-  document.getElementById("CirculoTamano").style.display = "block";  
+  document.getElementById("ImagenTamano").style.display = "none";
+  document.getElementById("CuadradoTamano").style.display = "none";
+  document.getElementById("CirculoTamano").style.display = "block";
   document.getElementById("mensajes").style.display = "none";
   lapiz=false;
   regla=false;
@@ -203,8 +210,8 @@ function activarCirculo(){
 function activarTriangulo(){
   document.getElementById("divuno").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "none";
-  document.getElementById("ImagenTamano").style.display = "none"; 
-  document.getElementById("CuadradoTamano").style.display = "none"; 
+  document.getElementById("ImagenTamano").style.display = "none";
+  document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
   document.getElementById("mensajes").style.display = "none";
   lapiz=false;
@@ -228,7 +235,7 @@ function CambioDeEsquina(){
       }
     socket.emit('triangulo',dataT);
     triangle(xArriba,yArriba,xIzquierda,yIzquierda,xDerecha,yDerecha);
-    EsquinaTriangulo=2;    
+    EsquinaTriangulo=2;
   }
 }
 function LimpiarTotal(){
@@ -271,18 +278,22 @@ function tamanomenos(){
 }
 
 }
+
 //este metodo permite arrastrar una archivo al canvas
 function gotFile(file) {
 // se pregunta si el archivo es de tipo imagen
 if (file.type === 'image') {
   document.getElementById("divuno").style.display = "none";
   document.getElementById("ReglayborradorTamano").style.display = "none";
-  document.getElementById("ImagenTamano").style.display = "block";  
+  document.getElementById("ImagenTamano").style.display = "block";
   lapiz=false;
   regla=false;
   Borrador=false;
   circulo=true;
   pocisionCirculo=true;
+
+      socket.emit('user image', file.data);
+
 	//Crea un  image DOM element y lo esconde
 	img = createImg(file.data).hide();
   //permite activar un la metodoalidad de poner una imagen
@@ -342,7 +353,7 @@ function mouseDragged(){
 function mouseClicked(){
   if(mouseY>50){
     //cuando se activa la herramienta regla ser requiere hacer un click sobre el canvas y luego otro en otro punto
-    //para generar una recta de un punto a otro   
+    //para generar una recta de un punto a otro
     if (regla==true) {
       stroke(20);
       if(firstclick == true){
@@ -372,7 +383,7 @@ function mouseClicked(){
       firstclick = true;
 
           //este metodo permite cambiar el groso de las rectas dibujadas
-          
+
       ellipse(mouseX, mouseY, 15, 15);
     }
 

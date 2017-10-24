@@ -30,9 +30,9 @@ io.on('connection', function(socket){
 
     //Emitiendo Imagen
     socket.on('user image',function(image){
-        io.sockets.emit('addimage',image);
+        socket.broadcast.emit('addimage',image);
     });
-    
+
     //new user
     socket.on('new user', function(msg,callback){
         callback(true);
@@ -44,7 +44,7 @@ io.on('connection', function(socket){
     function reglaSocket(dataR){
         socket.broadcast.emit('regla' , dataR);
     }
-    
+
     socket.on('lapiz' , lapizSocket);
     function lapizSocket(data){
         socket.broadcast.emit('lapiz' , data);
@@ -54,7 +54,7 @@ io.on('connection', function(socket){
       socket.broadcast.emit('borrador' , dataB);
     }
     socket.on('regla' , reglaSocket);
-    
+
 
     socket.on('image' , imageSocket);
     function imageSocket(data){
@@ -62,15 +62,15 @@ io.on('connection', function(socket){
     }
     socket.on('cuadrado', cuadradoSocket);
     function cuadradoSocket(dataC){
-        socket.broadcast.emit('cuadrado' , dataC);       
+        socket.broadcast.emit('cuadrado' , dataC);
     }
     socket.on('circulo', circuloSocket);
     function circuloSocket(dataCi){
-        socket.broadcast.emit('circulo' , dataCi);     
+        socket.broadcast.emit('circulo' , dataCi);
     }
     socket.on('triangulo', trianguloSocket);
     function trianguloSocket(dataT){
-        socket.broadcast.emit('triangulo' , dataT);             
+        socket.broadcast.emit('triangulo' , dataT);
     }
 });
 

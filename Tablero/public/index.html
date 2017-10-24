@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Socket.IO chat</title>
+    <title>tablero</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="librerias/p5.min.js"></script>
-    <script src="sketch.js"></script>
+    <script type="text/javascript" src="chat.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="librerias/addons/p5.dom.min.js"></script>
     <script src="librerias/addons/p5.sound.min.js"></script>
@@ -21,7 +21,7 @@
         var $nombreUsuario = $('#nombreUsuario');
         var $formChat = $('#formChat');
         var $messages = $('#messages');
-        //var $DivParaCuadrado = $('DivParaCuadrado');  
+        //var $DivParaCuadrado = $('DivParaCuadrado');
         var $m = $('#m');
         $formChat.submit(function(e){
           e.preventDefault();
@@ -30,31 +30,8 @@
           return false;
         });
 
-        socket.on('addimage',function(base64image){
-            var imagen = document.createElement("img");
-            imagen.width=200;
-            imagen.height=200;
-            imagen.src = base64image; 
-            var c=document.getElementById('defaultCanvas0');
-            console.log(c);
-            var ctx=c.getContext("2d");
-            c.appendChild(imagen);
-            ctx.drawImage(imagen,10,10);
-      
-        });
-        $(function(){
-            $("#imagefile").on('change',function(e){
-                var file = e.originalEvent.target.files[0];
-                var reader = new FileReader();
-                reader.onload = function(evt){
-                    socket.emit('user image', evt.target.result);
-                    
-                };
-                reader.readAsDataURL(file);
-            });
-        });
 
-        socket.on('new message', function(mensaje){ 
+        socket.on('new message', function(mensaje){
           var fecha = new Date();
           var horaDelEnvio = (fecha.getHours()+":"+fecha.getMinutes());
           $messages.append($('<li><strong>'+mensaje.user+'</strong>:'+mensaje.data+"<p style='color:red;'>"+horaDelEnvio+'</p></li>'));
@@ -66,7 +43,7 @@
               $userForm.hide();
               $formChat.show();
               $messages.show();
-            } 
+            }
           });
           $('#nombreUsuario').val('');
           return false;
@@ -76,10 +53,6 @@
     </script>
   </head>
   <body>
-    <div id="mensajes" style="position:fixed;top:0px;left:150px;">
-      <input type="text" id="mensa">
-      <input type="file" id="imagefile">
-    </div>
     <div class="hamburger" id="HamburguesaIzquierda">
       <div class="_layer -top"></div>
       <div class="_layer -mid"></div>
