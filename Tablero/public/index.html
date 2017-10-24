@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="librerias/p5.min.js"></script>
+    <script src="sketch.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="librerias/addons/p5.dom.min.js"></script>
     <script src="librerias/addons/p5.sound.min.js"></script>
@@ -28,6 +29,31 @@
           $m.val('');
           return false;
         });
+
+        socket.on('addimage',function(base64image){
+            var imagen = document.createElement("img");
+            imagen.width=200;
+            imagen.height=200;
+            imagen.src = base64image; 
+            var c=document.getElementById('defaultCanvas0');
+            console.log(c);
+            var ctx=c.getContext("2d");
+            c.appendChild(imagen);
+            ctx.drawImage(imagen,10,10);
+      
+        });
+        $(function(){
+            $("#imagefile").on('change',function(e){
+                var file = e.originalEvent.target.files[0];
+                var reader = new FileReader();
+                reader.onload = function(evt){
+                    socket.emit('user image', evt.target.result);
+                    
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
         socket.on('new message', function(mensaje){ 
           var fecha = new Date();
           var horaDelEnvio = (fecha.getHours()+":"+fecha.getMinutes());
@@ -50,6 +76,10 @@
     </script>
   </head>
   <body>
+    <div id="mensajes" style="position:fixed;top:0px;left:150px;">
+      <input type="text" id="mensa">
+      <input type="file" id="imagefile">
+    </div>
     <div class="hamburger" id="HamburguesaIzquierda">
       <div class="_layer -top"></div>
       <div class="_layer -mid"></div>
@@ -76,7 +106,7 @@
           <button style="width:70px; height:65px;" id="button6" onclick="activarCuadrado()"></button>
         </li>
         <li>
-          <button style="width:70px; height:70px;" id="button7"></button>
+          <button style="width:70px; height:70px;" id="button7" onclick="activarImagen()"></button>
         </li>
         <li>
           <button style="width:70px; height:66px;" id="button8" onclick="LimpiarTotal()"></button>
@@ -148,7 +178,7 @@
     </div>
 
     <script src="Funcionamiento.js"></script>
-    <div  id="divuno" style="position:relative;left:15%;display: none;">
+    <div  id="divuno" style="position:relative;left:12%;display: none;">
 
     <input style="background-color: #F01616; width:70px; height:50px;border-style: outset;border-width: 5px;" type="button" id="ColorRojo" onclick="tipoColor(255,0,0)" value="">
     <input style="background-color: #08DB3D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorVerde" onclick="tipoColor(0,255,0)" value="">
@@ -173,7 +203,7 @@
     </script>
 </div>
      <div class="container" >
-      <div id="userFormArea" class="row">
+      <div id="userFormArea" class="row" style="display:none">
         <div class="col-md-12">
           <form id="userForm" >
             <div class="form-group">

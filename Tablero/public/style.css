@@ -20,7 +20,9 @@ body{margin:0;padding:0;font: 13px Helvetica, Arial;}
     right:3%;
     top:2%;
 }
-
+#mensajes{
+  display: none;
+}
 #HamburguesaDerecha{
 	position:fixed;
   background-color:transparent;

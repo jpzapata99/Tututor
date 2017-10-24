@@ -28,6 +28,11 @@ io.on('connection', function(socket){
     io.emit('new message', {data:mensaje,user:socket.nombreUsuario});
     });
 
+    //Emitiendo Imagen
+    socket.on('user image',function(image){
+        io.sockets.emit('addimage',image);
+    });
+    
     //new user
     socket.on('new user', function(msg,callback){
         callback(true);

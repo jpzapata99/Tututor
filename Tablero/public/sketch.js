@@ -111,6 +111,7 @@ function activarLapiz() {
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
+  document.getElementById("mensajes").style.display = "none";
   lapiz=true;
   regla=false;
   Borrador=false;
@@ -124,7 +125,8 @@ function activarRegla(){
   document.getElementById("ReglayborradorTamano").style.display = "block";
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
-  document.getElementById("CirculoTamano").style.display = "none"; 
+  document.getElementById("CirculoTamano").style.display = "none";
+  document.getElementById("mensajes").style.display = "none"; 
     //esto permite solamente activar la metodo de crear lineas rectas y desactivar las demas metodos
   regla=true;
   firstclick = false;
@@ -151,7 +153,8 @@ function activarBorrador(){
   document.getElementById("ReglayborradorTamano").style.display = "block";
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
-  document.getElementById("CirculoTamano").style.display = "none";   
+  document.getElementById("CirculoTamano").style.display = "none";
+  document.getElementById("mensajes").style.display = "none";   
   lapiz=false;
   regla=false;
   Borrador=true;
@@ -164,7 +167,8 @@ function activarCuadrado(){
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none"; 
   document.getElementById("CuadradoTamano").style.display = "block"; 
-  document.getElementById("CirculoTamano").style.display = "none";   
+  document.getElementById("CirculoTamano").style.display = "none";
+  document.getElementById("mensajes").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
@@ -173,6 +177,14 @@ function activarCuadrado(){
   triangulo=false;  
 }
 
+function activarImagen(){
+  document.getElementById("divuno").style.display = "none"
+  document.getElementById("ReglayborradorTamano").style.display = "none";
+  document.getElementById("ImagenTamano").style.display = "none"; 
+  document.getElementById("CuadradoTamano").style.display = "none"; 
+  document.getElementById("CirculoTamano").style.display = "none";
+  document.getElementById("mensajes").style.display = "block"; 
+}
 //este metodo permite activar la funcionalidad de crear circulos sobre el tablero
 function activarCirculo(){
   document.getElementById("divuno").style.display = "none"
@@ -180,6 +192,7 @@ function activarCirculo(){
   document.getElementById("ImagenTamano").style.display = "none"; 
   document.getElementById("CuadradoTamano").style.display = "none"; 
   document.getElementById("CirculoTamano").style.display = "block";  
+  document.getElementById("mensajes").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
@@ -193,6 +206,7 @@ function activarTriangulo(){
   document.getElementById("ImagenTamano").style.display = "none"; 
   document.getElementById("CuadradoTamano").style.display = "none"; 
   document.getElementById("CirculoTamano").style.display = "none";
+  document.getElementById("mensajes").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
