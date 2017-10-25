@@ -6,51 +6,14 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="librerias/p5.min.js"></script>
-    <script type="text/javascript" src="chat.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="librerias/addons/p5.dom.min.js"></script>
     <script src="librerias/addons/p5.sound.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-    <script>
-        $(function () {
-        var socket = io.connect();
-        var $userFormArea  = $('#userFormArea');
-        var $userForm  = $('#userForm');
-        var $users = $('#users');
-        var $nombreUsuario = $('#nombreUsuario');
-        var $formChat = $('#formChat');
-        var $messages = $('#messages');
-        //var $DivParaCuadrado = $('DivParaCuadrado');
-        var $m = $('#m');
-        $formChat.submit(function(e){
-          e.preventDefault();
-          socket.emit('chat message', $m.val());
-          $m.val('');
-          return false;
-        });
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"></script>
 
-
-        socket.on('new message', function(mensaje){
-          var fecha = new Date();
-          var horaDelEnvio = (fecha.getHours()+":"+fecha.getMinutes());
-          $messages.append($('<li><strong>'+mensaje.user+'</strong>:'+mensaje.data+"<p style='color:red;'>"+horaDelEnvio+'</p></li>'));
-        });
-
-        $userForm.submit(function(){
-          socket.emit('new user', $nombreUsuario.val(),function(msg){
-            if (msg){
-              $userForm.hide();
-              $formChat.show();
-              $messages.show();
-            }
-          });
-          $('#nombreUsuario').val('');
-          return false;
-        });
-
-      });
-    </script>
   </head>
   <body>
     <div class="hamburger" id="HamburguesaIzquierda">
@@ -149,7 +112,6 @@
         mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
       </script>
     </div>
-
     <script src="Funcionamiento.js"></script>
     <div  id="divuno" style="position:relative;left:12%;display: none;">
 
@@ -176,7 +138,7 @@
     </script>
 </div>
      <div class="container" >
-      <div id="userFormArea" class="row" style="display:none">
+      <div id="userFormArea" class="row" >
         <div class="col-md-12">
           <form id="userForm" >
             <div class="form-group">
@@ -202,8 +164,6 @@
     </nav>
     <script src="indexMenu.js"></script>
     <script src="sketch.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-      crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script src="chat.js"></script>
   </body>
 </html>

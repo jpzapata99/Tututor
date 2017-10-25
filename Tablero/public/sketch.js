@@ -1,26 +1,15 @@
-var px = 0;
-var py = 0;
-var px2=0;
-var py2=0;
-var ban = false;
+var px,py,px2,py2 = 0;
+var ban,regla,cuadrado,lapiz,firstclick,Borrador,circulo,imprimir_imagen,triangulo = false;
 var cnv=null;
-var regla = false;
-var lapiz = false;
-var firstclick = false;
-var Borrador=false;
-var circulo=false;
 var xArriba,yArriba,xIzquierda,yIzquierda, xDerecha, yDerecha,pcx,pcy = 0;
 var EsquinaTriangulo = 0;
 var lapiztamano=65;
 var imgtamano=200;
 var reglatamano=4;
 var borradortamano=60;
-var imprimir_imagen=false;
-var img;
-var cuadrado = false;
+var img,URLTemp=null;
 var CuadradoTamanoP=20;
 var CirculoTamano=10;
-var triangulo = false;
 
 function setup() {
   //me permite conectarme al server y manener una coneccion con el host
@@ -35,11 +24,10 @@ function setup() {
     socket.on('circulo',newCirculo);
     socket.on('triangulo',newTriangulo);
     socket.on('addimage',newimage);
-    //socket.on('imagen' , newImagen);
 //windowWidth devuelve el ancho de la pantalla del ordenador en donde se abre el proyecto
   var x=windowWidth;
   //windowWidth devuelve el largo de la pantalla del ordenador en donde se abre el proyecto
-  var y=windowHeight-100;
+  var y=windowHeight-140;
   //permite crear un acanvaz o lienzo sobre una pagina, los parametros hacen referencia al tamaño que se desea tener
   //cnv pemite tener el canvas como un objeto y manipularlo
  cnv=createCanvas(x,y);
@@ -66,9 +54,10 @@ function windowResized(){
 }
 
 
-function newimage(base64image){
-  img = createImg(base64image).hide();
-  image(img, 100, 100, 500, 500);
+function newimage(dataI){
+  var imagen = createImg(dataI.i).hide();
+  image(imagen, dataI.x, dataI.y, dataI.h, dataI.h);
+
 }
 //este metodo sera el que permita enviar informacion sobre lo que se dibuje sobre el canvas al server,
 //para luego ser conpartido a otros tableros
@@ -104,9 +93,6 @@ function newRegla(dataR){
   line(dataR.t,dataR.u,dataR.l,dataR.p);
 }
 
-function newImagen(data){
-  //img(data.i, data.x, data.y,300,300);
-}
 
 //este metodo espera ser activado desde un boton puesto en el fichero index.html
 function activarLapiz() {
@@ -118,7 +104,6 @@ function activarLapiz() {
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mensajes").style.display = "none";
   lapiz=true;
   regla=false;
   Borrador=false;
@@ -129,11 +114,10 @@ function activarLapiz() {
 //este metodo espera ser activado desde un boton puesto en el fichero index.html
 function activarRegla(){
   document.getElementById("divuno").style.display = "none"
-  document.getElementById("ReglayborradorTamano").style.display = "block";
+  document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mensajes").style.display = "none";
     //esto permite solamente activar la metodo de crear lineas rectas y desactivar las demas metodos
   regla=true;
   firstclick = false;
@@ -161,7 +145,6 @@ function activarBorrador(){
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mensajes").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=true;
@@ -170,12 +153,10 @@ function activarBorrador(){
   triangulo=false;
 }
 function activarCuadrado(){
-  document.getElementById("divuno").style.display = "none"
+  document.getElementById("divuno").style.display = "block"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none";
-  document.getElementById("CuadradoTamano").style.display = "block";
   document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mensajes").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
@@ -190,16 +171,13 @@ function activarImagen(){
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mensajes").style.display = "block";
 }
 //este metodo permite activar la funcionalidad de crear circulos sobre el tablero
 function activarCirculo(){
-  document.getElementById("divuno").style.display = "none"
+  document.getElementById("divuno").style.display = "block"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
-  document.getElementById("CirculoTamano").style.display = "block";
-  document.getElementById("mensajes").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
@@ -208,12 +186,11 @@ function activarCirculo(){
   triangulo=false;
 }
 function activarTriangulo(){
-  document.getElementById("divuno").style.display = "none"
+  document.getElementById("divuno").style.display = "block"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mensajes").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
@@ -291,9 +268,7 @@ if (file.type === 'image') {
   Borrador=false;
   circulo=true;
   pocisionCirculo=true;
-
-      socket.emit('user image', file.data);
-
+      URLTemp=file.data;
 	//Crea un  image DOM element y lo esconde
 	img = createImg(file.data).hide();
   //permite activar un la metodoalidad de poner una imagen
@@ -410,16 +385,19 @@ function mouseClicked(){
           xArriba = mouseX;
           yArriba = mouseY;
           CambioDeEsquina();
+          ellipse(xArriba,yArriba,8);
       }
       else if(EsquinaTriangulo==3){
           xIzquierda = mouseX;
           yIzquierda = mouseY;
           CambioDeEsquina();
+          ellipse(xIzquierda,yIzquierda,8);
       }
       else if(EsquinaTriangulo==4){
           xDerecha = mouseX;
           yDerecha = mouseY;
           CambioDeEsquina();
+          ellipse(xDerecha,yDerecha,8);
       }
       else{
         CambioDeEsquina();
@@ -428,12 +406,15 @@ function mouseClicked(){
     }
     //luego de arrastrar la imagen al canvas se debe hacer click sobre cualquier parte de este para que aparezca
     if (imprimir_imagen==true) {
-    //  var data={
-    //  i:img,
-    //  x:mouseX,
-    //  y:mouseY
-    //}
-    //  socket.emit('imagen' , data);
+      var dataI={
+      i:URLTemp,
+      x:mouseX,
+      y:mouseY,
+      h:imgtamano
+    }
+    for (var i = 0; i <=1; i++) {
+      socket.emit('user image' , dataI);
+    }
       //este metodo permite poner una imagen sobre el canvas
       image(img, mouseX, mouseY,imgtamano,imgtamano);
       imprimir_imagen=false;

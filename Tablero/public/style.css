@@ -15,8 +15,8 @@ body{margin:0;padding:0;font: 13px Helvetica, Arial;}
     background:#333333;
     margin-bottom:4px;
     border-radius:2px;
-    width:70px;
-    height:70px;
+    width:50px;
+    height:50px;
     right:3%;
     top:2%;
 }
@@ -30,7 +30,7 @@ body{margin:0;padding:0;font: 13px Helvetica, Arial;}
 	top:0;
 	height:30px;
 	width:30px;
-	padding:3% 7.5%;
+	padding:1.5% 5%;
 	-webkit-transform:translate3d(0, 0, 0);
 	transform:translate3d(0, 0, 0);
 	-webkit-transition:-webkit-transform 0.25s cubic-bezier(0.05, 1.04, 0.72, 0.98);
@@ -49,7 +49,7 @@ body{margin:0;padding:0;font: 13px Helvetica, Arial;}
 
 }
 ._layer{
-  visibility: hidden;
+  visibility: visible;
 	background:#333333;
 	margin-bottom:4px;
 	border-radius:2px;
@@ -106,7 +106,7 @@ body{margin:0;padding:0;font: 13px Helvetica, Arial;}
 #menuppalDerecha ul{
   margin:0;padding:0;
 }
-#menuppalDerecha ul li { 
+#menuppalDerecha ul li {
     list-style: none;
 	text-align:right;
 	font-family: Verdadna, Arial, Helvetica;
@@ -123,22 +123,22 @@ body{margin:0;padding:0;font: 13px Helvetica, Arial;}
   color:#369;
 }
 #menuppalDerecha ul  form{
-    background: #000; 
-    padding: 3px; 
-    position:fixed; 
-    bottom: 0; 
+    background: #000;
+    padding: 3px;
+    position:fixed;
+    bottom: 0;
     width: 30%;
 }
 #menuppalDerecha ul  form input{
-    border: 0; 
-    padding: 10px; 
-    width: 70%; 
+    border: 0;
+    padding: 10px;
+    width: 70%;
     margin-right: .5%;
 }
 #menuppalDerecha ul  form button{
-    width: 29%; 
-    background: rgb(130, 224, 255); 
-    border: none; 
+    width: 29%;
+    background: rgb(130, 224, 255);
+    border: none;
     padding: 10px;
 }
 #menuppalDerecha ul a:hover{
@@ -269,6 +269,6 @@ width: 100%;
     height: 80% ; width: 80%;
 }
 #button9{
-    background-image:url(Imagenes/triangulo.PNG);
+    background-image:url(Imagenes/triangulo.jpg);
     height: 80% ; width: 80%;
 }

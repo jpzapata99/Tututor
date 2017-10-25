@@ -29,8 +29,8 @@ io.on('connection', function(socket){
     });
 
     //Emitiendo Imagen
-    socket.on('user image',function(image){
-        socket.broadcast.emit('addimage',image);
+    socket.on('user image',function(dataI){
+        socket.broadcast.emit('addimage',dataI);
     });
 
     //new user
