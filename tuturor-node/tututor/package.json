@@ -18,5 +18,6 @@
     "express": "^4.16.1",
     "mysql": "^2.14.1",
     "sync-mysql": "^3.0.1"
-  }
+  },
+  "devDependencies": {}
 }

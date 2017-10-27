@@ -1,12 +1,12 @@
 /* Styles for dialog window */
-#small-dialog,#small-dialog2{
+#small-dialog,#small-dialog2,#dialogo{
 	background: #134416;
 	text-align: left;
 	max-width: 500px;
 	margin: 40px auto;
 	position: relative; 
 }
-#small-dialog-it,#small-dialog-in,#small-dialog-fr,#small-dialog-sh,#small-dialog-sf,#small-dialog-su,#small-dialog-me,#small-dialog-ch,#small-dialog-pi,#small-dialog-am {
+#small-dialog-it,#dialogo,#small-dialog-in,#small-dialog-fr,#small-dialog-sh,#small-dialog-sf,#small-dialog-su,#small-dialog-me,#small-dialog-ch,#small-dialog-pi,#small-dialog-am {
 	background: white;
 	padding:0px;
 	text-align: left;
@@ -27,6 +27,9 @@ a.play-icon.popup-with-zoom-anim img:hover {
 	text-align:center;
 	margin:0 auto;
 }
+#dialogo{
+	color: #000000
+}
 .portfolio-items img{
 	width:100%;
 }
@@ -45,7 +48,7 @@ a.play-icon.popup-with-zoom-anim img:hover {
  */
 
 /* start state */
-.my-mfp-zoom-in #small-dialog {
+.my-mfp-zoom-in #small-dialog,.my-mfp-zoom-in #dialogo  {
 opacity: 0;
 -webkit-transition: all 0.2s ease-in-out;
 -moz-transition: all 0.2s ease-in-out;
@@ -58,7 +61,7 @@ transition: all 0.2s ease-in-out;
 transform: scale(0.8);
 }
 /* animate in */
-.my-mfp-zoom-in.mfp-ready #small-dialog {
+.my-mfp-zoom-in.mfp-ready #small-dialog,.my-mfp-zoom-in.mfp-ready #dialogo {
 opacity: 1;
 -webkit-transform: scale(1);
 -moz-transform: scale(1);
@@ -68,7 +71,7 @@ transform: scale(1);
 padding: 50px 50px 80px;
 }
 /* animate out */
-.my-mfp-zoom-in.mfp-removing #small-dialog {
+.my-mfp-zoom-in.mfp-removing #small-dialog,.my-mfp-zoom-in.mfp-removing #dialogo {
 -webkit-transform: scale(0.8);
 -moz-transform: scale(0.8);
 -ms-transform: scale(0.8);
@@ -299,7 +302,7 @@ button::-moz-focus-inner {
 	transition: all 0.5s ease-in-out;
 }
 @media all and (max-width:640px){
-	#small-dialog, #small-dialog2 { 
+	#small-dialog, #small-dialog2,#dialogo { 
 		max-width: 420px; 
 	}
 }
@@ -314,7 +317,7 @@ button::-moz-focus-inner {
 	.mfp-close {
 		left: 0;
 	}
-	#small-dialog, #small-dialog2 {
+	#small-dialog, #small-dialog2 ,#dialogo{
 		max-width: 320px;
 	}
 	
@@ -327,7 +330,7 @@ button::-moz-focus-inner {
 	.comments-area span{
 		padding-bottom:3px;
 	}
-	#small-dialog{
+	#small-dialog,#dialogo{
 		padding:15px;
 	}
 	.comments-area input[type="text"], .comments-area textarea{
