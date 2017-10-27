@@ -6,24 +6,31 @@ var EsquinaTriangulo = 0;
 var lapiztamano=65;
 var imgtamano=200;
 var reglatamano=4;
-var borradortamano=60;
+var borradortamano=50;
+var tamanoLetra=60
 var img,URLTemp=null;
 var CuadradoTamanoP=20;
 var CirculoTamano=10;
-
+var indiceArregloDeControlZ=0;
+var entroAlRuedo=0;
+var Aplicar=1;
+ArregloDeImagenes = new Array();
+var input;
 function setup() {
   //me permite conectarme al server y manener una coneccion con el host
   socket = io.connect('http://localhost:3000');
   //Esto me permite comunicarme con el servidor y señalar que quiero enviar
   //el primer parametro hace referencia a un id que se conparte entre el server y el modelo(sketch.js)
   //el segundo parametro hace referencia al metodo en el que dire que voy a enviar al server
-    socket.on('lapiz' , newLapiz);
-    socket.on('borrador' , newBorrador);
-    socket.on('regla' , newRegla);
-    socket.on('cuadrado',newCuadrado);
-    socket.on('circulo',newCirculo);
-    socket.on('triangulo',newTriangulo);
-    socket.on('addimage',newimage);
+    socket.on('lapiz' , transmitirLapiz);
+    socket.on('borrador' , transmitirBorrador);
+    socket.on('regla' , transmitirRegla);
+    socket.on('cuadrado',transmitirCuadrado);
+    socket.on('circulo',transmitirCirculo);
+    socket.on('triangulo',transmitirTriangulo);
+    socket.on('addimage',transmitirImagen);
+    socket.on('texto',transmitirTexto);
+    socket.on('borrar',transmitirBorrar);
 //windowWidth devuelve el ancho de la pantalla del ordenador en donde se abre el proyecto
   var x=windowWidth;
   //windowWidth devuelve el largo de la pantalla del ordenador en donde se abre el proyecto
@@ -37,11 +44,16 @@ function setup() {
  background(88,100,70);
  //este operacion permite arrastrar y soltar objetos de tipo fichero(archivos o imagenes) sobre el canvas
  cnv.drop(gotFile);
-
+ input = createInput();
+ input.id("mitexto");
+ input.style("position:absolute;left:35%;top:94%");
+ input.style("background-color: olive;");
+ input.style("font: 50px Arial");
+ input.style("display: none");
+ textStyle(NORMAL);
 }
 
 function draw() {}
-
 //este metodo permite centrar el canvas en medio de la pantalla
 function centerCanvas(){
   var x = (windowWidth - width)/2;
@@ -53,15 +65,25 @@ function windowResized(){
   centerCanvas();
 }
 
+function transmitirBorrar(){
+  background(88,100,70);
+}
 
-function newimage(dataI){
+function transmitirTexto(dataText){
+  push();
+  textSize(dataText.tam);
+  translate(dataText.x, dataText.y);
+  text(dataText.nam, 0, 0);
+  pop();
+}
+function transmitirImagen(dataI){
   var imagen = createImg(dataI.i).hide();
   image(imagen, dataI.x, dataI.y, dataI.h, dataI.h);
 
 }
 //este metodo sera el que permita enviar informacion sobre lo que se dibuje sobre el canvas al server,
 //para luego ser conpartido a otros tableros
-function newLapiz(data){
+function transmitirLapiz(data){
   //este metodo permite dibujar sin que quede un borde sobre el dibujo
   noStroke();
   //los parametros (data.r,data.g ... etc) hacen referencia a un objeto de tipo data
@@ -72,22 +94,22 @@ function newLapiz(data){
   //tamaño y pocision de la ellipse
   ellipse(data.x, data.y,data.w,data.w);
 }
-function newCuadrado(dataC){
+function transmitirCuadrado(dataC){
   rect(dataC.r,dataC.s,dataC.m,dataC.m);
 }
-function newBorrador(dataB){
+function transmitirBorrador(dataB){
   noStroke();
   fill(88,100,70);
   ellipse(dataB.x, dataB.y,dataB.w,dataB.w);
 }
-function newTriangulo(dataT){
+function transmitirTriangulo(dataT){
   triangle(dataT.x1,dataT.y1,dataT.x2,dataT.y2,dataT.x3,dataT.y3);
 }
-function newCirculo(dataCi){
+function transmitirCirculo(dataCi){
   ellipse(dataCi.c, dataCi.d,dataCi.e,dataCi.e);
 }
 
-function newRegla(dataR){
+function transmitirRegla(dataR){
   strokeWeight(dataR.a);
   stroke(20);
   line(dataR.t,dataR.u,dataR.l,dataR.p);
@@ -104,6 +126,8 @@ function activarLapiz() {
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
+  document.getElementById("mitexto").style.display = "none";
+  document.getElementById("LetraTamano").style.display = "none";
   lapiz=true;
   regla=false;
   Borrador=false;
@@ -114,10 +138,12 @@ function activarLapiz() {
 //este metodo espera ser activado desde un boton puesto en el fichero index.html
 function activarRegla(){
   document.getElementById("divuno").style.display = "none"
-  document.getElementById("ReglayborradorTamano").style.display = "none";
+  document.getElementById("ReglayborradorTamano").style.display = "block";
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
+  document.getElementById("mitexto").style.display = "none";
+  document.getElementById("LetraTamano").style.display = "none";
     //esto permite solamente activar la metodo de crear lineas rectas y desactivar las demas metodos
   regla=true;
   firstclick = false;
@@ -145,6 +171,8 @@ function activarBorrador(){
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
+  document.getElementById("mitexto").style.display = "none";
+  document.getElementById("LetraTamano").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=true;
@@ -157,6 +185,8 @@ function activarCuadrado(){
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
+  document.getElementById("mitexto").style.display = "none";
+  document.getElementById("LetraTamano").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
@@ -165,19 +195,14 @@ function activarCuadrado(){
   triangulo=false;
 }
 
-function activarImagen(){
-  document.getElementById("divuno").style.display = "none"
-  document.getElementById("ReglayborradorTamano").style.display = "none";
-  document.getElementById("ImagenTamano").style.display = "none";
-  document.getElementById("CuadradoTamano").style.display = "none";
-  document.getElementById("CirculoTamano").style.display = "none";
-}
 //este metodo permite activar la funcionalidad de crear circulos sobre el tablero
 function activarCirculo(){
   document.getElementById("divuno").style.display = "block"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
+  document.getElementById("mitexto").style.display = "none";
+  document.getElementById("LetraTamano").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
@@ -191,6 +216,8 @@ function activarTriangulo(){
   document.getElementById("ImagenTamano").style.display = "none";
   document.getElementById("CuadradoTamano").style.display = "none";
   document.getElementById("CirculoTamano").style.display = "none";
+  document.getElementById("mitexto").style.display = "none";
+  document.getElementById("LetraTamano").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
@@ -215,12 +242,51 @@ function CambioDeEsquina(){
     EsquinaTriangulo=2;
   }
 }
+
+function activarImagen(){
+  document.getElementById("divuno").style.display = "none"
+  document.getElementById("ReglayborradorTamano").style.display = "none";
+  document.getElementById("ImagenTamano").style.display = "none";
+  document.getElementById("CuadradoTamano").style.display = "none";
+  document.getElementById("CirculoTamano").style.display = "none";
+  indiceArregloDeControlZ
+  c = document.getElementById("defaultCanvas0");
+  imagencopia  = c.toDataURL("image/png");
+  ArregloDeImagenes[indiceArregloDeControlZ]=imagencopia;
+  indiceArregloDeControlZ++;
+}
+function activarMostrado(){
+ var x=windowWidth;
+ var y=windowHeight-140;
+ var posicionx = (windowWidth - width)/2;
+ var posiciony = (windowHeight - height)/2;
+ if(indiceArregloDeControlZ-Aplicar>=0){
+ var imagenParaPegar = createImg(ArregloDeImagenes[indiceArregloDeControlZ-Aplicar]).show();
+ imagenParaPegar.style("display","none");
+ imagenParaPegar.style("height",y+"px");
+ imagenParaPegar.style("width", x+"px");
+ imagenParaPegar.style("position", "absolute");
+ imagenParaPegar.style("top",70+"px");
+ image(imagenParaPegar,posicionx,posiciony-70);
+   if(entroAlRuedo==0){
+    entroAlRuedo++;
+  }
+  else if (entroAlRuedo==1){
+    Aplicar++;
+    entroAlRuedo=0;
+  }
+}
+}
+
+
+
 function LimpiarTotal(){
   //este metodo Borra todo lo dibujado y puesto sobre el canvas
   background(88,100,70);
+  socket.emit('borrar');
 }
   //este metodo permite aumentar el tamaño del borrador, el lapiz y la regla
-function tamanomas(){
+function tamanoMas(){
   if (lapiz==true) {
     lapiztamano+=15;
 
@@ -239,7 +305,7 @@ function tamanomas(){
   }
 }
 //este metodo permite disminuir el tamaño del borrador, el lapiz y la regla
-function tamanomenos(){
+function tamanoMenos(){
   if(lapiztamano>=0 && lapiz==true){
   lapiztamano-=15;
 }else if (regla==true && reglatamano>=0) {
@@ -253,21 +319,34 @@ function tamanomenos(){
 }else if(circulo==true && CirculoTamano>=0){
     CirculoTamano-=10;
 }
+}
 
+function tamanoMasTexto(){
+tamanoLetra+=5;
+}
+function tamanoMenosTexto(){
+  if (tamanoLetra>=1) {
+  tamanoLetra-=5
+  }
 }
 
 //este metodo permite arrastrar una archivo al canvas
 function gotFile(file) {
 // se pregunta si el archivo es de tipo imagen
 if (file.type === 'image') {
-  document.getElementById("divuno").style.display = "none";
+  document.getElementById("divuno").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "block";
+  document.getElementById("CuadradoTamano").style.display = "none";
+  document.getElementById("CirculoTamano").style.display = "none";
+  document.getElementById("mitexto").style.display = "none";
+  document.getElementById("LetraTamano").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
-  circulo=true;
-  pocisionCirculo=true;
+  circulo=false;
+  cuadrado = false;
+  triangulo=false;
       URLTemp=file.data;
 	//Crea un  image DOM element y lo esconde
 	img = createImg(file.data).hide();
@@ -294,6 +373,7 @@ function tipoColor(R,G,B){
 //este metodo pse ejecuta cuando el ussuario hace un click derecho contante del raton
 function mouseDragged(){
   if(mouseY>50){
+
    //esto permite borrar usando una ellipse de igual color al del tablero
     if(Borrador==true){
       var dataB={
@@ -303,9 +383,9 @@ function mouseDragged(){
     }
     socket.emit('borrador',dataB);
   	   noStroke();
-  	   fill(88,100,70);
        //borradortamano es una variable global que varia de acuerdo a los metodos tamanomas y tamanomenos
        //mouseX y mouseY devuelven la pocision del mouse con respecto al eje X  y  Y
+       fill(88,100,70);
   	    ellipse(mouseX,mouseY,borradortamano,borradortamano);
     }
     //Esto permite dibujar sobre el tablero
@@ -326,7 +406,10 @@ function mouseDragged(){
 }
 //este metodo se activa cuando el usuario hace click sobre canvas
 function mouseClicked(){
-  if(mouseY>50){
+  if(mouseY>50 && windowHeight-165 > mouseY){
+    if(input.value!=''){
+      escribir();
+    }
     //cuando se activa la herramienta regla ser requiere hacer un click sobre el canvas y luego otro en otro punto
     //para generar una recta de un punto a otro
     if (regla==true) {
@@ -420,4 +503,34 @@ function mouseClicked(){
       imprimir_imagen=false;
     }
   }
+}
+function activarTexto(){
+  document.getElementById("mitexto").style.display = "block";
+  document.getElementById("LetraTamano").style.display = "block";
+  document.getElementById("divuno").style.display = "block"
+  lapiz=false;
+  regla=false;
+  Borrador=false;
+  circulo=false;
+  cuadrado = false;
+  triangulo=false;
+
+}
+
+function escribir() {
+  var name = input.value();
+  dataText={
+    nam:name,
+    x:mouseX,
+    y:mouseY,
+    tam:tamanoLetra
+  }
+  socket.emit('texto', dataText);
+  input.value('');
+    push();
+    tipoColor();
+    textSize(tamanoLetra);
+    translate(mouseX, mouseY);
+    text(name, 0, 0);
+    pop();
 }

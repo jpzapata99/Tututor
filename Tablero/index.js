@@ -72,6 +72,15 @@ io.on('connection', function(socket){
     function trianguloSocket(dataT){
         socket.broadcast.emit('triangulo' , dataT);
     }
+
+    socket.on('texto', textoSocket);
+    function textoSocket(dataText){
+      socket.broadcast.emit('texto',dataText);
+    }
+    socket.on('borrar', borrarSocket);
+    function borrarSocket(){
+      socket.broadcast.emit('borrar');
+    }
 });
 
 io.emit('some event', { for: 'everyone' });

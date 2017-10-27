@@ -261,7 +261,7 @@ width: 100%;
     height: 80% ; width: 80%;
 }
 #button7{
-    background-image:url(Imagenes/Plano.PNG);
+    background-image:url(Imagenes/Guardar.png);
     height: 80% ; width: 80%;
 }
 #button8{
@@ -271,4 +271,13 @@ width: 100%;
 #button9{
     background-image:url(Imagenes/triangulo.jpg);
     height: 80% ; width: 80%;
+}
+#button10{
+  background-image: url(Imagenes/retroceso.png);
+  height: 80% ; width: 80%;
+}
+
+#button12{
+  background-image: url(Imagenes/A.jpg);
+  height: 80%; width: 80%;
 }
