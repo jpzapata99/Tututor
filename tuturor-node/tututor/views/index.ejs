@@ -52,7 +52,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<div class="login-form">
 				<form action="/" method="POST">
 					<div class="input">
-						<i class="fa fa-user" aria-hidden="true"></i> <input type="text" class="user" name="username" placeholder="Usuario" required="" />
+						<i class="fa fa-user" aria-hidden="true"></i> <input type="text" class="user" name="usuario" placeholder="Usuario" required="" />
 					</div>
 					<div class="input">
 						<i class="fa fa-unlock-alt" aria-hidden="true"></i> <input type="password" class="lock" name="password" placeholder="Contraseña" required="" />
@@ -98,16 +98,28 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <div class="login-form">
 	<form action="/" method="POST" onsubmit="return comprobarClave()">
 		<div class="input">
-			<i class="fa fa-user" aria-hidden="true"></i> <input pattern=".{7,15}" type="text" class="user" name="username" placeholder="Usuario (caracteres: 5 min - 15 max)" required="" />
+			<i class="fa fa-user" aria-hidden="true"></i> <input pattern=".{7,15}" type="text" class="user" name="usuario" placeholder="Ingrese su usuario (7min-15max Caracteres)" required="" />
 		</div>
 		<div class="input">
-			<i class="fa fa-envelope" aria-hidden="true"></i> <input id ="email" action="/" method="GET" type="email" name="Email" class="email" placeholder="Correo" required=""/>
+			<i class="fa fa-user" aria-hidden="true"></i> <input id ="nombre" pattern=".{3,20}" type="text" class="user" name="nombre" placeholder="Ingrese su nombre" required="" />
 		</div>
 		<div class="input">
-			<i class="fa fa-unlock-alt" aria-hidden="true"></i> <input id="password1" type="password" name="Password" class="password" placeholder="Contraseña" required=""/>
+			<i class="fa fa-user" aria-hidden="true"></i> <input id ="apellido" pattern=".{3,25}" type="text" class="user" name="apellido" placeholder="Ingrese su apellido" required="" />
+		</div>
+		<div class="input">
+			<i class="fa fa-id-card-o" aria-hidden="true"></i> <input id ="carnet" pattern=".{12}" type="text" class="user" name="carnet" placeholder="Ingrese su carnet estudiantil EAFIT" required="" />
+		</div>
+		<div class="input">
+			<i class="fa fa-envelope" aria-hidden="true"></i> <input id ="email" action="/" method="GET" type="email" name="Email" class="email" placeholder="Ingrese su Correo EAFIT" required=""/>
+		</div>
+		<div class="input">
+			<i class="fa fa-unlock-alt" aria-hidden="true"></i> <input id="password1" type="password" name="Password" class="password" placeholder="Ingrese su Contraseña" required=""/>
 		</div>
 		<div class="input">
 			<i class="fa fa-unlock-alt" aria-hidden="true"></i> <input id="password2" type="password" name="Password" class="password" placeholder="Confirme Contraseña" required=""/>
+		</div>
+		<div class="input">
+			<i class="fa fa-barcode" aria-hidden="true"></i> <input id ="codigo" pattern=".{15}" type="text" class="user" name="codigo" placeholder="Ingrese codigo de monitor si es monitor" />
 		</div>
 		<input type="submit" value="Sign Up">
 			</form>

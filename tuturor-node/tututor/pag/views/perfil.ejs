@@ -92,10 +92,64 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 				</div>
 			</div>
+			<!-- Lista de preguntas-->
 			<div class="col-sm-6 about-w3left">
-				<h4>Una idea<br>Un proyecto</h4>
-				<p>Tutotor comienza como una idea para satisfacer la necesidad de presentacion de trabajos e ideas que aporten una solucion a una problematica existente, todo ello para la materia de "Proyecto integrador I", impulsado por el equipo de desarrollo se convirtio en una plataforma web para el mejoramiento continuo de las monitorias y el proceso del estudiante.</p>
-				<a href="#" class="button button-isi"><span>Lee más</span><i class="icon glyphicon glyphicon-arrow-right"></i></a>
+				<nav>
+					<ul>
+						<% for(var i = 0; i < preguntas.length; ++i) { %>
+							<li>
+								<div class="well w3l">
+									<h4>Pregunta 1</h4>
+									<h3>
+										<span class="label label-primary">Tema</span>
+									</h3> <br>
+									<input type="text" class="form-control1" id="mediuminput" placeholder="TITULO" style="margin-left: 1.2em">
+									<br>
+									<div class="col-sm-8"><textarea name="txtarea1" id="txtarea1" cols="50" rows="4" class="form-control1"></textarea></div>
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#" style="margin-top: 0.4em">Responder</button>
+								</div>
+							</li>
+						<% } %>
+						<!--
+						<li>
+							<div class="well w3l">
+								<h4>Pregunta 1</h4>
+								<h3>
+									<span class="label label-primary">Tema</span>
+								</h3> <br>
+								<input type="text" class="form-control1" id="mediuminput" placeholder="TITULO" style="margin-left: 1.2em">
+								<br>
+								<div class="col-sm-8"><textarea name="txtarea1" id="txtarea1" cols="50" rows="4" class="form-control1"></textarea></div>
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#" style="margin-top: 0.4em">Responder</button>
+							</div>
+						</li>
+						<li>
+							<div class="well w3l">
+										<h4>Pregunta 2</h4>
+										<h3>
+											<span class="label label-primary">Tema</span>
+										</h3> <br>
+										<input type="text" class="form-control1" id="mediuminput" placeholder="TITULO" style="margin-left: 1.2em">
+										<br>
+										<div class="col-sm-8"><textarea name="txtarea1" id="txtarea1" cols="50" rows="4" class="form-control1"></textarea></div>
+										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#" style="margin-top: 0.4em">Responder</button>
+							</div>
+						</li>
+						<li>
+							<div class="well w3l">
+										<h4>Pregunta 3</h4>
+										<h3>
+											<span class="label label-primary">Tema</span>
+										</h3> <br>
+										<input type="text" class="form-control1" id="mediuminput" placeholder="TITULO" style="margin-left: 1.2em">
+										<br>
+										<div class="col-sm-8"><textarea name="txtarea1" id="txtarea1" cols="50" rows="4" class="form-control1"></textarea></div>
+										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#" style="margin-top: 0.4em">Responder</button>
+							</div>
+						</li>
+					-->
+					</ul>
+				</nav>
 			</div>
 			<div class="clearfix"> </div>
 		</div>
