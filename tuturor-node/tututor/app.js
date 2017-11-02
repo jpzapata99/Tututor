@@ -15,20 +15,20 @@ var app = express();
 
 //Vairables de informacion necesarias para el programa
 const saltRounds = 10; // Numero de potencia de incriptacion del bcrypt
-var usuario= [];
+var estudiante= [];
 
 
 //Permite obtener acceso a el cuerpo de los formularios
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 //Puerto local donde se corre el programa
-const PORT = 9001;
+const PORT = 8080;
 /*Inicialización y definición de la conexión a la base de datos de manera
 sincrona*/
 var connection = new mysqlSync({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'prueba',
+  database: 'tututor',
   port: 3306
 });
 /*Inicialización y definición de la conexión ciclica a la base de datos de
@@ -37,7 +37,7 @@ var pool = mysql.createPool({
    host: 'localhost',
    user: 'root',
    password: '',
-   database: 'prueba',
+   database: 'tututor',
    port: 3306
 });
 //Funcion que permite leer mas de 1 carpeta de views
@@ -73,7 +73,7 @@ function copyFile(src, dest) {
   });
   readStream.pipe(fs.createWriteStream(dest));//pegamos el archivo en la direccion de destino
 }
-/*Comprueba si el usuario y/o el correo se encuentra disponible*/
+/*Comprueba si el estudiante y/o el correo se encuentra disponible*/
 function comprobar(tam,tipo) {
   console.log(tam);
   if (tam > 0){
@@ -98,15 +98,13 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 })) //Hacemos que la aplicacion use el sistema de sessiones
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
-}
+
 /*Métodos que se encarga de renderizar una pagina cuando esta se recibe en la
 barra de navegación*/
 //cuando entren solo la direccion principal
 app.get('/', function(req, res){
-  if(req.session.username){
-    res.render('perfil',{nombre:req.session.username, foto: "../../uploads/" + req.session.username + "/perfil.jpg ",info:req.session.informacion});
+  if(req.session.usuario){
+    res.render('perfil',{nombre:req.session.usuario, foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info:req.session.informacion});
   }else {
     res.render('index', {
         mensaje:false
@@ -121,11 +119,12 @@ app.get('/index.ejs', function(req, res){
 });
 //Cuando entran al perfil
 app.get('/perfil.ejs',function(req,res){
-  if(req.session.username){ //si hay un usuario inicado
-    if(!req.session.informacion){ // si hay informacion sobre ese usuario
-      var sql_string = "SELECT * FROM usuario WHERE nombre_usuario = '" + req.session.username + "'"; // hace una consulta
+  var monitor = true;
+  if(req.session.usuario){ //si hay un estudiante inicado
+    if(!req.session.informacion){ // si hay informacion sobre ese estudiante
+      var sql_string = "SELECT * FROM estudiante WHERE usuario = '" + req.session.usuario + "'"; // hace una consulta
       var result = connection.query(sql_string);
-      req.session.informacion = { name: req.session.username, correo: result[0].correo_usuario, carrera: '' }; //guarda la info de esa session
+      req.session.informacion = { name: req.session.usuario, correo: result[0].correo, carrera: '' }; //guarda la info de esa session
       req.session.id = result[0].usuario_id;
     }
     var rutUplo = 'uploads';
@@ -133,12 +132,29 @@ app.get('/perfil.ejs',function(req,res){
     if (!fs.existsSync(rutUplo)){ // si no existe la carpeta 'Uploads'
       fs.mkdirSync(rutUplo); // crea la carpeta 'Uploads'
     }
-    if(!fs.existsSync('./uploads/' +req.session.username)){ // si no existe la carpeta 'uploads' + la carpeta con el nombre del usuario
-        fs.mkdirSync('./uploads/' +req.session.username); // crea la carpeta con el nombre del usuario
-        copyFile(__dirname + '/images/perfil.jpg', path.join(__dirname +'/uploads/' +req.session.username, filename)); // copiamos dentro de ella lo foto por defecto
+    if(!fs.existsSync('./uploads/' +req.session.usuario)){ // si no existe la carpeta 'uploads' + la carpeta con el nombre del estudiante
+        fs.mkdirSync('./uploads/' +req.session.usuario); // crea la carpeta con el nombre del estudiante
+        copyFile(__dirname + '/images/perfil.jpg', path.join(__dirname +'/uploads/' +req.session.usuario, filename)); // copiamos dentro de ella lo foto por defecto
     }
-      res.render('perfil',{nombre:req.session.username, foto: "../../uploads/" + req.session.username + "/perfil.jpg ",info: req.session.informacion});
+    if(monitor){
+      console.log("ENTRO A MONITOR");
+      var sql_string2 = "SELECT * FROM pregunta";
+      pool.getConnection(function(err, con){//Llamado a una conexión asincrona
+        if(err){
+          con.release();
+          throw err;
+        }
+        con.query(sql_string2, function (err2, res2) {
+          con.release();
+          res.render('perfil',{preguntas:res2, nombre:req.session.usuario, foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
+          if(err2) throw err2;
+        });
+      });
+    }
+    if(!monitor){
+      res.render('perfil',{preguntas:"", nombre:req.session.usuario, foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
       //renderizamos el perfil
+    }
   }else{
     //si no hay ninguna session iniciada redireccionamos a la pantalla de logeo
     res.redirect('index.ejs');
@@ -148,11 +164,11 @@ app.get('/perfil.ejs',function(req,res){
 //Cuando ingresemos al index de la pagina normal
 app.get('/index2.ejs',function(req,res){
   res.render('../pag/views/index2',{login:true,
-  perfil:"Bienvenido " + req.session.username + " Has iniciado sesion " });
+  perfil:"Bienvenido " + req.session.usuario + " Has iniciado sesion " });
 });
 //cuando ingresamos al index desde otra pagina que no sea la de logeo
   app.get('/pag/views/index2.ejs', function(req, res){
-  if(req.session.username){
+  if(req.session.usuario){
         res.redirect('/perfil.ejs');
       }else{
       res.redirect('../../../index.ejs');
@@ -161,16 +177,16 @@ app.get('/index2.ejs',function(req,res){
 
 //Recibe todo lo que termine con verify
 app.get(/.*verify$/, function (req, res) {
-  sql_string = "SELECT nombre_usuario FROM usuario WHERE link = '" + req.url + "'";
+  sql_string = "SELECT usuario FROM estudiante WHERE url = '" + req.url + "'";
   var result = connection.query(sql_string);
   if(result.length != 0){
-    sql_string = "UPDATE usuario "+
-                 "SET verificado = 1, link = ''"+
-                 "WHERE nombre_usuario = '" + result[0].nombre_usuario + "'"; // Actualiza el usuario como verificado
+    sql_string = "UPDATE estudiante "+
+                 "SET verificado = 1, url = ''"+
+                 "WHERE usuario = '" + result[0].usuario + "'"; // Actualiza el estudiante como verificado
     var result2 = connection.query(sql_string);
     res.render('index', {
         mensaje:'Su cuenta ha sido verificada exitosamente'
-    }); // verifica exitosamente al usuario
+    }); // verifica exitosamente al estudiante
   }else{
     res.render('index', {
         mensaje:'Esta url NO EXISTE'
@@ -185,19 +201,19 @@ app.post('/', urlencodedParser, function(req, res){
   //Si es un post de registro
   if (data.Email) {
     var disponible =  true; //Variable usada para continuar la verificación
-    var sql_string = "SELECT nombre_usuario FROM usuario WHERE nombre_usuario = '" + data.username + "'";
+    var sql_string = "SELECT usuario FROM estudiante WHERE usuario = '" + data.usuario + "'";
     var result = connection.query(sql_string);
     try{
       comprobar(result.length, "Usuario");
     }catch(err){
-      disponible = false;//Si el usuario existe, no se continua la verificación
+      disponible = false;//Si el estudiante existe, no se continua la verificación
       console.log(err.message);
       res.render('index', {//Se le envia un mensaje de error diciendo que el correo no es admitido
-          mensaje:'Lo sentimos pero este nombre de usuario no se encuentra disponible.'
+          mensaje:'Lo sentimos pero este nombre de estudiante no se encuentra disponible.'
       });
     }
-    if(disponible){//Entra cuando el usuario es disponible
-      sql_string = "SELECT correo_usuario FROM usuario WHERE correo_usuario = '" + data.Email + "'";
+    if(disponible){//Entra cuando el estudiante es disponible
+      sql_string = "SELECT correo FROM estudiante WHERE correo = '" + data.Email + "'";
       var result2 = connection.query(sql_string);
       try{
         comprobar(result2.length, "Email");
@@ -211,22 +227,22 @@ app.post('/', urlencodedParser, function(req, res){
         }
       }
     }
-    if (disponible){//Entra cuando el usuario y el email estan disponibles
+    if (disponible){//Entra cuando el estudiante y el email estan disponibles
       var salt = bcrypt.genSaltSync(saltRounds);
       var hash = bcrypt.hashSync(data.Password[0], salt);
-      //Se crea el link para enviar al correo del usuario
+      //Se crea el link para enviar al correo del estudiante
         var linkr = "/" + randomstring.generate(15) + "verify";
-        var sql_string2 = "INSERT INTO usuario (nombre_usuario, correo_usuario, contra_usuario, verificado, link) VALUES ('" +
-        data.username + "', '" + data.Email + "', '" + hash + "', 0, '" + linkr + "')";
+        var sql_string2 = "INSERT INTO estudiante (usuario, nombre, apellido, correo, contra, carnet, verificado, url) VALUES ('" +
+        data.usuario + "', '" + data.nombre + "', '" + data.apellido + "', '" + data.Email + "', '" + hash + "', '" + data.carnet + "', 0, '" + linkr + "')";
         pool.getConnection(function(err, con){//Llamado a una conexión asincrona
-        if(err){
-          con.release();
-          throw err;
-        }
-        con.query(sql_string2, function(err2, res2) {
-          con.release();
-          if(err2) throw err2;
-        });
+          if(err){
+            con.release();
+            throw err;
+          }
+          con.query(sql_string2, function(err2, res2) {
+            con.release();
+            if(err2) throw err2;
+          });
       });
 
       var smtpTransport = nodemailer.createTransport({
@@ -242,7 +258,7 @@ app.post('/', urlencodedParser, function(req, res){
             to: data.Email+"", // list of receivers
             subject: "Bienvenido a Tututor", // Subject line
             text: "",
-            html: "<h1>Hola " + data.username + ". </h1> <br> <p>Bienvenido a Tututor, para terminar tu" +
+            html: "<h1>Hola " + data.usuario + ". </h1> <br> <p>Bienvenido a Tututor, para terminar tu" +
             " proceso de registro, por favor da clic en el siguiente enlace: </a> <a>localhost:8080" + linkr +"</a>" +
             "<br> <a> Si cree que no debio recibir este correo pruede ingresar a nuestra pagina y hacer su reclamo:</a>"+
             " localhost:8080/"
@@ -265,15 +281,15 @@ app.post('/', urlencodedParser, function(req, res){
     }
   //Si es un post de inicio de sesión
   }else{
-    sql_string = "SELECT * FROM usuario WHERE nombre_usuario = '" + req.body.username + "'";
+    sql_string = "SELECT * FROM estudiante WHERE usuario = '" + req.body.usuario + "'";
     var result = connection.query(sql_string);
     if(result != ""){
-      if(bcrypt.compareSync(data.password, result[0].contra_usuario)){
+      if(bcrypt.compareSync(data.password, result[0].contra)){
         if(result[0].verificado == 1){
-          req.session.username = req.body.username;
+          req.session.usuario = req.body.usuario;
           res.render('../pag/views/index2.ejs', {//Se le envia un mensaje de error diciendo que el correo no es admitido
               login:true,
-              perfil:"Bienvenido " + req.session.username + " Se ha inciado sesion correctamente"
+              perfil:"Bienvenido " + req.session.usuario + " Se ha inciado sesion correctamente"
           });
         }else {
           res.render('index', {
@@ -285,28 +301,28 @@ app.post('/', urlencodedParser, function(req, res){
         res.render('index',{mensaje:"Usuario o contraseña incorrecta"})
       }
     }else{
-      res.render('index',{mensaje:"Este usuario no existe"})
+      res.render('index',{mensaje:"Este estudiante no existe"})
     }
   }
 });
 app.post('/cambiar', urlencodedParser, function(req, res){
-  sql_string = "SELECT * FROM usuario WHERE nombre_usuario = '" + req.session.username + "'";
+  sql_string = "SELECT * FROM estudiante WHERE usuario = '" + req.session.usuario + "'";
   var result = connection.query(sql_string);
   console.log(req.body.contraA);
-  if(bcrypt.compareSync(req.body.contraA, result[0].contra_usuario)){
+  if(bcrypt.compareSync(req.body.contraA, result[0].contra)){
     if(req.body.nuevaC != req.body.contraA){
       var salt = bcrypt.genSaltSync(saltRounds);
       var hash = bcrypt.hashSync(req.body.nuevaC, salt);
-      sql_string = "UPDATE usuario "+
-                   "SET contra_usuario = '" + hash +"' "+
-                   "WHERE nombre_usuario = '" + result[0].nombre_usuario+ "'" ;
+      sql_string = "UPDATE estudiante "+
+                   "SET contra = '" + hash +"' "+
+                   "WHERE usuario = '" + result[0].usuario+ "'" ;
       var result2 = connection.query(sql_string);
-      res.render('perfil',{nombre:"Contraseña exitosamente cambiada", foto: "../../uploads/" + req.session.username + "/perfil.jpg ",info: req.session.informacion});
+      res.render('perfil',{nombre:"Contraseña exitosamente cambiada", foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
     }else{
-      res.render('perfil',{nombre:"La contraseña ingresada no puede ser igual a la anterior", foto: "../../uploads/" + req.session.username + "/perfil.jpg ",info: req.session.informacion});
+      res.render('perfil',{nombre:"La contraseña ingresada no puede ser igual a la anterior", foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
     }
   }else{
-    res.render('perfil',{nombre:"No ha ingresado su contraseña anterior", foto: "../../uploads/" + req.session.username + "/perfil.jpg ",info: req.session.informacion});
+    res.render('perfil',{nombre:"No ha ingresado su contraseña anterior", foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
   }
 });
 //POST que se encarga del cambio de foto
@@ -315,13 +331,13 @@ app.post('/foto', function (req, res){
   form.parse(req);
   form.on('fileBegin', function (name, file){ // cuando el archcivo este subiendo
     if(path.extname(file.name) == '.jpg' || path.extname(file.name) == '.png' || path.extname(file.name) == '.gif'){
-      fs.unlinkSync(__dirname + '/uploads/' + req.session.username + '/perfil.jpg'); // borramos la imagen de perfil anterior
-      file.path = __dirname + '/uploads/' + req.session.username +'/perfil.jpg' ; // ponemos el archivo en la carpeta del usuario
+      fs.unlinkSync(__dirname + '/uploads/' + req.session.usuario + '/perfil.jpg'); // borramos la imagen de perfil anterior
+      file.path = __dirname + '/uploads/' + req.session.usuario +'/perfil.jpg' ; // ponemos el archivo en la carpeta del estudiante
     }else {
-      res.render('perfil',{nombre:"El archivo no es un formato de foto valido", foto: "../../uploads/" + req.session.username + "/perfil.jpg ",info:req.session.informacion});
+      res.render('perfil',{nombre:"El archivo no es un formato de foto valido", foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info:req.session.informacion});
     }
   });
-  res.render('perfil',{nombre:req.session.username, foto: "../../uploads/" + req.session.username + "/perfil.jpg ",info:req.session.informacion});
+  res.render('perfil',{nombre:req.session.usuario, foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info:req.session.informacion});
 });
 // Funcion para cerrar sesion
 app.post('/cerrar',function(req,res){
