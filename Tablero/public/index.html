@@ -58,80 +58,7 @@
         </li>
       </ul>
     </nav>
-      <div id="ReglayborradorTamano" style="position:relative;left:15%;display: none;">
-        <button id="menosregla" onclick="tamanoMenos()" value=""></button>
-        <script type="text/javascript">
-          var menos=document.getElementById("menosregla");
-          menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
-        </script>
-        <button id="masregla" onclick="tamanoMas()" value="" ></button>
-        <script type="text/javascript">
-          var mas=document.getElementById("masregla");
-          mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
-        </script>
-      </div>
-      <div id="CuadradoTamano" style="position:relative;left:15%;display: none;">
-        <button id="menosCuadrado" onclick="tamanoMenos()" value=""></button>
-        <script type="text/javascript">
-          var menos=document.getElementById("menosCuadrado");
-          menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
-        </script>
-        <button id="masCuadrado" onclick="tamanoMas()" value="" ></button>
-        <script type="text/javascript">
-          var mas=document.getElementById("masCuadrado");
-          mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
-        </script>
-      </div>
-      <div id="CirculoTamano" style="position:relative;left:15%;display: none;">
-        <button id="menosCirculo" onclick="tamanoMenos()" value=""></button>
-        <script type="text/javascript">
-          var menos=document.getElementById("menosCirculo");
-          menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
-        </script>
-        <button id="masCirculo" onclick="tamanoMas()" value="" ></button>
-        <script type="text/javascript">
-          var mas=document.getElementById("masCirculo");
-          mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
-        </script>
-      </div>
-      <div id="TrianguloTamano" style="position:relative;left:15%;display: none;">
-        <button id="menosTriangulo" onclick="tamanoMenos()" value=""></button>
-        <script type="text/javascript">
-          var menos=document.getElementById("menosTriangulo");
-          menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
-        </script>
-        <button id="masTriangulo" onclick="tamanoMas()" value="" ></button>
-        <script type="text/javascript">
-          var mas=document.getElementById("masTriangulo");
-          mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
-        </script>
-      </div>
-      <div id="ImagenTamano" style="position:relative;left:40%;display: none;">
-      <button id="imgtamanoMenos" onclick="tamanoMenos()" value=""></button>
-      <script type="text/javascript">
-        var menos=document.getElementById("imgtamanoMenos");
-        menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
-      </script>
-      <button id="imgtamanoMas" onclick="tamanoMas()" value="" ></button>
-      <script type="text/javascript">
-        var mas=document.getElementById("imgtamanoMas");
-        mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
-      </script>
-    </div>
-    <div id="LetraTamano" style="position:absolute;left:75%;top:94%;display: none;">
-      <button id="LetraPequeña" onclick="tamanoMenosTexto()" value=""></button>
-      <script type="text/javascript">
-        var menos=document.getElementById("LetraPequeña");
-        menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
-      </script>
-      <button id="LetraGrande" onclick="tamanoMasTexto()" value="" ></button>
-      <script type="text/javascript">
-        var mas=document.getElementById("LetraGrande");
-        mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
-      </script>
-    </div>
-    <script src="Funcionamiento.js"></script>
-    <div  id="divuno" style="position:relative;left:12%;display: none;">
+    <div  id="color-tamaño" style="position:relative;left:12%;display: none;">
 
     <input style="background-color: #F01616; width:70px; height:50px;border-style: outset;border-width: 5px;" type="button" id="ColorRojo" onclick="tipoColor(255,0,0)" value="">
     <input style="background-color: #08DB3D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorVerde" onclick="tipoColor(0,255,0)" value="">
@@ -144,17 +71,44 @@
     <input style="background-color: #817DEB; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulC" onclick="tipoColor(093,155,155)" value="">
     <input style="background-color: #323004; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorCafe" onclick="tipoColor(108,059,042)" value="">
 
-    <button id="menoslapiz" onclick="tamanoMenos()" value=""></button>
+    <button id="tamanomenos" onclick="tamanoMenos()" value=""></button>
     <script type="text/javascript">
-      var menos=document.getElementById("menoslapiz");
+      var menos=document.getElementById("tamanomenos");
       menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
     </script>
-    <button id="maslapiz" onclick="tamanoMas()" value=""></button>
+    <button id="tamanomas" onclick="tamanoMas()" value=""></button>
     <script type="text/javascript">
-      var mas=document.getElementById("maslapiz");
+      var mas=document.getElementById("tamanomas");
       mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
     </script>
 </div>
+      <div id="ReglayborradorTamano" style="position:relative;left:15%;display: none;">
+        <button id="menosregla" onclick="tamanoMenos()" value=""></button>
+        <script type="text/javascript">
+          var menos=document.getElementById("menosregla");
+          menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
+        </script>
+        <button id="masregla" onclick="tamanoMas()" value="" ></button>
+        <script type="text/javascript">
+          var mas=document.getElementById("masregla");
+          mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
+        </script>
+      </div>
+
+      <div id="ImagenTamano" style="position:relative;left:40%;display: none;">
+      <button id="imgtamanoMenos" onclick="tamanoMenos()" value=""></button>
+      <script type="text/javascript">
+        var menos=document.getElementById("imgtamanoMenos");
+        menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
+      </script>
+      <button id="imgtamanoMas" onclick="tamanoMas()" value="" ></button>
+      <script type="text/javascript">
+        var mas=document.getElementById("imgtamanoMas");
+        mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
+      </script>
+    </div>
+
+    <script src="Funcionamiento.js"></script>
      <div class="container" >
       <div id="userFormArea" class="row" >
         <div class="col-md-12">

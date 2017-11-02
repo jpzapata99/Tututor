@@ -1,5 +1,5 @@
 var px,py,px2,py2 = 0;
-var ban,regla,cuadrado,lapiz,firstclick,Borrador,circulo,imprimir_imagen,triangulo = false;
+var ban,regla,cuadrado,lapiz,firstclick,Borrador,circulo,imprimir_imagen,triangulo,texto = false;
 var cnv=null;
 var xArriba,yArriba,xIzquierda,yIzquierda, xDerecha, yDerecha,pcx,pcy = 0;
 var EsquinaTriangulo = 0;
@@ -53,7 +53,13 @@ function setup() {
  textStyle(NORMAL);
 }
 
-function draw() {}
+function draw() {
+  if (texto==true) {
+    input.style("display:block");
+  }else{
+    input.style("display:none");
+  }
+}
 //este metodo permite centrar el canvas en medio de la pantalla
 function centerCanvas(){
   var x = (windowWidth - width)/2;
@@ -119,31 +125,25 @@ function transmitirRegla(dataR){
 //este metodo espera ser activado desde un boton puesto en el fichero index.html
 function activarLapiz() {
   //este operacion fuerza al html o mostrar el objeto de nombre "divuno"
-  document.getElementById("divuno").style.display = "block"
+  document.getElementById("color-tamaño").style.display = "block"
   //este operacion fuerza al html a desactivar el objeto de nombre "ReglayborradorTamano"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   //esto permite solamente activar la metodo de dibujar y desactivar las demas herramientas
   document.getElementById("ImagenTamano").style.display = "none";
-  document.getElementById("CuadradoTamano").style.display = "none";
-  document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mitexto").style.display = "none";
-  document.getElementById("LetraTamano").style.display = "none";
   lapiz=true;
   regla=false;
   Borrador=false;
   circulo=false;
   cuadrado = false;
   triangulo=false;
+  texto=false;
 }
 //este metodo espera ser activado desde un boton puesto en el fichero index.html
 function activarRegla(){
-  document.getElementById("divuno").style.display = "none"
+  document.getElementById("color-tamaño").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "block";
   document.getElementById("ImagenTamano").style.display = "none";
-  document.getElementById("CuadradoTamano").style.display = "none";
-  document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mitexto").style.display = "none";
-  document.getElementById("LetraTamano").style.display = "none";
+
     //esto permite solamente activar la metodo de crear lineas rectas y desactivar las demas metodos
   regla=true;
   firstclick = false;
@@ -152,6 +152,7 @@ function activarRegla(){
   circulo=false;
   cuadrado = false;
   triangulo=false;
+  texto=false;
 }
 //Este metodo permite tomar un pantallazo del canvas actual
 function activarPantallazo(){
@@ -163,67 +164,58 @@ function activarPantallazo(){
   circulo=false;
   cuadrado = false;
   triangulo=false;
+  texto=false;
 }
 //este metodo activa la funcionalidad de borrar sobre el tablero
 function activarBorrador(){
-  document.getElementById("divuno").style.display = "none"
+  document.getElementById("color-tamaño").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "block";
   document.getElementById("ImagenTamano").style.display = "none";
-  document.getElementById("CuadradoTamano").style.display = "none";
-  document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mitexto").style.display = "none";
-  document.getElementById("LetraTamano").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=true;
   circulo=false;
   cuadrado = false;
   triangulo=false;
+  texto=false;
 }
 function activarCuadrado(){
-  document.getElementById("divuno").style.display = "block"
+  document.getElementById("color-tamaño").style.display = "block"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none";
-  document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mitexto").style.display = "none";
-  document.getElementById("LetraTamano").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
   circulo=false;
   cuadrado = true;
   triangulo=false;
+  texto=false;
 }
 
 //este metodo permite activar la funcionalidad de crear circulos sobre el tablero
 function activarCirculo(){
-  document.getElementById("divuno").style.display = "block"
+  document.getElementById("color-tamaño").style.display = "block"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none";
-  document.getElementById("CuadradoTamano").style.display = "none";
-  document.getElementById("mitexto").style.display = "none";
-  document.getElementById("LetraTamano").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
   circulo=true;
   cuadrado = false;
   triangulo=false;
+  texto=false;
 }
 function activarTriangulo(){
-  document.getElementById("divuno").style.display = "block"
+  document.getElementById("color-tamaño").style.display = "block"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none";
-  document.getElementById("CuadradoTamano").style.display = "none";
-  document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mitexto").style.display = "none";
-  document.getElementById("LetraTamano").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
   circulo=false;
   cuadrado = false;
   triangulo=true;
+  texto=false;
   CambioDeEsquina();
 }
 function CambioDeEsquina(){
@@ -244,11 +236,9 @@ function CambioDeEsquina(){
 }
 
 function activarImagen(){
-  document.getElementById("divuno").style.display = "none"
+  document.getElementById("color-tamaño").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none";
-  document.getElementById("CuadradoTamano").style.display = "none";
-  document.getElementById("CirculoTamano").style.display = "none";
   indiceArregloDeControlZ
   c = document.getElementById("defaultCanvas0");
   imagencopia  = c.toDataURL("image/png");
@@ -302,6 +292,8 @@ function tamanoMas(){
     CuadradoTamanoP+=20;
   }else if(circulo==true && CirculoTamano>=0){
     CirculoTamano+=10;
+  }else if (texto==true) {
+      tamanoLetra+=10;
   }
 }
 //este metodo permite disminuir el tamaño del borrador, el lapiz y la regla
@@ -318,35 +310,24 @@ function tamanoMenos(){
     CuadradoTamanoP-=20;
 }else if(circulo==true && CirculoTamano>=0){
     CirculoTamano-=10;
+}else if (texto==true && tamanoLetra>=0) {
+  tamanoLetra-=10;
 }
 }
-
-function tamanoMasTexto(){
-tamanoLetra+=5;
-}
-function tamanoMenosTexto(){
-  if (tamanoLetra>=1) {
-  tamanoLetra-=5
-  }
-}
-
 //este metodo permite arrastrar una archivo al canvas
 function gotFile(file) {
 // se pregunta si el archivo es de tipo imagen
 if (file.type === 'image') {
-  document.getElementById("divuno").style.display = "none"
+  document.getElementById("color-tamaño").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "block";
-  document.getElementById("CuadradoTamano").style.display = "none";
-  document.getElementById("CirculoTamano").style.display = "none";
-  document.getElementById("mitexto").style.display = "none";
-  document.getElementById("LetraTamano").style.display = "none";
   lapiz=false;
   regla=false;
   Borrador=false;
   circulo=false;
   cuadrado = false;
   triangulo=false;
+  texto=false;
       URLTemp=file.data;
 	//Crea un  image DOM element y lo esconde
 	img = createImg(file.data).hide();
@@ -505,15 +486,16 @@ function mouseClicked(){
   }
 }
 function activarTexto(){
-  document.getElementById("mitexto").style.display = "block";
-  document.getElementById("LetraTamano").style.display = "block";
-  document.getElementById("divuno").style.display = "block"
+  document.getElementById("ImagenTamano").style.display = "none";
+  document.getElementById("ReglayborradorTamano").style.display = "none";
+  document.getElementById("color-tamaño").style.display = "block"
   lapiz=false;
   regla=false;
   Borrador=false;
   circulo=false;
   cuadrado = false;
   triangulo=false;
+  texto=true;
 
 }
 
