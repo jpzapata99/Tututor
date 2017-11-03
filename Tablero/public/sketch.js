@@ -14,6 +14,7 @@ var CirculoTamano=10;
 var indiceArregloDeControlZ=0;
 var entroAlRuedo=0;
 var Aplicar=1;
+var savedImg;
 ArregloDeImagenes = new Array();
 var input;
 function setup() {
@@ -31,6 +32,7 @@ function setup() {
     socket.on('addimage',transmitirImagen);
     socket.on('texto',transmitirTexto);
     socket.on('borrar',transmitirBorrar);
+    socket.on('controlZ',transmitirControlZ);
 //windowWidth devuelve el ancho de la pantalla del ordenador en donde se abre el proyecto
   var x=windowWidth;
   //windowWidth devuelve el largo de la pantalla del ordenador en donde se abre el proyecto
@@ -87,6 +89,10 @@ function transmitirImagen(dataI){
   image(imagen, dataI.x, dataI.y, dataI.h, dataI.h);
 
 }
+function transmitirControlZ(data){
+    var imagen = createImg(data.img).show();
+    image(imagen,data.x1,data.y1,data.tamX,data.tamY);
+}
 //este metodo sera el que permita enviar informacion sobre lo que se dibuje sobre el canvas al server,
 //para luego ser conpartido a otros tableros
 function transmitirLapiz(data){
@@ -99,6 +105,7 @@ function transmitirLapiz(data){
   //este metodo permite dibujar una ellpise, los parametros hacen referencia al
   //tamaño y pocision de la ellipse
   ellipse(data.x, data.y,data.w,data.w);
+  console.log("Miguel le llegó?");
 }
 function transmitirCuadrado(dataC){
   rect(dataC.r,dataC.s,dataC.m,dataC.m);
@@ -239,33 +246,60 @@ function activarImagen(){
   document.getElementById("color-tamaño").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none";
-  indiceArregloDeControlZ
+  /*indiceArregloDeControlZ
   c = document.getElementById("defaultCanvas0");
   imagencopia  = c.toDataURL("image/png");
   ArregloDeImagenes[indiceArregloDeControlZ]=imagencopia;
   indiceArregloDeControlZ++;
+  Aplicar=0;*/
+  cnv = document.getElementById('defaultCanvas0');
+  savedImg = cnv.toDataURL();
+  ArregloDeImagenes[indiceArregloDeControlZ]=savedImg;
+  indiceArregloDeControlZ++;
+  Aplicar=0;
 }
 function activarMostrado(){
- var x=windowWidth;
+ /*var x=windowWidth;
  var y=windowHeight-140;
  var posicionx = (windowWidth - width)/2;
  var posiciony = (windowHeight - height)/2;
  if(indiceArregloDeControlZ-Aplicar>=0){
- var imagenParaPegar = createImg(ArregloDeImagenes[indiceArregloDeControlZ-Aplicar]).show();
- imagenParaPegar.style("display","none");
- imagenParaPegar.style("height",y+"px");
- imagenParaPegar.style("width", x+"px");
- imagenParaPegar.style("position", "absolute");
- imagenParaPegar.style("top",70+"px");
- image(imagenParaPegar,posicionx,posiciony-70);
+   var imagenParaPegar = createImg(ArregloDeImagenes[indiceArregloDeControlZ-Aplicar-1]).show();
+   imagenParaPegar.style("display","none");
+   imagenParaPegar.style("height",y+"px");
+   imagenParaPegar.style("width", x+"px");
+   imagenParaPegar.style("position", "absolute");
+   imagenParaPegar.style("top",70+"px");
+   image(imagenParaPegar,posicionx,posiciony-70);
+   var data = {
+    x1:posicionx,
+    y1:posiciony,
+    img:ArregloDeImagenes[indiceArregloDeControlZ-Aplicar-1],
+    tamX:x,
+    tamY:y
+   }
+   socket.emit('controlZ',data);
+
    if(entroAlRuedo==0){
-    entroAlRuedo++;
-  }
-  else if (entroAlRuedo==1){
+      entroAlRuedo++;
+   }
+   else if (entroAlRuedo==1){
+      Aplicar++;
+      entroAlRuedo=0;
+   }
+  }*/
+  var x=windowWidth;
+  var y=windowHeight-140;
+  if(indiceArregloDeControlZ-Aplicar>0){
+    var ctx = document.getElementById('defaultCanvas0').getContext('2d');
+    var img = new Image();
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0,width,height);
+    };
+    img.src = ArregloDeImagenes[indiceArregloDeControlZ-Aplicar-1];
     Aplicar++;
-    entroAlRuedo=0;
   }
-}
+  //img.style("top",70+"px");
 }
 
 
