@@ -42,7 +42,6 @@ io.on('connection', function(socket){
     });
 
     function reglaSocket(dataR){
-        callback(true);
         socket.broadcast.emit('regla' , dataR);
     }
     function controlZ(data){
@@ -50,11 +49,11 @@ io.on('connection', function(socket){
     }
     socket.on('lapiz' , lapizSocket);
     function lapizSocket(data){
-        socket.broadcast.emit('lapiz' , data);
+        io.emit('lapiz' , data);
     }
     socket.on('borrador' , borradorSocket);
     function borradorSocket(dataB){
-      socket.broadcast.emit('borrador' , dataB);
+        io.emit('borrador' , dataB);
     }
     socket.on('regla' , reglaSocket);
 

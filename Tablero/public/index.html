@@ -13,10 +13,11 @@
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
       crossorigin="anonymous"></script>
-
+ 
   </head>
   <body>
-    <div class="hamburger" id="HamburguesaIzquierda">
+        <label id="labelParaColocarTamañoTexto" style="background-color: olive;position:absolute;left:80%;top:94%;font: 30px Arial;display: block;">Tamaño:</label>
+    <div class="hamburger" id="HamburguesaIzquierda" style="width:12%;">
       <div class="_layer -top"></div>
       <div class="_layer -mid"></div>
       <div class="_layer -bottom"></div>
@@ -70,7 +71,6 @@
     <input style="background-color: #38376D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulO" onclick="tipoColor(062,095,138)" value="">
     <input style="background-color: #817DEB; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulC" onclick="tipoColor(093,155,155)" value="">
     <input style="background-color: #323004; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorCafe" onclick="tipoColor(108,059,042)" value="">
-
     <button id="tamanomenos" onclick="tamanoMenos()" value=""></button>
     <script type="text/javascript">
       var menos=document.getElementById("tamanomenos");

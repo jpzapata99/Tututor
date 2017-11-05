@@ -48,9 +48,9 @@ function setup() {
  cnv.drop(gotFile);
  input = createInput();
  input.id("mitexto");
- input.style("position:absolute;left:35%;top:94%");
+ input.style("position:absolute;left:30%;top:94%");
  input.style("background-color: olive;");
- input.style("font: 50px Arial");
+ input.style("font: 20px Arial");
  input.style("display: none");
  textStyle(NORMAL);
 }
@@ -105,7 +105,6 @@ function transmitirLapiz(data){
   //este metodo permite dibujar una ellpise, los parametros hacen referencia al
   //tamaño y pocision de la ellipse
   ellipse(data.x, data.y,data.w,data.w);
-  console.log("Miguel le llegó?");
 }
 function transmitirCuadrado(dataC){
   rect(dataC.r,dataC.s,dataC.m,dataC.m);
@@ -131,6 +130,7 @@ function transmitirRegla(dataR){
 
 //este metodo espera ser activado desde un boton puesto en el fichero index.html
 function activarLapiz() {
+  InstruccionesLapiz();
   //este operacion fuerza al html o mostrar el objeto de nombre "divuno"
   document.getElementById("color-tamaño").style.display = "block"
   //este operacion fuerza al html a desactivar el objeto de nombre "ReglayborradorTamano"
@@ -160,6 +160,8 @@ function activarRegla(){
   cuadrado = false;
   triangulo=false;
   texto=false;
+}
+function InstruccionesLapiz(){
 }
 //Este metodo permite tomar un pantallazo del canvas actual
 function activarPantallazo(){
@@ -223,22 +225,26 @@ function activarTriangulo(){
   cuadrado = false;
   triangulo=true;
   texto=false;
+  EsquinaTriangulo = 0;
   CambioDeEsquina();
 }
 function CambioDeEsquina(){
-  EsquinaTriangulo++;
-  if(EsquinaTriangulo==5){
-    var dataT={
-        x1:xArriba,
-        y1:yArriba,
-        x2:xIzquierda,
-        y2:yIzquierda,
-        x3:xDerecha,
-        y3:yDerecha
-      }
-    socket.emit('triangulo',dataT);
-    triangle(xArriba,yArriba,xIzquierda,yIzquierda,xDerecha,yDerecha);
-    EsquinaTriangulo=2;
+  if(triangulo){
+    console.log(EsquinaTriangulo);
+    EsquinaTriangulo++;
+    if(EsquinaTriangulo==5){
+      var dataT={
+          x1:xArriba,
+          y1:yArriba,
+          x2:xIzquierda,
+          y2:yIzquierda,
+          x3:xDerecha,
+          y3:yDerecha
+        }
+      socket.emit('triangulo',dataT);
+      triangle(xArriba,yArriba,xIzquierda,yIzquierda,xDerecha,yDerecha);
+      EsquinaTriangulo=2;
+    }
   }
 }
 
@@ -259,35 +265,7 @@ function activarImagen(){
   Aplicar=0;
 }
 function activarMostrado(){
- /*var x=windowWidth;
- var y=windowHeight-140;
- var posicionx = (windowWidth - width)/2;
- var posiciony = (windowHeight - height)/2;
- if(indiceArregloDeControlZ-Aplicar>=0){
-   var imagenParaPegar = createImg(ArregloDeImagenes[indiceArregloDeControlZ-Aplicar-1]).show();
-   imagenParaPegar.style("display","none");
-   imagenParaPegar.style("height",y+"px");
-   imagenParaPegar.style("width", x+"px");
-   imagenParaPegar.style("position", "absolute");
-   imagenParaPegar.style("top",70+"px");
-   image(imagenParaPegar,posicionx,posiciony-70);
-   var data = {
-    x1:posicionx,
-    y1:posiciony,
-    img:ArregloDeImagenes[indiceArregloDeControlZ-Aplicar-1],
-    tamX:x,
-    tamY:y
-   }
-   socket.emit('controlZ',data);
-
-   if(entroAlRuedo==0){
-      entroAlRuedo++;
-   }
-   else if (entroAlRuedo==1){
-      Aplicar++;
-      entroAlRuedo=0;
-   }
-  }*/
+ 
   var x=windowWidth;
   var y=windowHeight-140;
   if(indiceArregloDeControlZ-Aplicar>0){
@@ -311,6 +289,7 @@ function LimpiarTotal(){
 }
   //este metodo permite aumentar el tamaño del borrador, el lapiz y la regla
 function tamanoMas(){
+    var colocar = document.getElementById('labelParaColocarTamañoTexto');
   if (lapiz==true) {
     lapiztamano+=15;
 
@@ -329,24 +308,28 @@ function tamanoMas(){
   }else if (texto==true) {
       tamanoLetra+=10;
   }
+  colocar.innerHTML = 'Tamaño: ' + lapiztamano + 'px';
 }
 //este metodo permite disminuir el tamaño del borrador, el lapiz y la regla
 function tamanoMenos(){
+  var colocar = document.getElementById('labelParaColocarTamañoTexto');
   if(lapiztamano>=0 && lapiz==true){
   lapiztamano-=15;
-}else if (regla==true && reglatamano>=0) {
-  reglatamano-=1;
-}else if (Borrador==true && borradortamano>=0) {
-  borradortamano-=30;
-}else if(imprimir_imagen==true){
-    imgtamano-=50;
-}else if(cuadrado==true && CuadradoTamanoP>=0){
-    CuadradoTamanoP-=20;
-}else if(circulo==true && CirculoTamano>=0){
-    CirculoTamano-=10;
-}else if (texto==true && tamanoLetra>=0) {
-  tamanoLetra-=10;
-}
+  }else if (regla==true && reglatamano>=0) {
+    reglatamano-=1;
+  }else if (Borrador==true && borradortamano>=0) {
+    borradortamano-=30;
+  }else if(imprimir_imagen==true){
+      imgtamano-=50;
+  }else if(cuadrado==true && CuadradoTamanoP>=0){
+      CuadradoTamanoP-=20;
+  }else if(circulo==true && CirculoTamano>=0){
+      CirculoTamano-=10;
+  }else if (texto==true && tamanoLetra>=0) {
+    tamanoLetra-=10;
+    text(tamanoLetra,60,70);
+  }
+  colocar.innerHTML = 'Tamaño: ' + lapiztamano + 'px';
 }
 //este metodo permite arrastrar una archivo al canvas
 function gotFile(file) {
@@ -387,135 +370,146 @@ function tipoColor(R,G,B){
 
 //este metodo pse ejecuta cuando el ussuario hace un click derecho contante del raton
 function mouseDragged(){
-  if(mouseY>50){
-
-   //esto permite borrar usando una ellipse de igual color al del tablero
-    if(Borrador==true){
-      var dataB={
-      x:mouseX,
-      y:mouseY,
-      w:borradortamano
-    }
-    socket.emit('borrador',dataB);
-  	   noStroke();
-       //borradortamano es una variable global que varia de acuerdo a los metodos tamanomas y tamanomenos
-       //mouseX y mouseY devuelven la pocision del mouse con respecto al eje X  y  Y
-       fill(88,100,70);
-  	    ellipse(mouseX,mouseY,borradortamano,borradortamano);
-    }
-    //Esto permite dibujar sobre el tablero
-    if(lapiz==true){
-      var data={
-      x:mouseX,
-      y:mouseY,
-      w:lapiztamano
-    }
-      socket.emit('lapiz' , data);
-  	   noStroke();
-       //cuando se da clic sobre un boton de color este metodo cambia el color de lapiz
-  	tipoColor();
-    //lapiztamano es una variable global que varia de acuerdo a los metodos tamanomas y tamanomenos
-    ellipse(mouseX,mouseY,lapiztamano,lapiztamano);
+  var hamburguesaEjemplo = document.getElementById('HamburguesaIzquierda');
+  var anchoDelMenú = ((12*windowWidth)/100);
+  if((hamburguesaEjemplo.className == 'hamburger') || (hamburguesaEjemplo.className == 'hamburger is-active' && mouseX>anchoDelMenú)){
+    if(mouseY>50){
+     //esto permite borrar usando una ellipse de igual color al del tablero
+      if(Borrador==true){
+        var dataB={
+        x:mouseX,
+        y:mouseY,
+        w:borradortamano
+      }
+      socket.emit('borrador',dataB);
+    	   noStroke();
+         //borradortamano es una variable global que varia de acuerdo a los metodos tamanomas y tamanomenos
+         //mouseX y mouseY devuelven la pocision del mouse con respecto al eje X  y  Y
+         fill(88,100,70);
+    	    ellipse(mouseX,mouseY,borradortamano,borradortamano);
+      }
+      //Esto permite dibujar sobre el tablero
+      if(lapiz==true){
+        var data={
+        x:mouseX,
+        y:mouseY,
+        w:lapiztamano
+      }
+        socket.emit('lapiz' , data);
+    	   noStroke();
+         //cuando se da clic sobre un boton de color este metodo cambia el color de lapiz
+    	tipoColor();
+      //lapiztamano es una variable global que varia de acuerdo a los metodos tamanomas y tamanomenos
+      ellipse(mouseX,mouseY,lapiztamano,lapiztamano);
+      }
     }
   }
 }
 //este metodo se activa cuando el usuario hace click sobre canvas
 function mouseClicked(){
-  if(mouseY>50 && windowHeight-165 > mouseY){
-    if(input.value!=''){
-      escribir();
-    }
-    //cuando se activa la herramienta regla ser requiere hacer un click sobre el canvas y luego otro en otro punto
-    //para generar una recta de un punto a otro
-    if (regla==true) {
-      stroke(20);
-      if(firstclick == true){
-        if (ban==false) {
-          px=mouseX;
-          py=mouseY;
-          ban=true;
-        }else{
-          px2=mouseX;
-          py2=mouseY;
-          ban=false;
-          var dataR={
-            t:px,
-            u:py,
-            l:px2,
-            p:py2,
-            a:reglatamano
+  var hamburguesaEjemplo = document.getElementById('HamburguesaIzquierda');
+  var anchoDelMenú = ((12*windowWidth)/100);
+  if((hamburguesaEjemplo.className == 'hamburger') || (hamburguesaEjemplo.className == 'hamburger is-active' && mouseX>anchoDelMenú)){
+    if(mouseY>50 && windowHeight-165 > mouseY){
+      if(input.value!=''){
+        escribir();
+      }
+      //cuando se activa la herramienta regla ser requiere hacer un click sobre el canvas y luego otro en otro punto
+      //para generar una recta de un punto a otro
+      if (regla==true) {
+        stroke(20);
+        if(firstclick == true){
+          if (ban==false) {
+            px=mouseX;
+            py=mouseY;
+            ban=true;
+          }else{
+            px2=mouseX;
+            py2=mouseY;
+            ban=false;
+            var dataR={
+              t:px,
+              u:py,
+              l:px2,
+              p:py2,
+              a:reglatamano
+          }
+                //esta ellpise ayuda a indicar en donde se hizo click como para conocer el inicio  y final de la recta
+            socket.emit('regla', dataR);
+            strokeWeight(reglatamano);
+            //este metodo permite dibujar rectas sobre el tablero,los dos primeros parametros son,
+            //el punto de inicio de la linea y los otros dos el punto de fin.
+            line(px,py,px2,py2);
+          }
         }
-              //esta ellpise ayuda a indicar en donde se hizo click como para conocer el inicio  y final de la recta
-          socket.emit('regla', dataR);
-          strokeWeight(reglatamano);
-          //este metodo permite dibujar rectas sobre el tablero,los dos primeros parametros son,
-          //el punto de inicio de la linea y los otros dos el punto de fin.
-          line(px,py,px2,py2);
+        firstclick = true;
+
+            //este metodo permite cambiar el groso de las rectas dibujadas
+
+        ellipse(mouseX, mouseY, 15, 15);
+      }
+
+      if (cuadrado==true){
+        var dataC={
+            r:mouseX,
+            s:mouseY,
+            m:CuadradoTamanoP
         }
+        socket.emit('cuadrado',dataC);
+        rect(mouseX,mouseY,CuadradoTamanoP,CuadradoTamanoP);
       }
-      firstclick = true;
-
-          //este metodo permite cambiar el groso de las rectas dibujadas
-
-      ellipse(mouseX, mouseY, 15, 15);
-    }
-
-    if (cuadrado==true){
-      var dataC={
-          r:mouseX,
-          s:mouseY,
-          m:CuadradoTamanoP
+      if(circulo==true){
+        var dataCi={
+          c:mouseX,
+          d:mouseY,
+          e:CirculoTamano
+        }
+          socket.emit('circulo',dataCi);
+          ellipse(mouseX,mouseY,CirculoTamano,CirculoTamano);
       }
-      socket.emit('cuadrado',dataC);
-      rect(mouseX,mouseY,CuadradoTamanoP,CuadradoTamanoP);
-    }
-    if(circulo==true){
-      var dataCi={
-        c:mouseX,
-        d:mouseY,
-        e:CirculoTamano
-      }
-        socket.emit('circulo',dataCi);
-        ellipse(mouseX,mouseY,CirculoTamano,CirculoTamano);
-    }
-    if(triangulo==true){
-        if(EsquinaTriangulo==2){
-          xArriba = mouseX;
-          yArriba = mouseY;
+      if(triangulo==true){
+          if(EsquinaTriangulo==2){
+            xArriba = mouseX;
+            yArriba = mouseY;
+            CambioDeEsquina();
+            ellipse(xArriba,yArriba,8);
+            console.log('Primer vertice:'+ xArriba + ' ' +yArriba);
+        }
+        else if(EsquinaTriangulo==3){
+            xIzquierda = mouseX;
+            yIzquierda = mouseY;
+            CambioDeEsquina();
+            ellipse(xIzquierda,yIzquierda,8);
+            console.log('Segundo vertice:'+ xIzquierda + ' ' +yIzquierda);
+        }
+        else if(EsquinaTriangulo==4){
+            xDerecha = mouseX;
+            yDerecha = mouseY;
+            CambioDeEsquina();
+            ellipse(xDerecha,yDerecha,8);
+            console.log('Tercer vertice:'+ xDerecha + ' ' +yDerecha);
+
+        }
+        else{
           CambioDeEsquina();
-          ellipse(xArriba,yArriba,8);
-      }
-      else if(EsquinaTriangulo==3){
-          xIzquierda = mouseX;
-          yIzquierda = mouseY;
-          CambioDeEsquina();
-          ellipse(xIzquierda,yIzquierda,8);
-      }
-      else if(EsquinaTriangulo==4){
-          xDerecha = mouseX;
-          yDerecha = mouseY;
-          CambioDeEsquina();
-          ellipse(xDerecha,yDerecha,8);
-      }
-      else{
-        CambioDeEsquina();
-      }
+        }
 
-    }
-    //luego de arrastrar la imagen al canvas se debe hacer click sobre cualquier parte de este para que aparezca
-    if (imprimir_imagen==true) {
-      var dataI={
-      i:URLTemp,
-      x:mouseX,
-      y:mouseY,
-      h:imgtamano
-    }
-    for (var i = 0; i <=1; i++) {
-      socket.emit('user image' , dataI);
-    }
-      //este metodo permite poner una imagen sobre el canvas
-      image(img, mouseX, mouseY,imgtamano,imgtamano);
-      imprimir_imagen=false;
+      }
+      //luego de arrastrar la imagen al canvas se debe hacer click sobre cualquier parte de este para que aparezca
+      if (imprimir_imagen==true) {
+        var dataI={
+        i:URLTemp,
+        x:mouseX,
+        y:mouseY,
+        h:imgtamano
+      }
+      for (var i = 0; i <=1; i++) {
+        socket.emit('user image' , dataI);
+      }
+        //este metodo permite poner una imagen sobre el canvas
+        image(img, mouseX, mouseY,imgtamano,imgtamano);
+        imprimir_imagen=false;
+      }
     }
   }
 }
