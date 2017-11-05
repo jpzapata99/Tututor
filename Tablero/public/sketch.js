@@ -17,9 +17,10 @@ var Aplicar=1;
 var savedImg;
 ArregloDeImagenes = new Array();
 var input;
+var colocar = document.getElementById('labelParaColocarTamañoTexto');
 function setup() {
   //me permite conectarme al server y manener una coneccion con el host
-  socket = io.connect('http://localhost:3000');
+  socket = io.connect('https://atututor.herokuapp.com');
   //Esto me permite comunicarme con el servidor y señalar que quiero enviar
   //el primer parametro hace referencia a un id que se conparte entre el server y el modelo(sketch.js)
   //el segundo parametro hace referencia al metodo en el que dire que voy a enviar al server
@@ -60,6 +61,21 @@ function draw() {
     input.style("display:block");
   }else{
     input.style("display:none");
+  }
+  if (lapiz==true) {
+      colocar.innerHTML = 'Tamaño: ' + lapiztamano + 'px';
+  }else if (regla==true) {
+      colocar.innerHTML = 'Tamaño: ' + reglatamano + 'px';
+  }else if (Borrador==true) {
+      colocar.innerHTML = 'Tamaño: ' + borradortamano + 'px';
+  }else if(imprimir_imagen==true){
+      colocar.innerHTML = 'Tamaño: ' + imgtamano + 'px';
+  }else if(cuadrado==true){
+      colocar.innerHTML = 'Tamaño: ' + CuadradoTamanoP + 'px';
+  }else if(circulo==true && CirculoTamano>=0){
+      colocar.innerHTML = 'Tamaño: ' + CirculoTamano + 'px';
+  }else if (texto==true) {
+      colocar.innerHTML = 'Tamaño: ' + tamanoLetra + 'px';
   }
 }
 //este metodo permite centrar el canvas en medio de la pantalla
@@ -130,7 +146,6 @@ function transmitirRegla(dataR){
 
 //este metodo espera ser activado desde un boton puesto en el fichero index.html
 function activarLapiz() {
-  InstruccionesLapiz();
   //este operacion fuerza al html o mostrar el objeto de nombre "divuno"
   document.getElementById("color-tamaño").style.display = "block"
   //este operacion fuerza al html a desactivar el objeto de nombre "ReglayborradorTamano"
@@ -160,8 +175,6 @@ function activarRegla(){
   cuadrado = false;
   triangulo=false;
   texto=false;
-}
-function InstruccionesLapiz(){
 }
 //Este metodo permite tomar un pantallazo del canvas actual
 function activarPantallazo(){
@@ -214,6 +227,21 @@ function activarCirculo(){
   triangulo=false;
   texto=false;
 }
+
+function activarTexto(){
+  document.getElementById("ImagenTamano").style.display = "none";
+  document.getElementById("ReglayborradorTamano").style.display = "none";
+  document.getElementById("color-tamaño").style.display = "block"
+  lapiz=false;
+  regla=false;
+  Borrador=false;
+  circulo=false;
+  cuadrado = false;
+  triangulo=false;
+  texto=true;
+
+}
+
 function activarTriangulo(){
   document.getElementById("color-tamaño").style.display = "block"
   document.getElementById("ReglayborradorTamano").style.display = "none";
@@ -252,12 +280,6 @@ function activarImagen(){
   document.getElementById("color-tamaño").style.display = "none"
   document.getElementById("ReglayborradorTamano").style.display = "none";
   document.getElementById("ImagenTamano").style.display = "none";
-  /*indiceArregloDeControlZ
-  c = document.getElementById("defaultCanvas0");
-  imagencopia  = c.toDataURL("image/png");
-  ArregloDeImagenes[indiceArregloDeControlZ]=imagencopia;
-  indiceArregloDeControlZ++;
-  Aplicar=0;*/
   cnv = document.getElementById('defaultCanvas0');
   savedImg = cnv.toDataURL();
   ArregloDeImagenes[indiceArregloDeControlZ]=savedImg;
@@ -265,7 +287,7 @@ function activarImagen(){
   Aplicar=0;
 }
 function activarMostrado(){
- 
+
   var x=windowWidth;
   var y=windowHeight-140;
   if(indiceArregloDeControlZ-Aplicar>0){
@@ -277,7 +299,6 @@ function activarMostrado(){
     img.src = ArregloDeImagenes[indiceArregloDeControlZ-Aplicar-1];
     Aplicar++;
   }
-  //img.style("top",70+"px");
 }
 
 
@@ -289,7 +310,6 @@ function LimpiarTotal(){
 }
   //este metodo permite aumentar el tamaño del borrador, el lapiz y la regla
 function tamanoMas(){
-    var colocar = document.getElementById('labelParaColocarTamañoTexto');
   if (lapiz==true) {
     lapiztamano+=15;
 
@@ -308,28 +328,26 @@ function tamanoMas(){
   }else if (texto==true) {
       tamanoLetra+=10;
   }
-  colocar.innerHTML = 'Tamaño: ' + lapiztamano + 'px';
 }
 //este metodo permite disminuir el tamaño del borrador, el lapiz y la regla
 function tamanoMenos(){
   var colocar = document.getElementById('labelParaColocarTamañoTexto');
-  if(lapiztamano>=0 && lapiz==true){
+  if(lapiztamano>0 && lapiz==true){
   lapiztamano-=15;
-  }else if (regla==true && reglatamano>=0) {
+  }else if (regla==true && reglatamano>0) {
     reglatamano-=1;
-  }else if (Borrador==true && borradortamano>=0) {
+  }else if (Borrador==true && borradortamano>0) {
     borradortamano-=30;
-  }else if(imprimir_imagen==true){
+  }else if(imprimir_imagen==true && imgtamano>0){
       imgtamano-=50;
-  }else if(cuadrado==true && CuadradoTamanoP>=0){
+  }else if(cuadrado==true && CuadradoTamanoP>0){
       CuadradoTamanoP-=20;
-  }else if(circulo==true && CirculoTamano>=0){
+  }else if(circulo==true && CirculoTamano>0){
       CirculoTamano-=10;
-  }else if (texto==true && tamanoLetra>=0) {
+  }else if (texto==true && tamanoLetra>0) {
     tamanoLetra-=10;
     text(tamanoLetra,60,70);
   }
-  colocar.innerHTML = 'Tamaño: ' + lapiztamano + 'px';
 }
 //este metodo permite arrastrar una archivo al canvas
 function gotFile(file) {
@@ -408,7 +426,7 @@ function mouseDragged(){
 //este metodo se activa cuando el usuario hace click sobre canvas
 function mouseClicked(){
   var hamburguesaEjemplo = document.getElementById('HamburguesaIzquierda');
-  var anchoDelMenú = ((12*windowWidth)/100);
+  var anchoDelMenú = ((15*windowWidth)/100);
   if((hamburguesaEjemplo.className == 'hamburger') || (hamburguesaEjemplo.className == 'hamburger is-active' && mouseX>anchoDelMenú)){
     if(mouseY>50 && windowHeight-165 > mouseY){
       if(input.value!=''){
@@ -512,19 +530,6 @@ function mouseClicked(){
       }
     }
   }
-}
-function activarTexto(){
-  document.getElementById("ImagenTamano").style.display = "none";
-  document.getElementById("ReglayborradorTamano").style.display = "none";
-  document.getElementById("color-tamaño").style.display = "block"
-  lapiz=false;
-  regla=false;
-  Borrador=false;
-  circulo=false;
-  cuadrado = false;
-  triangulo=false;
-  texto=true;
-
 }
 
 function escribir() {
