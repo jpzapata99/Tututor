@@ -9,6 +9,22 @@ body{
 	font-family: 'Roboto', sans-serif;
 	background: #fff;
 }
+textarea{
+	resize: none;
+}
+#preguntasE{
+	height: 600px;
+	width: 50%;
+	overflow: hidden;
+	overflow-y: scroll;
+	text-decoration: none;
+}
+#txtarea1{
+	height: 50px;
+}
+#preguntasLi{
+	text-decoration: none;
+}
 body a{
 	transition: 0.5s all;
 	-webkit-transition: 0.5s all;

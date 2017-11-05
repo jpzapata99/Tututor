@@ -102,6 +102,7 @@ hr {
 pre {
   overflow: auto;
 }
+
 code,
 kbd,
 pre,
@@ -6158,8 +6159,9 @@ button.close {
   filter: alpha(opacity=50);
   opacity: .5;
 }
-nav ul{height:600px; width:100%;}
+nav ul{height:600px; width:100%; }
 nav ul{overflow:hidden; overflow-y:scroll;}
+input{color: #000;}
 .carousel-control.left {
   background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);
   background-image:      -o-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);

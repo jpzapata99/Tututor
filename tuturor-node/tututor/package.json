@@ -1,23 +1,31 @@
 {
   "name": "tututor",
   "version": "1.0.0",
-  "description": "Conexion node and sql",
+  "description": "Pagina web tututor",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "sql",
-    "node"
-  ],
-  "author": "Nicolas M, Miguel Angel O., Juan Pablo Z., Sergio Andres M.",
-  "license": "ISC",
+  "engines": {
+   "npm": "3.10.10"
+ },
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "ejs": "^2.5.7",
     "express": "^4.16.1",
+    "express-session": "^1.15.6",
+    "formidable": "^1.1.1",
+    "memorystore": "^1.6.0",
     "mysql": "^2.14.1",
+    "nodemailer": "^4.3.0",
+    "path": "^0.12.7",
+    "randomstring": "^1.1.5",
     "sync-mysql": "^3.0.1"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
 }
