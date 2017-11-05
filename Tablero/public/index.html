@@ -13,10 +13,11 @@
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
       crossorigin="anonymous"></script>
-
+ 
   </head>
   <body>
-    <div class="hamburger" id="HamburguesaIzquierda">
+        <label id="labelParaColocarTamañoTexto" style="background-color: olive;position:absolute;left:80%;top:94%;font: 30px Arial;display: block;">Tamaño:</label>
+    <div class="hamburger" id="HamburguesaIzquierda" style="width:12%;">
       <div class="_layer -top"></div>
       <div class="_layer -mid"></div>
       <div class="_layer -bottom"></div>
@@ -58,6 +59,29 @@
         </li>
       </ul>
     </nav>
+    <div  id="color-tamaño" style="position:relative;left:12%;display: none;">
+
+    <input style="background-color: #F01616; width:70px; height:50px;border-style: outset;border-width: 5px;" type="button" id="ColorRojo" onclick="tipoColor(255,0,0)" value="">
+    <input style="background-color: #08DB3D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorVerde" onclick="tipoColor(0,255,0)" value="">
+    <input style="background-color: #191A19; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorNegro" onclick="tipoColor(0,0,0)" value="">
+    <input style="background-color: #703C4F; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorMorado" onclick="tipoColor(108,070,117)" value="">
+    <input style="background-color: #F2F5F1; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorBlanco" onclick="tipoColor(255,255,255)" value="">
+    <input style="background-color: #EDDA09; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAmarillo" onclick="tipoColor(255,255,0)" value="">
+    <input style="background-color: #A1A097; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorGris" onclick="tipoColor(144,144,144)" value="">
+    <input style="background-color: #38376D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulO" onclick="tipoColor(062,095,138)" value="">
+    <input style="background-color: #817DEB; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulC" onclick="tipoColor(093,155,155)" value="">
+    <input style="background-color: #323004; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorCafe" onclick="tipoColor(108,059,042)" value="">
+    <button id="tamanomenos" onclick="tamanoMenos()" value=""></button>
+    <script type="text/javascript">
+      var menos=document.getElementById("tamanomenos");
+      menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
+    </script>
+    <button id="tamanomas" onclick="tamanoMas()" value=""></button>
+    <script type="text/javascript">
+      var mas=document.getElementById("tamanomas");
+      mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
+    </script>
+</div>
       <div id="ReglayborradorTamano" style="position:relative;left:15%;display: none;">
         <button id="menosregla" onclick="tamanoMenos()" value=""></button>
         <script type="text/javascript">
@@ -70,42 +94,7 @@
           mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
         </script>
       </div>
-      <div id="CuadradoTamano" style="position:relative;left:15%;display: none;">
-        <button id="menosCuadrado" onclick="tamanoMenos()" value=""></button>
-        <script type="text/javascript">
-          var menos=document.getElementById("menosCuadrado");
-          menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
-        </script>
-        <button id="masCuadrado" onclick="tamanoMas()" value="" ></button>
-        <script type="text/javascript">
-          var mas=document.getElementById("masCuadrado");
-          mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
-        </script>
-      </div>
-      <div id="CirculoTamano" style="position:relative;left:15%;display: none;">
-        <button id="menosCirculo" onclick="tamanoMenos()" value=""></button>
-        <script type="text/javascript">
-          var menos=document.getElementById("menosCirculo");
-          menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
-        </script>
-        <button id="masCirculo" onclick="tamanoMas()" value="" ></button>
-        <script type="text/javascript">
-          var mas=document.getElementById("masCirculo");
-          mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
-        </script>
-      </div>
-      <div id="TrianguloTamano" style="position:relative;left:15%;display: none;">
-        <button id="menosTriangulo" onclick="tamanoMenos()" value=""></button>
-        <script type="text/javascript">
-          var menos=document.getElementById("menosTriangulo");
-          menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
-        </script>
-        <button id="masTriangulo" onclick="tamanoMas()" value="" ></button>
-        <script type="text/javascript">
-          var mas=document.getElementById("masTriangulo");
-          mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
-        </script>
-      </div>
+
       <div id="ImagenTamano" style="position:relative;left:40%;display: none;">
       <button id="imgtamanoMenos" onclick="tamanoMenos()" value=""></button>
       <script type="text/javascript">
@@ -118,43 +107,8 @@
         mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
       </script>
     </div>
-    <div id="LetraTamano" style="position:absolute;left:75%;top:94%;display: none;">
-      <button id="LetraPequeña" onclick="tamanoMenosTexto()" value=""></button>
-      <script type="text/javascript">
-        var menos=document.getElementById("LetraPequeña");
-        menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
-      </script>
-      <button id="LetraGrande" onclick="tamanoMasTexto()" value="" ></button>
-      <script type="text/javascript">
-        var mas=document.getElementById("LetraGrande");
-        mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
-      </script>
-    </div>
+
     <script src="Funcionamiento.js"></script>
-    <div  id="divuno" style="position:relative;left:12%;display: none;">
-
-    <input style="background-color: #F01616; width:70px; height:50px;border-style: outset;border-width: 5px;" type="button" id="ColorRojo" onclick="tipoColor(255,0,0)" value="">
-    <input style="background-color: #08DB3D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorVerde" onclick="tipoColor(0,255,0)" value="">
-    <input style="background-color: #191A19; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorNegro" onclick="tipoColor(0,0,0)" value="">
-    <input style="background-color: #703C4F; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorMorado" onclick="tipoColor(108,070,117)" value="">
-    <input style="background-color: #F2F5F1; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorBlanco" onclick="tipoColor(255,255,255)" value="">
-    <input style="background-color: #EDDA09; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAmarillo" onclick="tipoColor(255,255,0)" value="">
-    <input style="background-color: #A1A097; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorGris" onclick="tipoColor(144,144,144)" value="">
-    <input style="background-color: #38376D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulO" onclick="tipoColor(062,095,138)" value="">
-    <input style="background-color: #817DEB; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulC" onclick="tipoColor(093,155,155)" value="">
-    <input style="background-color: #323004; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorCafe" onclick="tipoColor(108,059,042)" value="">
-
-    <button id="menoslapiz" onclick="tamanoMenos()" value=""></button>
-    <script type="text/javascript">
-      var menos=document.getElementById("menoslapiz");
-      menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
-    </script>
-    <button id="maslapiz" onclick="tamanoMas()" value=""></button>
-    <script type="text/javascript">
-      var mas=document.getElementById("maslapiz");
-      mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
-    </script>
-</div>
      <div class="container" >
       <div id="userFormArea" class="row" >
         <div class="col-md-12">

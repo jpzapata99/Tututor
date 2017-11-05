@@ -7,18 +7,18 @@ body{margin:0;padding:0;font: 13px Helvetica, Arial;}
 #formChat {display:none;background: #000; padding: 3px; position:fixed; bottom: 0; width: 30%;}
 #formChat input { border: 0; padding: 10px; width: 70%; margin-right: .5%; }
 #formChat button { width: 29%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-#messages  { display:none;list-style-image: url('http://www.udg.mx/sites/default/files/face.png'); margin: 5; padding: 0;color: rgb(130,224,255); background: #000;width: 40%; display: inline-block;}
+#messages  { display:none; margin: 5; padding: 0;font-family: "Helvetica";color: rgb(20,20,239);background: rgb(165,165,169); width: 40%; display: inline-block;}
 #messages li { padding: 20px 20px; width: 70%;}
 #messages img { height: 2% ; width: 10%; }
 #imagenHamburguesaDerecha {
     position: fixed;
-    background:#333333;
+    background:#000;
     margin-bottom:4px;
     border-radius:2px;
     width:50px;
     height:50px;
-    right:3%;
-    top:2%;
+    right:2.5%;
+    top:1.5%;
 }
 #mensajes{
   display: none;

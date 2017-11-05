@@ -44,14 +44,16 @@ io.on('connection', function(socket){
     function reglaSocket(dataR){
         socket.broadcast.emit('regla' , dataR);
     }
-
+    function controlZ(data){
+        socket.broadcast.emit('controlZ',data);
+    }
     socket.on('lapiz' , lapizSocket);
     function lapizSocket(data){
-        socket.broadcast.emit('lapiz' , data);
+        io.emit('lapiz' , data);
     }
     socket.on('borrador' , borradorSocket);
     function borradorSocket(dataB){
-      socket.broadcast.emit('borrador' , dataB);
+        io.emit('borrador' , dataB);
     }
     socket.on('regla' , reglaSocket);
 
