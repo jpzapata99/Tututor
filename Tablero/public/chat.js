@@ -20,7 +20,7 @@
     socket.on('new message', function(mensaje){
       var fecha = new Date();
       var horaDelEnvio = (fecha.getHours()+":"+fecha.getMinutes());
-      $messages.append($('<li><font size=5><strong>'+mensaje.user+'</strong>:'+mensaje.data+"<p style='color:red;'>"+horaDelEnvio+'</p></font></li>'));
+      $messages.append($('<li><font size=3><strong>'+mensaje.user+'</strong>:'+mensaje.data+"<p style='color:red;'>"+horaDelEnvio+'</p></font></li>'));
     });
 
     $userForm.submit(function(){

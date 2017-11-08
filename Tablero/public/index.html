@@ -13,10 +13,32 @@
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
       crossorigin="anonymous"></script>
+    <script>
+// Place this code in the head section of your HTML file 
+(function(r, d, s) {
+  r.loadSkypeWebSdkAsync = r.loadSkypeWebSdkAsync || function(p) {
+    var js, sjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(p.id)) { return; }
+    js = d.createElement(s);
+    js.id = p.id;
+    js.src = p.scriptToLoad;
+    js.onload = p.callback
+    sjs.parentNode.insertBefore(js, sjs);
+  };
+  var p = {
+    scriptToLoad: 'https://swx.cdn.skype.com/shared/v/latest/skypewebsdk.js',
+    id: 'skype_web_sdk'
+  };
+  r.loadSkypeWebSdkAsync(p);
+})(window, document, 'script');
+</script>
+
+<div class='skype-share' data-href='https://atututor.herokuapp.com/' data-lang='' data-text='' data-style='circle'style="position:fixed; left: 80%;top:2%;width:150px;height:50px;" ></div>
 
   </head>
   <body>
-        <label id="labelParaColocarTamañoTexto" style="position:absolute;left:80%;top:94%;font: 30px Arial;display: block;">Tamaño:</label>
+    <label id="labelParaColocarTamañoTexto" style="position:absolute;left:80%;top:94%;font: 30px Arial;display: block;">Tamaño:</label>
+    <label id="IndicadorParaElTexto" style="position:absolute;left:10%;top:94%;font: 30px Arial;display: none;">Ingrese el texto:</label>
     <div class="hamburger" id="HamburguesaIzquierda" style="width:2%;">
       <div class="_layer -top"></div>
       <div class="_layer -mid"></div>
@@ -25,37 +47,48 @@
     <nav class="menuppal" id="menuppalIzquierda">
       <ul>
         <li>
-        <button style="width:70px; height:60px;" id="button1" onclick="activarLapiz()"></button>
+          <button style="width:70px; height:60px;" id="button1" onclick="activarLapiz()"></button>
+          <a href="https://www.w3schools.com">?</a>
         </li>
         <li>
           <button style="width:70px; height:55px;" id="button2" onclick="activarRegla()"></button>
+          <a href="https://www.w3schools.com">?</a>          
         </li>
         <li>
           <button style="width:70px; height:50px;" id="button3" onclick="activarPantallazo()"></button>
+          <a href="https://www.w3schools.com">?</a>
         </li>
         <li>
           <button style="width:70px; height:50px;" id="button4" onclick="activarBorrador()"></button>
+          <a href="https://www.w3schools.com">?</a>          
         </li>
         <li>
           <button style="width:70px; height:50px;" id="button5" onclick="activarCirculo()" ></button>
+          <a href="https://www.w3schools.com">?</a>        
         </li>
         <li>
           <button style="width:70px; height:65px;" id="button6" onclick="activarCuadrado()"></button>
+          <a href="https://www.w3schools.com">?</a>        
         </li>
         <li>
           <button style="width:70px; height:70px;" id="button7" onclick="activarImagen()"></button>
+          <a href="https://www.w3schools.com">?</a>        
         </li>
         <li>
           <button style="width:70px; height:66px;" id="button8" onclick="LimpiarTotal()"></button>
+          <a href="https://www.w3schools.com">?</a>        
         </li>
         <li>
           <button style="width:70px; height:66px;" id="button9" onclick="activarTriangulo()"></button>
+          <a href="https://www.w3schools.com">?</a>        
         </li>
         <li>
           <button style="width:70px; height:66px;" id="button10" onclick="activarMostrado()"></button>
+          <a href="https://www.w3schools.com">?</a>        
         </li>
         <li>
           <button style="width:70px; height:66px;" id="button11" onclick="activarTexto()"></button>
+          <a href="https://www.w3schools.com">?</a>        
         </li>
       </ul>
     </nav>
@@ -71,27 +104,28 @@
     <input style="background-color: #38376D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulO" onclick="tipoColor(062,095,138)" value="">
     <input style="background-color: #817DEB; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulC" onclick="tipoColor(093,155,155)" value="">
     <input style="background-color: #323004; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorCafe" onclick="tipoColor(108,059,042)" value="">
-    <button id="tamanomenos" onclick="tamanoMenos()" value=""></button>
+    <button id="tamanomenos" onclick="tamanoMenos()" value="" style=""></button>
     <script type="text/javascript">
       var menos=document.getElementById("tamanomenos");
-      menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
+      menos.innerHTML='<img src ="Imagenes/Resta_opt.PNG"/>';
     </script>
-    <button id="tamanomas" onclick="tamanoMas()" value=""></button>
+    <button id="tamanomas" onclick="tamanoMas()" value="" style=""></button>
     <script type="text/javascript">
       var mas=document.getElementById("tamanomas");
-      mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
+      mas.innerHTML='<img src ="Imagenes/suma_opt.PNG"/>';
     </script>
-</div>
+  </div>
+      <input  type="submit" class="btn btn-primary" id="SalirMonitoria" onclick="GenerarEncuesta()" value="Terminar Monitoria"></input>
       <div id="ReglayborradorTamano" style="position:relative;left:15%;display: none;">
         <button id="menosregla" onclick="tamanoMenos()" value=""></button>
         <script type="text/javascript">
           var menos=document.getElementById("menosregla");
-          menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
+          menos.innerHTML='<img src ="Imagenes/Resta_opt.PNG"/>';
         </script>
         <button id="masregla" onclick="tamanoMas()" value="" ></button>
         <script type="text/javascript">
           var mas=document.getElementById("masregla");
-          mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
+          mas.innerHTML='<img src ="Imagenes/suma_opt.PNG"/>';
         </script>
       </div>
 
@@ -99,12 +133,12 @@
       <button id="imgtamanoMenos" onclick="tamanoMenos()" value=""></button>
       <script type="text/javascript">
         var menos=document.getElementById("imgtamanoMenos");
-        menos.innerHTML='<img src ="Imagenes/Resta_opt.jpg"/>';
+        menos.innerHTML='<img src ="Imagenes/Resta_opt.PNG"/>';
       </script>
       <button id="imgtamanoMas" onclick="tamanoMas()" value="" ></button>
       <script type="text/javascript">
         var mas=document.getElementById("imgtamanoMas");
-        mas.innerHTML='<img src ="Imagenes/suma_opt.jpg"/>';
+        mas.innerHTML='<img src ="Imagenes/suma_opt.PNG"/>';
       </script>
     </div>
 
@@ -125,7 +159,7 @@
     <div class="hamburger" id="HamburguesaDerecha">
       <img src="Imagenes/chatImage.png" id="imagenHamburguesaDerecha"></div>
     <nav class="menuppal" id="menuppalDerecha">
-      <div id="messages"></div>
+      <div id="messages" style="overflow:hidden; overflow-y:scroll; height:90%; width:30%;"></div>
         <form action="" id="formChat">
           <input id="m" autocomplete="off" /><button>Enviar</button>
         </form>

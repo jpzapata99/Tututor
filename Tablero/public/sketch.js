@@ -49,9 +49,9 @@ function setup() {
  cnv.drop(gotFile);
  input = createInput();
  input.id("mitexto");
- input.style("position:absolute;left:30%;top:94%");
- input.style("background-color: olive;");
- input.style("font: 20px Arial");
+ input.style("position:absolute;left:25%;top:94%");
+ input.style("background-color: white;");
+ input.style("font: 30px Arial");
  input.style("display: none");
  textStyle(NORMAL);
 }
@@ -59,21 +59,23 @@ function setup() {
 function draw() {
   if (texto==true) {
     input.style("display:block");
+    document.getElementById('IndicadorParaElTexto').style.display="block";
   }else{
     input.style("display:none");
+    document.getElementById('IndicadorParaElTexto').style.display="none";    
   }
   if (lapiz==true) {
-      colocar.innerHTML = 'Tamaño: ' + lapiztamano + 'px';
+      colocar.innerHTML = 'Tamaño grosor: ' + lapiztamano + 'px';
   }else if (regla==true) {
-      colocar.innerHTML = 'Tamaño: ' + reglatamano + 'px';
+      colocar.innerHTML = 'Tamaño grosor: ' + reglatamano + 'px';
   }else if (Borrador==true) {
-      colocar.innerHTML = 'Tamaño: ' + borradortamano + 'px';
+      colocar.innerHTML = 'Tamaño radio: ' + borradortamano + 'px';
   }else if(imprimir_imagen==true){
-      colocar.innerHTML = 'Tamaño: ' + imgtamano + 'px';
+      colocar.innerHTML = 'Tamaño LargoAncho: ' + imgtamano + 'px';
   }else if(cuadrado==true){
-      colocar.innerHTML = 'Tamaño: ' + CuadradoTamanoP + 'px';
+      colocar.innerHTML = 'Tamaño lado: ' + CuadradoTamanoP + 'px';
   }else if(circulo==true && CirculoTamano>=0){
-      colocar.innerHTML = 'Tamaño: ' + CirculoTamano + 'px';
+      colocar.innerHTML = 'Tamaño radio: ' + CirculoTamano + 'px';
   }else if (texto==true) {
       colocar.innerHTML = 'Tamaño: ' + tamanoLetra + 'px';
   }
@@ -310,22 +312,21 @@ function LimpiarTotal(){
 }
   //este metodo permite aumentar el tamaño del borrador, el lapiz y la regla
 function tamanoMas(){
-  if (lapiz==true) {
+  if (lapiz==true && lapiztamano>=0) {
     lapiztamano+=15;
-
-  } else if (regla==true) {
+  } else if (regla==true && reglatamano>=0) {
     reglatamano+=1;
-  }else if (Borrador==true) {
+  }else if (Borrador==true && borradortamano>=0) {
     borradortamano+=30;
   }
-  else if(imprimir_imagen==true){
+  else if(imprimir_imagen==true && imgtamano>=0){
     imgtamano+=50;
   }
-  else if(cuadrado==true){
+  else if(cuadrado==true && CuadradoTamanoP>=0){
     CuadradoTamanoP+=20;
   }else if(circulo==true && CirculoTamano>=0){
     CirculoTamano+=10;
-  }else if (texto==true) {
+  }else if (texto==true && tamanoLetra>=0) {
       tamanoLetra+=10;
   }
 }
@@ -333,19 +334,46 @@ function tamanoMas(){
 function tamanoMenos(){
   var colocar = document.getElementById('labelParaColocarTamañoTexto');
   if(lapiztamano>0 && lapiz==true){
-  lapiztamano-=15;
+    if(lapiztamano<15){
+      lapiztamano=0;
+    }
+    else{
+      lapiztamano-=15;
+    }
   }else if (regla==true && reglatamano>0) {
     reglatamano-=1;
   }else if (Borrador==true && borradortamano>0) {
-    borradortamano-=30;
+    if(borradortamano<30){
+      borradortamano=0;
+    }else{
+      borradortamano-=30;
+    }
   }else if(imprimir_imagen==true && imgtamano>0){
-      imgtamano-=50;
+    if(imgtamano<50){
+      imgtamano=0;
+    }
+    else{ imgtamano-=50;
+    }
   }else if(cuadrado==true && CuadradoTamanoP>0){
+    if(CuadradoTamanoP<20){
+      CuadradoTamanoP=0;
+    }
+    else{
       CuadradoTamanoP-=20;
+    }  
   }else if(circulo==true && CirculoTamano>0){
+    if(CirculoTamano<10){
+      CirculoTamano=0;
+    }else{
       CirculoTamano-=10;
+    }
   }else if (texto==true && tamanoLetra>0) {
-    tamanoLetra-=10;
+    if(tamanoLetra<10){
+      tamanoLetra=0;
+    }
+    else{
+      tamanoLetra-=10;
+    }
     text(tamanoLetra,60,70);
   }
 }
