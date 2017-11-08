@@ -451,7 +451,7 @@ app.post('/cerrar',function(req,res){
 app.post('/preguntaN',urlencodedParser ,function(req,res){
 
   var sql_string2 = "INSERT INTO pregunta (idEstudiante, Titulo, tema, contexto, estado) VALUES (" +
-  req.session.informacion.idE + ", '" + req.body.nombreP + "', '" + req.body.tema + "', '" + req.body.textoP + "', 0 " + ")";
+  req.session.informacion.idE + ", '" + req.body.nombreP + "', '" + req.body.tema + "', '" + req.body.textoP + "', 1 " + ")";
   console.log(sql_string2);
   var result = connection.query(sql_string2);
   res.redirect('/perfil.ejs');
