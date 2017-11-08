@@ -14,31 +14,33 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
       crossorigin="anonymous"></script>
     <script>
-// Place this code in the head section of your HTML file 
-(function(r, d, s) {
-  r.loadSkypeWebSdkAsync = r.loadSkypeWebSdkAsync || function(p) {
-    var js, sjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(p.id)) { return; }
-    js = d.createElement(s);
-    js.id = p.id;
-    js.src = p.scriptToLoad;
-    js.onload = p.callback
-    sjs.parentNode.insertBefore(js, sjs);
-  };
-  var p = {
-    scriptToLoad: 'https://swx.cdn.skype.com/shared/v/latest/skypewebsdk.js',
-    id: 'skype_web_sdk'
-  };
-  r.loadSkypeWebSdkAsync(p);
-})(window, document, 'script');
-</script>
+      // Place this code in the head section of your HTML file 
+      (function(r, d, s) {
+        r.loadSkypeWebSdkAsync = r.loadSkypeWebSdkAsync || function(p) {
+          var js, sjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(p.id)) { return; }
+          js = d.createElement(s);
+          js.id = p.id;
+          js.src = p.scriptToLoad;
+          js.onload = p.callback
+          sjs.parentNode.insertBefore(js, sjs);
+        };
+        var p = {
+          scriptToLoad: 'https://swx.cdn.skype.com/shared/v/latest/skypewebsdk.js',
+          id: 'skype_web_sdk'
+        };
+        r.loadSkypeWebSdkAsync(p);
+      })(window, document, 'script');
+    </script>
 
-<div class='skype-share' data-href='https://atututor.herokuapp.com/' data-lang='' data-text='' data-style='circle'style="position:fixed; left: 80%;top:2%;width:150px;height:50px;" ></div>
+      <div class='skype-share' data-href='https://atututor.herokuapp.com/' data-lang='' data-text='' data-style='circle'style="position:fixed; left: 80%;top:2%;width:150px;height:50px;" ></div>
 
   </head>
   <body>
     <label id="labelParaColocarTamañoTexto" style="position:absolute;left:80%;top:94%;font: 30px Arial;display: block;">Tamaño:</label>
     <label id="IndicadorParaElTexto" style="position:absolute;left:10%;top:94%;font: 30px Arial;display: none;">Ingrese el texto:</label>
+    <label id="IndicadorDeColorActual" style="position:absolute;left:60%;top:94%;font: 30px Arial;">Color Actual:</label>
+    <input style="width:90px;position:absolute;left:72%;top:94%; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorActual"  value="">
     <div class="hamburger" id="HamburguesaIzquierda" style="width:2%;">
       <div class="_layer -top"></div>
       <div class="_layer -mid"></div>
@@ -92,7 +94,7 @@
         </li>
       </ul>
     </nav>
-    <div  id="color-tamaño" style="position:relative;left:12%;display: none;">
+    <div  id="color-tamaño" style="position:relative;left:12%;display: none;width:60%;">
 
     <input style="background-color: #F01616; width:70px; height:50px;border-style: outset;border-width: 5px;" type="button" id="ColorRojo" onclick="tipoColor(255,0,0)" value="">
     <input style="background-color: #08DB3D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorVerde" onclick="tipoColor(0,255,0)" value="">
