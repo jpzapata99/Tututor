@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>tablero</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="librerias/p5.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="librerias/addons/p5.dom.min.js"></script>
+    <script src="librerias/addons/p5.sound.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"></script>
+    <!--<script>
+// Place this code in the head section of your HTML file
+(function(r, d, s) {
+  r.loadSkypeWebSdkAsync = r.loadSkypeWebSdkAsync || function(p) {
+    var js, sjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(p.id)) { return; }
+    js = d.createElement(s);
+    js.id = p.id;
+    js.src = p.scriptToLoad;
+    js.onload = p.callback
+    sjs.parentNode.insertBefore(js, sjs);
+  };
+  var p = {
+    scriptToLoad: 'https://swx.cdn.skype.com/shared/v/latest/skypewebsdk.js',
+    id: 'skype_web_sdk'
+  };
+  r.loadSkypeWebSdkAsync(p);
+})(window, document, 'script');
+</script>-->
+
+<div class='skype-share' data-href='https://atututor.herokuapp.com/' data-lang='' data-text='' data-style='circle'style="position:fixed; left: 80%;top:2%;width:150px;height:50px;" ></div>
+
+  </head>
+  <body>
+    <label id="labelParaColocarTamañoTexto" style="position:absolute;left:80%;top:94%;font: 30px Arial;display: block;">Tamaño:</label>
+    <label id="IndicadorParaElTexto" style="position:absolute;left:10%;top:94%;font: 30px Arial;display: none;">Ingrese el texto:</label>
+    <div class="hamburger" id="HamburguesaIzquierda" style="width:2%;">
+      <div class="_layer -top"></div>
+      <div class="_layer -mid"></div>
+      <div class="_layer -bottom"></div>
+    </div>
+    <nav class="menuppal" id="menuppalIzquierda">
+      <ul>
+        <li>
+          <button style="width:70px; height:60px;" id="button1" onclick="activarLapiz()"></button>
+          <a href="https://www.w3schools.com">?</a>
+        </li>
+        <li>
+          <button style="width:70px; height:55px;" id="button2" onclick="activarRegla()"></button>
+          <a href="https://www.w3schools.com">?</a>
+        </li>
+        <li>
+          <button style="width:70px; height:50px;" id="button3" onclick="activarPantallazo()"></button>
+          <a href="https://www.w3schools.com">?</a>
+        </li>
+        <li>
+          <button style="width:70px; height:50px;" id="button4" onclick="activarBorrador()"></button>
+          <a href="https://www.w3schools.com">?</a>
+        </li>
+        <li>
+          <button style="width:70px; height:50px;" id="button5" onclick="activarCirculo()" ></button>
+          <a href="https://www.w3schools.com">?</a>
+        </li>
+        <li>
+          <button style="width:70px; height:65px;" id="button6" onclick="activarCuadrado()"></button>
+          <a href="https://www.w3schools.com">?</a>
+        </li>
+        <li>
+          <button style="width:70px; height:70px;" id="button7" onclick="activarImagen()"></button>
+          <a href="https://www.w3schools.com">?</a>
+        </li>
+        <li>
+          <button style="width:70px; height:66px;" id="button8" onclick="LimpiarTotal()"></button>
+          <a href="https://www.w3schools.com">?</a>
+        </li>
+        <li>
+          <button style="width:70px; height:66px;" id="button9" onclick="activarTriangulo()"></button>
+          <a href="https://www.w3schools.com">?</a>
+        </li>
+        <li>
+          <button style="width:70px; height:66px;" id="button10" onclick="activarMostrado()"></button>
+          <a href="https://www.w3schools.com">?</a>
+        </li>
+        <li>
+          <button style="width:70px; height:66px;" id="button11" onclick="activarTexto()"></button>
+          <a href="https://www.w3schools.com">?</a>
+        </li>
+      </ul>
+    </nav>
+    <div  id="color-tamaño" style="position:relative;left:12%;display: none;">
+
+    <input style="background-color: #F01616; width:70px; height:50px;border-style: outset;border-width: 5px;" type="button" id="ColorRojo" onclick="tipoColor(255,0,0)" value="">
+    <input style="background-color: #08DB3D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorVerde" onclick="tipoColor(0,255,0)" value="">
+    <input style="background-color: #191A19; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorNegro" onclick="tipoColor(0,0,0)" value="">
+    <input style="background-color: #703C4F; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorMorado" onclick="tipoColor(108,070,117)" value="">
+    <input style="background-color: #F2F5F1; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorBlanco" onclick="tipoColor(255,255,255)" value="">
+    <input style="background-color: #EDDA09; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAmarillo" onclick="tipoColor(255,255,0)" value="">
+    <input style="background-color: #A1A097; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorGris" onclick="tipoColor(144,144,144)" value="">
+    <input style="background-color: #38376D; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulO" onclick="tipoColor(062,095,138)" value="">
+    <input style="background-color: #817DEB; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorAzulC" onclick="tipoColor(093,155,155)" value="">
+    <input style="background-color: #323004; width:70px; height:50px; border-style: outset;border-width: 5px;" type="button" id="ColorCafe" onclick="tipoColor(108,059,042)" value="">
+    <button id="tamanomenos" onclick="tamanoMenos()" value="" style=""></button>
+    <script type="text/javascript">
+      var menos=document.getElementById("tamanomenos");
+      menos.innerHTML='<img src ="Imagenes/Resta_opt.PNG"/>';
+    </script>
+    <button id="tamanomas" onclick="tamanoMas()" value="" style=""></button>
+    <script type="text/javascript">
+      var mas=document.getElementById("tamanomas");
+      mas.innerHTML='<img src ="Imagenes/suma_opt.PNG"/>';
+    </script>
+  </div>
+      <input  type="submit" class="btn btn-primary" id="SalirMonitoria" onclick="GenerarEncuesta()" value="Terminar Monitoria"></input>
+      <div id="ReglayborradorTamano" style="position:relative;left:15%;display: none;">
+        <button id="menosregla" onclick="tamanoMenos()" value=""></button>
+        <script type="text/javascript">
+          var menos=document.getElementById("menosregla");
+          menos.innerHTML='<img src ="Imagenes/Resta_opt.PNG"/>';
+        </script>
+        <button id="masregla" onclick="tamanoMas()" value="" ></button>
+        <script type="text/javascript">
+          var mas=document.getElementById("masregla");
+          mas.innerHTML='<img src ="Imagenes/suma_opt.PNG"/>';
+        </script>
+      </div>
+
+      <div id="ImagenTamano" style="position:relative;left:40%;display: none;">
+      <button id="imgtamanoMenos" onclick="tamanoMenos()" value=""></button>
+      <script type="text/javascript">
+        var menos=document.getElementById("imgtamanoMenos");
+        menos.innerHTML='<img src ="Imagenes/Resta_opt.PNG"/>';
+      </script>
+      <button id="imgtamanoMas" onclick="tamanoMas()" value="" ></button>
+      <script type="text/javascript">
+        var mas=document.getElementById("imgtamanoMas");
+        mas.innerHTML='<img src ="Imagenes/suma_opt.PNG"/>';
+      </script>
+    </div>
+
+    <script src="Funcionamiento.js"></script>
+     <div class="container" >
+      <div id="userFormArea" class="row" >
+        <div class="col-md-12">
+          <form id="userForm" >
+            <div class="form-group">
+              <label>Escriba su condición:</label>
+              <input id="nombreUsuario" placeholder="Monitor o Estudiante"  />
+              <input type="submit" class="btn btn-primary" value="Entrar" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="hamburger" id="HamburguesaDerecha">
+      <img src="Imagenes/chatImage.png" id="imagenHamburguesaDerecha"></div>
+    <nav class="menuppal" id="menuppalDerecha">
+      <div id="messages" style="overflow:hidden; overflow-y:scroll; height:90%; width:30%;"></div>
+        <form action="" id="formChat">
+          <input id="m" autocomplete="off" /><button>Enviar</button>
+        </form>
+    </nav>
+    <script src="indexMenu.js"></script>
+    <script src="sketch.js"></script>
+    <script src="chat.js"></script>
+  </body>
+</html>

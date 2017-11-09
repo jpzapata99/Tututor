@@ -90,7 +90,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<li><a href="perfil.ejs"><h1><span id="contador" class="label label-danger">0</span></h1></a></li>
 						<% } %>
 						<% if (info.id == "estudiante") { %>
-						<li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#preguntaN">Hacer una pregunta</button></li>
+						<form action="/crearSala">
+							<li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#preguntaN">Hacer una pregunta</button></li>
+						</form>
 						<% } %>
 					</ul>
 
@@ -109,7 +111,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 							</h3> <br>
 							<div class="col-sm-9"><textarea readonly name="txtarea1" id="txtarea1" cols="50" rows="4" class="form-control1"><%= preguntas[i].contexto %></textarea></div>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#" style="margin-top: 0.4em">Responder</button>
+							<form action="/responder" method="post">
+								<input type="hidden" value="preguntas[i].idEstudiante" name="idUsuario" />
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#" style="margin-top: 0.4em">Responder</button>
+							</form>
 						</div>
 					</li>
 						<% } %>

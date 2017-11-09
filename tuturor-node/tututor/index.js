@@ -6,7 +6,7 @@ var mysqlSync = require('sync-mysql');
 var formidable = require('formidable');
 const cookieParser = require('cookie-parser');
 var session = require('express-session');
-var io = require('socket.io').listen(3001);
+var io2 = require('socket.io').listen(3001);
 var MemoryStore = require('memorystore')(session);
 var fs = require('fs');
 const path = require('path');
@@ -161,12 +161,12 @@ app.get('/perfil.ejs',function(req,res){
 });
 //Escuha el llamado del perfil
 var sql_socket = "SELECT * FROM pregunta WHERE estado = 1"
-io.sockets.on('connection', function (socket) {
+io2.sockets.on('connection', function (socket) {
     socket.on('message', function (mensaje) {
       result = connection.query(sql_socket);
       if(result.length > numP){
         numP = result.length;
-        io.sockets.send(numP);
+        io2.sockets.send(numP);
         console.log("CAMBIO");
       }else if(result.length < numP){
         numP = result.length;
@@ -317,6 +317,19 @@ function registro(usuario,data){
 /*Es como un tipo de listener que se activa cuado se es enviado un formulario,
 este se encarga de realizar las consultas necesarias para la validación de los
 datos*/
+app.post('/crearSala', function(req, res){
+  var salaUrl = "/sala" + randomstring.generate(15);
+  var sql_string = "INSERT INTO sala (idEstudiante, url) VALUES ("+req.session.informacion.idE+", '"+salaUrl+"')";
+  connection.query(sql_string);
+  res.redirect('/perfil.ejs');
+});
+
+app.post('/responder', urlencodedParser, function(req, res){
+  var data = req.body;
+  var sql_string = "UPDATE sala SET idTutor = "+req.session.informacion.idT+" WHERE idEstudiante = " + data.idUsuario;
+  connection.query(sql_string);
+});
+
 app.post('/', urlencodedParser, function(req, res){
   var data = req.body;
   if(data.codigo){
@@ -352,10 +365,10 @@ app.post('/', urlencodedParser, function(req, res){
   if(!data.Email){
     var login = loginU("estudiante",data);
     if(login == 1){
-        req.session.usuario = req.body.usuario;
-        sql_string = "SELECT * FROM estudiante WHERE usuario = '" + data.usuario + "'";
-          var result2 = connection.query(sql_string);
-        req.session.informacion =  { name:req.session.usuario, correo: result2[0].correo, carrera: '', nombre: result2[0].nombre, apellido:result2[0].apellido, carnet : result2[0].carnet, id : "estudiante" ,idE : result2[0].idEstudiante};
+      req.session.usuario = req.body.usuario;
+      sql_string = "SELECT * FROM estudiante WHERE usuario = '" + data.usuario + "'";
+      var result2 = connection.query(sql_string);
+      req.session.informacion =  { name:req.session.usuario, correo: result2[0].correo, carrera: '', nombre: result2[0].nombre, apellido:result2[0].apellido, carnet : result2[0].carnet, id : "estudiante" ,idE : result2[0].idEstudiante};
       res.render('../pag/views/index2.ejs', {login:true,perfil:"Bienvenido " + req.session.usuario + " Se ha inciado sesion correctamente"});
     }
     if(login == 2){
@@ -370,7 +383,7 @@ app.post('/', urlencodedParser, function(req, res){
         req.session.usuario = req.body.usuario;
         sql_string = "SELECT * FROM tutor WHERE usuario = '" + data.usuario + "'";
         var result2 = connection.query(sql_string);
-        req.session.informacion =  { name:req.session.usuario, correo: result2[0].correo, carrera: '', nombre: result2[0].nombre, apellido:result2[0].apellido, carnet : result2[0].carnet, id :"tutor" };
+        req.session.informacion =  { name:req.session.usuario, correo: result2[0].correo, carrera: '', nombre: result2[0].nombre, apellido:result2[0].apellido, carnet : result2[0].carnet, id :"tutor", idT : result2[0].idTutor};
         res.render('../pag/views/index2.ejs', {login:true,perfil:"Bienvenido " + req.session.usuario + " Se ha inciado sesion correctamente"});
       }
       if(login == 2){
@@ -460,4 +473,122 @@ app.post('/preguntaN',urlencodedParser ,function(req,res){
 //app.listen(PORT);
 var listener = app.listen(process.env.PORT || 5000, function () {
    console.log('Server started on port %d', listener.address().port);
+});
+
+
+
+
+
+
+//TABLERO
+const app2 = express()
+const http = require('http').Server(app2);
+const io = require('socket.io')(http);
+
+
+app2.use(express.static(path.join(__dirname, 'public')));
+app2.set('views', __dirname + '/public');
+app2.engine('html', require('ejs').renderFile);
+
+app2.get('/', function (req, res) {
+  res.send("404 NOT FOUND");
+});
+
+users = [];
+connections=[];
+var url = "";
+
+
+app2.get(/room.*$/, function(req, res){
+  console.log(url = req.url.substring(1,req.url.length));
+  res.render(__dirname + '/public/index.html');
+});
+
+// server side code
+io.on('connection', function(socket){
+    console.log('Connected: %s sockets onnected', connections.length);
+    if(url != ""){
+      socket.emit('newsala',url);
+        connections.push(socket);
+    }
+
+    //Desconexion
+    socket.on('disconnect',function(data){
+        connections.splice(connections.indexOf(socket),1);
+        console.log('Disconnected: %s sockets connected',connections.length);
+    });
+
+    socket.on('create', function(room) {
+      socket.join(room);
+    });
+
+    //Enviar Mensaje
+    socket.on('chat message', function(mensaje){
+    io.emit('new message', {data:mensaje,user:socket.nombreUsuario});
+    });
+
+    //Emitiendo Imagen
+    socket.on('user image',function(dataI){
+        socket.broadcast.emit('addimage',dataI);
+    });
+
+    //new user
+    socket.on('new user', function(msg,callback){
+        callback(true);
+        socket.nombreUsuario = msg;
+        users.push(socket.nombreUsuario);
+        io.emit('new user',socket.nombreUsuario);
+    });
+
+    function reglaSocket(dataR){
+        socket.broadcast.emit('regla' , dataR);
+    }
+    function controlZ(data){
+        socket.broadcast.emit('controlZ',data);
+    }
+    socket.on('lapiz' , lapizSocket);
+    function lapizSocket(data){
+      if(JSON.stringify(data.room)){
+            io.sockets.to(JSON.stringify(data.room).substring(1,JSON.stringify(data.room).length-1) ).emit('lapiz' , data);
+      }
+    }
+    socket.on('borrador' , borradorSocket);
+    function borradorSocket(dataB){
+        io.emit('borrador' , dataB);
+    }
+    socket.on('regla' , reglaSocket);
+
+
+    socket.on('image' , imageSocket);
+    function imageSocket(data){
+        socket.broadcast.emit('image' , dataR);
+    }
+    socket.on('cuadrado', cuadradoSocket);
+    function cuadradoSocket(dataC){
+        socket.broadcast.emit('cuadrado' , dataC);
+    }
+    socket.on('circulo', circuloSocket);
+    function circuloSocket(dataCi){
+        socket.broadcast.emit('circulo' , dataCi);
+    }
+    socket.on('triangulo', trianguloSocket);
+    function trianguloSocket(dataT){
+        socket.broadcast.emit('triangulo' , dataT);
+    }
+
+    socket.on('texto', textoSocket);
+    function textoSocket(dataText){
+      socket.broadcast.emit('texto',dataText);
+    }
+    socket.on('borrar', borrarSocket);
+    function borrarSocket(){
+      socket.broadcast.emit('borrar');
+    }
+});
+
+io.emit('some event', { for: 'everyone' });
+
+
+http.listen(process.env.PORT||3000, function(){
+  console.log('listening on *:3000');
 });
