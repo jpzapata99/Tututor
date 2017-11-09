@@ -123,6 +123,9 @@ function transmitirLapiz(data){
   //este metodo permite dibujar una ellpise, los parametros hacen referencia al
   //tamaño y pocision de la ellipse
   ellipse(data.x, data.y,data.w,data.w);
+
+   var hexa = "#" + componentToHex(data.r) + componentToHex(data.g) + componentToHex(data.b);       
+   document.getElementById('ColorActual').style.backgroundColor = hexa;
 }
 function transmitirCuadrado(dataC){
   rect(dataC.r,dataC.s,dataC.m,dataC.m);
@@ -289,7 +292,6 @@ function activarImagen(){
   Aplicar=0;
 }
 function activarMostrado(){
-
   var x=windowWidth;
   var y=windowHeight-140;
   if(indiceArregloDeControlZ-Aplicar>0){
@@ -302,8 +304,6 @@ function activarMostrado(){
     Aplicar++;
   }
 }
-
-
 
 function LimpiarTotal(){
   //este metodo Borra todo lo dibujado y puesto sobre el canvas
@@ -400,6 +400,12 @@ if (file.type === 'image') {
 	println('Not an image file!');
 }
 }
+
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
 //este metodo permite alternar entre colores para el lapiz,
 //s reciben los colores por parametro desde el fichero index.html de acuerdo a cada boton de color
 function tipoColor(R,G,B){
@@ -412,6 +418,7 @@ function tipoColor(R,G,B){
 //aqui se emiten los valores recogidos por data hacia el server
   socket.emit('lapiz' , data);
    fill(R,G,B);
+
  }
 
 //este metodo pse ejecuta cuando el ussuario hace un click derecho contante del raton
@@ -447,6 +454,8 @@ function mouseDragged(){
     	tipoColor();
       //lapiztamano es una variable global que varia de acuerdo a los metodos tamanomas y tamanomenos
       ellipse(mouseX,mouseY,lapiztamano,lapiztamano);
+      var hexa = "#" + componentToHex(R) + componentToHex(G) + componentToHex(B);       
+      document.getElementById('ColorActual').style.backgroundColor = hexa;
       }
     }
   }
