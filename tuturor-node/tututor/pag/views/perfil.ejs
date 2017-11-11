@@ -59,8 +59,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<!-- banner-text -->
 			<div class="banner-w3text about-w3lsbnr-text">
 				<div class="container">
-					<% if (nombre) { %>
+					<% if (nombre.charAt(0) != '/') { %>
 							<h2><%= nombre %></h2>
+					<% }else{%>
+							<h2>Sala: <a href=<%= "http://localhost:3000" + nombre %> target="_blank"><%= nombre%></a></h2>
 					<% } %>
 				</div>
 			</div> <br>
@@ -90,7 +92,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<li><a href="perfil.ejs"><h1><span id="contador" class="label label-danger">0</span></h1></a></li>
 						<% } %>
 						<% if (info.id == "estudiante") { %>
-						<form action="/crearSala">
+						<form action="/crearSala" method="POST">
 							<li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#preguntaN">Hacer una pregunta</button></li>
 						</form>
 						<% } %>
@@ -99,7 +101,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				</div>
 			</div>
 			<div id="preguntasE" class="col-sm-6 about-w3left">
-				<% if (info.id == "tutor") { %>
 				<% if (info.preguntas != false) { %>
 				<% for(var i = 0; i < preguntas.length; ++i) { %>
 					<li>
@@ -108,18 +109,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<h3>
 								<label><%= preguntas[i].Titulo %></label><br>
 								<span class="label label-primary"><%= preguntas[i].tema %></span>
-
 							</h3> <br>
 							<div class="col-sm-9"><textarea readonly name="txtarea1" id="txtarea1" cols="50" rows="4" class="form-control1"><%= preguntas[i].contexto %></textarea></div>
-							<form action="/responder" method="post">
-								<input type="hidden" value="preguntas[i].idEstudiante" name="idUsuario" />
-								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#" style="margin-top: 0.4em">Responder</button>
+							<% if (info.id == "tutor") { %>
+							<form action="/responder" method="POST">
+								<input type="hidden" value=<%= preguntas[i].idEstudiante %> name="idUsuario" />
+								<button class="btn btn-primary" type="submit" style="margin-top: 0.4em">Responder</button>
 							</form>
+							<% } %>
+							<% if (info.id == "estudiante") { %>
+							<form action="/eliminar" method="POST">
+								<input type="hidden" value=<%= preguntas[i].idEstudiante %> name="idUsuario" />
+								<button class="btn btn-primary" type="submit" style="margin-top: 0.4em">Eliminar</button>
+							</form>
+							<% } %>
 						</div>
 					</li>
 						<% } %>
 				<% } %>
-			<% } %>
 			<% if (info.id == "estudiante") { %>
 				<li>
 					<div class="well w3l">

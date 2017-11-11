@@ -109,7 +109,8 @@ barra de navegación*/
 //cuando entren solo la direccion principal
 app.get('/', function(req, res){
   if(req.session.usuario){
-    res.render('perfil',{nombre:req.session.usuario, foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info:req.session.informacion});
+    res.render('../pag/views/index2',{login:true,
+    perfil:"Bienvenido " + req.session.usuario + " Has iniciado sesion " });
   }else {
     res.render('index', {
         mensaje:false
@@ -151,7 +152,9 @@ app.get('/perfil.ejs',function(req,res){
     }else{
       a =  perfilComprobar(req.session.usuario);
       if(a==0){
-          res.render('perfil',{nombre:req.session.usuario, foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
+          var sql_string = "SELECT * FROM pregunta WHERE idEstudiante = " + req.session.informacion.idE;
+          var result = connection.query(sql_string);
+          res.render('perfil',{preguntas:result, nombre:req.session.usuario, foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
       }
     }
   }else{
@@ -317,17 +320,26 @@ function registro(usuario,data){
 /*Es como un tipo de listener que se activa cuado se es enviado un formulario,
 este se encarga de realizar las consultas necesarias para la validación de los
 datos*/
-app.post('/crearSala', function(req, res){
-  var salaUrl = "/sala" + randomstring.generate(15);
-  var sql_string = "INSERT INTO sala (idEstudiante, url) VALUES ("+req.session.informacion.idE+", '"+salaUrl+"')";
+app.post('/eliminar', urlencodedParser,function(req,res){
+  var sql_string = "DELETE FROM pregunta WHERE idEstudiante = " + req.body.idUsuario;
   connection.query(sql_string);
-  res.redirect('/perfil.ejs');
+  sql_string = "DELETE FROM sala WHERE idEstudiante = " + req.body.idUsuario;
+  connection.query(sql_string);
+  res.redirect('perfil.ejs');
 });
 
 app.post('/responder', urlencodedParser, function(req, res){
   var data = req.body;
-  var sql_string = "UPDATE sala SET idTutor = "+req.session.informacion.idT+" WHERE idEstudiante = " + data.idUsuario;
+  var idUsuario = parseInt(data.idUsuario);
+  var sql_string = "UPDATE sala SET idTutor = "+req.session.informacion.idT+" WHERE idEstudiante = " + idUsuario + " AND idTutor IS NULL";
   connection.query(sql_string);
+  sql_string = "SELECT url FROM sala WHERE idEstudiante = " + idUsuario;
+  var result = connection.query(sql_string);
+  if(result.length > 0){
+    res.render('perfil',{preguntas: false, nombre:result[0].url, foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
+  }else{
+    res.redirect('perfil.ejs');
+  }
 });
 
 app.post('/', urlencodedParser, function(req, res){
@@ -409,12 +421,12 @@ app.post('/cambiar', urlencodedParser, function(req, res){
                    "SET contra = '" + hash +"' "+
                    "WHERE usuario = '" + result[0].usuario+ "'" ;
       var result2 = connection.query(sql_string);
-      res.render('perfil',{nombre:"Contraseña exitosamente cambiada", foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
+      res.render('perfil',{preguntas: false,nombre:"Contraseña exitosamente cambiada", foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
     }else{
-      res.render('perfil',{nombre:"La contraseña ingresada no puede ser igual a la anterior", foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
+      res.render('perfil',{preguntas: false,nombre:"La contraseña ingresada no puede ser igual a la anterior", foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
     }
   }else{
-    res.render('perfil',{nombre:"No ha ingresado su contraseña anterior", foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
+    res.render('perfil',{preguntas: false,nombre:"No ha ingresado su contraseña anterior", foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
   }
 }else{
   sql_string = "SELECT * FROM " +req.session.informacion.id+ " WHERE usuario = '" + req.session.usuario + "'";
@@ -445,9 +457,8 @@ app.post('/foto', function (req, res){
       fs.unlinkSync(__dirname + '/uploads/' + req.session.usuario + '/perfil.jpg'); // borramos la imagen de perfil anterior
       file.path = __dirname + '/uploads/' + req.session.usuario +'/perfil.jpg' ; // ponemos el archivo en la carpeta del estudiante
     }else {
-      res.render('perfil',{preguntas:false, nombre:req.session.usuario, foto: "../../uploads/" + req.session.usuario + "/perfil.jpg ",info: req.session.informacion});
-
-          }
+      res.redirect('perfil.ejs');
+    }
   });
   res.redirect('/perfil.ejs');
   });
@@ -465,8 +476,10 @@ app.post('/preguntaN',urlencodedParser ,function(req,res){
 
   var sql_string2 = "INSERT INTO pregunta (idEstudiante, Titulo, tema, contexto, estado) VALUES (" +
   req.session.informacion.idE + ", '" + req.body.nombreP + "', '" + req.body.tema + "', '" + req.body.textoP + "', 1 " + ")";
-  console.log(sql_string2);
   var result = connection.query(sql_string2);
+  var salaUrl = "/sala" + randomstring.generate(15);
+  sql_string2 = "INSERT INTO sala (idEstudiante, url) VALUES ("+req.session.informacion.idE+", '"+salaUrl+"')";
+  connection.query(sql_string2);
   res.redirect('/perfil.ejs');
 });
 //Se corre el programa en el PORT definido anteriormente.
@@ -499,7 +512,7 @@ connections=[];
 var url = "";
 
 
-app2.get(/room.*$/, function(req, res){
+app2.get(/sala.*$/, function(req, res){
   console.log(url = req.url.substring(1,req.url.length));
   res.render(__dirname + '/public/index.html');
 });
