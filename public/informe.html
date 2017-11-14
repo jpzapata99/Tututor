@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>informe de desempeño</title>
+<style media="screen">
+  form {
+  margin: 0 auto;
+  width: 800px;
+  }
+
+  ul, ol {
+  padding: 0;
+  margin: 0;
+  }
+  ol > li {
+  list-style-position: inside;
+  border: 8px solid #7DA5E0;
+  padding: 10px;
+  margin: 10px;
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  color: #7DA5E0;
+  }
+
+  ul li {
+  list-style-type: none;
+  color: #000000;
+  display: inline;
+  }
+  h1{
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 60px;
+  }
+  h2{
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+  }
+  h3{
+  list-style-position: inside;
+  border: 10px solid #7DA5E0;
+  padding: 10px;
+  margin: 10px;
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  }
+  #preguntas{
+    position: relative;
+    margin: 0 auto;
+    width: 800px;
+  background-color: rgba(0, 0, 255, 0.1);
+    top: 80px;
+  }
+  #titulo{
+    position: relative;
+    width: 80px;
+    height: 30px;
+    left: 42%;
+  }
+  #subtitulo{
+    position: relative;
+    width: 700px;
+    height: 40px;
+    left: 30%;
+  }
+  #enviar{
+    position: relative;
+    text-decoration: none;
+        padding: 5px;
+        font-family: arial;
+        text-transform: uppercase;
+        padding-left: 5px;
+        padding-right: 5px;
+        font-weight: 300;
+        font-size: 25px;
+        color: black;
+        background-color:#99CCCC;
+        height: 40px;
+    left: 42%;
+  }
+  textarea{
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+  <div class="titulo" id="titulo">
+    <h1>Tututor</h1>
+  </div>
+  <div class="subtitulo" id="subtitulo">
+    <h2>Encuesta sobre el desempeño del monitor</h2>
+  </div>
+    <div class="preguntas" id="preguntas">
+
+<form action="/encuesta" method="post">
+<ol>
+  <h3>Responda las preguntas de acuerdo a como fue su experiencia en la monitoria</h3>
+<li>¿Fue respondia su duda(s) en la sesion de asesoria cademica?
+  <ul>
+    <select name="op1" required>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+  </ul>
+</li>
+
+<li>De 1 a 5 ¿Que le pareció la actitud del monitor durante la sesion de asesoria academica?
+  <ul>
+    <select name="op2" required>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+  </ul>
+</li>
+<li>¿Haria uso de la plataforma de nuevo?
+  <ul>
+    <select name="op3" required>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+  </ul>
+</li>
+<li>De 1 a 5: Califique el conocimiento mostrado por el monitor en relación a la explicasión que el monitor dio a la duda que usted presentó:
+  <ul>
+    <select name="op4" required>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+  </ul>
+</li>
+<li>Comentarios y sugerencias(sobre el monitor y/o la sesion de asesoria):
+  <ul>
+  <textarea name="sugerencia" rows="10" cols="40" placeholder="Escribe aquí tus comentarios" ></textarea>
+  </ul>
+</li>
+</ol>
+<button type="submit" value="Enviar" id="enviar" name="enviar" onclick="myFunction()">Enviar</button>
+  <label id="op1v" hidden ></label>
+  <label id="op2v" hidden ></label>
+  <label id="op3v" hidden ></label>
+  <label id="op4v" hidden ></label>
+
+</form>
+  </div>
+
+  <script>
+    function myFunction() {
+       var x = document.getElementById("op1").value;
+       document.getElementById("demo").innerHTML = "Found " + x + " options in the list.";
+    }
+  </script>
+</body>
+</html>
